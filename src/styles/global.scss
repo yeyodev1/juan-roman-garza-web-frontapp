@@ -1,27 +1,95 @@
 @use './colorVariables.module.scss' as *;
 @use './fonts.module.scss' as *;
 
-html, body {
-  background-color: $white;
-  margin: 0;
-  font-family: $font-principal;
-}
-
 :root {
+  // Theme Light (Default but customizable)
   --bg: #{$white};
+  --bg-offset: #f3f5f8;
   --text: #{$primary-dark};
+  --text-muted: #6b7280;
   --border: #{rgba($primary-dark, 0.08)};
   --accent: #{$primary};
+  --accent-gold: #D4AF37;
+  --accent-gold-rgb: 212, 175, 55;
+  --accent-blue-rgb: 32, 148, 210;
+  --card-bg: #ffffff;
+  --header-bg: rgba(255, 255, 255, 0.8);
+  --font-principal: 'Montserrat', sans-serif;
+  --font-secondary: 'Inter', sans-serif;
 }
 
 [data-theme='dark'] {
   --bg: #{$primary-dark};
+  --bg-offset: #031435;
   --text: #{$text-light};
+  --text-muted: #9ca3af;
   --border: #{rgba($white, 0.12)};
   --accent: #{$primary};
+  --accent-gold: #D5B038;
+  --accent-gold-rgb: 213, 176, 56;
+  --accent-blue-rgb: 32, 148, 210;
+  --card-bg: #031435;
+  --header-bg: rgba(1, 13, 39, 0.85);
+}
+
+// Force a default elegant dark layout matching the premium health/biotech look (blue, gold, black, white)
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px; // Dynamic header height offset
+  overflow-x: hidden;
 }
 
 body {
   background-color: var(--bg);
   color: var(--text);
+  margin: 0;
+  font-family: var(--font-secondary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.6;
 }
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-principal);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+// Premium Scrollbar
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--accent-gold);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: lighten(#D4AF37, 10%);
+}
+
+// Helper utility classes
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.text-gold {
+  color: var(--accent-gold);
+  background: linear-gradient(135deg, var(--accent-gold) 0%, #f3e5ab 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.section-padding {
+  padding: 8rem 0;
+  @media (max-width: 768px) {
+    padding: 5rem 0;
+  }
+}
+
