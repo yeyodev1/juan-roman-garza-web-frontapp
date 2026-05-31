@@ -1,25 +1,22 @@
 <script setup lang="ts">
 const emit = defineEmits(['navigate']);
-
 const profileImage = 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095167/assets-juan/99f4f652-01b1-4bf3-91af-9e73da8e6c0d.jpg';
 </script>
 
 <template>
   <section id="home" class="hero-section">
-    <!-- Abstract premium glow elements for Awwwards-style biotech look -->
     <div class="glow-sphere glow-primary"></div>
     <div class="glow-sphere glow-gold"></div>
 
     <div class="container hero-grid">
-      <!-- Left side text content -->
       <div class="hero-content">
         <span class="hero-tag">LIDERAZGO & SALUD PIONERA</span>
         <h1 class="hero-title">
-          LONGEVIDAD <span class="text-gold">REGENERATIVA</span>:
+          LONGEVIDAD <span class="text-gold">REGENERATIVA</span>
           <span class="subtitle-block">El Nuevo Activo Estratégico del Liderazgo Empresarial</span>
         </h1>
         <p class="hero-desc">
-          Conectando Psicología Organizacional, Tecnología y Medicina Regenerativa para potenciar el rendimiento de los líderes del siglo XXI. Mantén tu alto rendimiento físico e intelectual frente a los desafíos corporativos modernos.
+          Conectando Psicología Organizacional, Tecnología y Medicina Regenerativa para potenciar el rendimiento de los líderes del siglo XXI. Mantén tu rendimiento frente a los desafíos corporativos.
         </p>
         <div class="hero-actions">
           <button class="btn-primary" @click="emit('navigate', 'contact')">
@@ -31,17 +28,15 @@ const profileImage = 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095
         </div>
       </div>
 
-      <!-- Right side profile photo with premium frame -->
       <div class="hero-media">
         <div class="media-frame">
           <img :src="profileImage" alt="Juan Román Garza" class="profile-photo" />
           <div class="glow-border"></div>
-          <!-- Biotech floating badge -->
           <div class="floating-badge">
             <i class="fa-solid fa-dna badge-icon"></i>
             <div class="badge-text">
               <span class="badge-num">20+</span>
-              <span class="badge-lbl">Años de Respaldo Clínico</span>
+              <span class="badge-lbl">Años Clínicos</span>
             </div>
           </div>
         </div>
@@ -54,63 +49,40 @@ const profileImage = 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095
 .hero-section {
   position: relative;
   min-height: 100vh;
-  padding: 120px 0 80px;
+  padding: 160px 0 100px;
   display: flex;
   align-items: center;
   overflow: hidden;
   background-color: var(--bg);
-  transition: background-color 0.3s ease;
+  @media (max-width: 768px) { padding: 120px 0 60px; }
 }
 
-// Glow spheres for biotech Awwwards background
 .glow-sphere {
   position: absolute;
   border-radius: 50%;
   filter: blur(100px);
-  opacity: 0.15;
+  opacity: 0.12;
   z-index: 1;
   pointer-events: none;
-}
-
-.glow-primary {
-  width: 500px;
-  height: 500px;
-  top: -10%;
-  right: -10%;
-  background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
-}
-
-.glow-gold {
-  width: 400px;
-  height: 400px;
-  bottom: -10%;
-  left: -10%;
-  background: radial-gradient(circle, var(--accent-gold) 0%, transparent 70%);
+  &.glow-primary { width: 500px; height: 500px; top: -10%; right: -10%; background: radial-gradient(circle, var(--accent) 0%, transparent 70%); }
+  &.glow-gold { width: 400px; height: 400px; bottom: -10%; left: -10%; background: radial-gradient(circle, var(--accent-gold) 0%, transparent 70%); }
 }
 
 .hero-grid {
   display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
-  gap: 4rem;
+  grid-template-columns: 1.25fr 0.75fr;
+  gap: 6rem;
   align-items: center;
   position: relative;
   z-index: 2;
-
-  @media (max-width: 992px) {
-    grid-template-columns: 1fr;
-    gap: 3rem;
-    text-align: center;
-  }
+  @media (max-width: 992px) { grid-template-columns: 1fr; gap: 4rem; text-align: center; }
 }
 
 .hero-content {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-
-  @media (max-width: 992px) {
-    align-items: center;
-  }
+  @media (max-width: 992px) { align-items: center; }
 }
 
 .hero-tag {
@@ -119,7 +91,7 @@ const profileImage = 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095
   font-weight: 700;
   letter-spacing: 0.15em;
   color: var(--accent-gold);
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   padding: 0.4rem 1rem;
   border: 1px solid rgba(212, 175, 55, 0.3);
   border-radius: 50px;
@@ -127,25 +99,19 @@ const profileImage = 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095
 }
 
 .hero-title {
-  font-size: 3.2rem;
+  font-size: 3.5rem;
   line-height: 1.1;
-  margin-bottom: 1.5rem;
-
-  @media (max-width: 768px) {
-    font-size: 2.2rem;
-  }
+  margin-bottom: 2rem;
+  @media (max-width: 768px) { font-size: 2.2rem; }
 
   .subtitle-block {
     display: block;
     font-size: 1.8rem;
     font-weight: 500;
-    margin-top: 0.75rem;
+    margin-top: 1rem;
     color: var(--text);
     opacity: 0.9;
-
-    @media (max-width: 768px) {
-      font-size: 1.4rem;
-    }
+    @media (max-width: 768px) { font-size: 1.3rem; }
   }
 }
 
@@ -153,27 +119,14 @@ const profileImage = 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095
   font-size: 1.1rem;
   color: var(--text-muted);
   max-width: 600px;
-  margin-bottom: 2.5rem;
+  margin-bottom: 3rem;
   line-height: 1.6;
-
-  @media (max-width: 768px) {
-    font-size: 1rem;
-  }
 }
 
 .hero-actions {
   display: flex;
   gap: 1.5rem;
-  width: 100%;
-
-  @media (max-width: 992px) {
-    justify-content: center;
-  }
-
-  @media (max-width: 480px) {
-    flex-direction: column;
-    gap: 1rem;
-  }
+  @media (max-width: 480px) { flex-direction: column; width: 100%; }
 }
 
 .btn-primary {
@@ -190,13 +143,7 @@ const profileImage = 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095
   justify-content: center;
   gap: 0.75rem;
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-
-  &:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-    background: linear-gradient(135deg, var(--accent-gold) 0%, #b89528 100%);
-    color: #fefefe;
-  }
+  &:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.15); background: linear-gradient(135deg, var(--accent-gold) 0%, #b89528 100%); color: #fefefe; }
 }
 
 .btn-secondary {
@@ -213,27 +160,16 @@ const profileImage = 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095
   justify-content: center;
   gap: 0.5rem;
   transition: all 0.3s ease;
-
-  &:hover {
-    background-color: var(--border);
-    color: var(--accent-gold);
-    border-color: var(--accent-gold);
-  }
+  &:hover { background-color: var(--border); color: var(--accent-gold); border-color: var(--accent-gold); }
 }
 
-.hero-media {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+.hero-media { display: flex; justify-content: center; width: 100%; }
 
 .media-frame {
   position: relative;
   width: 100%;
-  max-width: 380px;
+  max-width: 340px;
   aspect-ratio: 1 / 1;
-  border-radius: 24px;
-  overflow: visible;
 
   .profile-photo {
     width: 100%;
@@ -243,27 +179,23 @@ const profileImage = 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095
     position: relative;
     z-index: 2;
     border: 4px solid var(--card-bg);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
   }
 
   .glow-border {
     position: absolute;
-    top: -10px;
-    left: -10px;
-    right: -10px;
-    bottom: -10px;
+    top: -8px; left: -8px; right: -8px; bottom: -8px;
     border-radius: 30px;
     background: linear-gradient(135deg, var(--accent) 0%, var(--accent-gold) 100%);
     z-index: 1;
-    opacity: 0.4;
-    filter: blur(8px);
+    opacity: 0.3;
+    filter: blur(6px);
   }
 }
 
 .floating-badge {
   position: absolute;
   bottom: 20px;
-  left: -30px;
+  left: -20px;
   background: var(--card-bg);
   border: 1px solid var(--border);
   padding: 0.75rem 1.25rem;
@@ -273,35 +205,11 @@ const profileImage = 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095
   gap: 0.75rem;
   z-index: 3;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  @media (max-width: 480px) { left: 10px; bottom: -20px; }
 
-  @media (max-width: 480px) {
-    left: 10px;
-    bottom: -20px;
-  }
-
-  .badge-icon {
-    font-size: 1.5rem;
-    color: var(--accent-gold);
-  }
-
-  .badge-text {
-    display: flex;
-    flex-direction: column;
-    text-align: left;
-  }
-
-  .badge-num {
-    font-family: var(--font-principal);
-    font-weight: 800;
-    font-size: 1.1rem;
-    line-height: 1;
-    color: var(--text);
-  }
-
-  .badge-lbl {
-    font-size: 0.7rem;
-    color: var(--text-muted);
-    font-weight: 500;
-  }
+  .badge-icon { font-size: 1.4rem; color: var(--accent-gold); }
+  .badge-text { display: flex; flex-direction: column; text-align: left; }
+  .badge-num { font-weight: 800; font-size: 1.1rem; color: var(--text); }
+  .badge-lbl { font-size: 0.7rem; color: var(--text-muted); }
 }
 </style>
