@@ -76,6 +76,11 @@ onMounted(() => {
 <style lang="scss" scoped>
 .approach-section { background-color: var(--bg); transition: background-color 0.3s ease; padding-top: 150px; min-height: 100vh; padding-bottom: 100px; }
 
+.approach-container {
+  padding: 0 1.5rem;
+  width: 100%;
+}
+
 .section-header {
   margin-bottom: 5rem;
   display: flex; flex-direction: column; align-items: center;
