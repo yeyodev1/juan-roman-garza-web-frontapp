@@ -1,32 +1,105 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted } from 'vue';
+import { onMounted, onUnmounted, ref } from 'vue';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Using a wide presentation image for the hero banner
-const heroImage = 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095166/assets-juan/71d82988-7ebc-48c3-9c7e-1bea286410ab.jpg'; 
+// High-end assets for Powerhouse
+const heroVideo = 'https://res.cloudinary.com/drw5sn8qw/video/upload/v1780095169/assets-juan/WhatsApp_Video_2026-05-29_at_12_43_38_PM.mp4';
+const imageAuditorium = 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095166/assets-juan/c875b275-008f-42eb-8828-799b8d573ae1.jpg';
+const imagePresentation = 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095164/assets-juan/65feeba0-0dce-4cff-b63d-eb15952be89c.jpg';
+
+const splitTitle = "Powerhouse Biotech".split('');
 
 onMounted(() => {
-  // Hero reveal
-  gsap.fromTo('.ph-hero-title', { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 1.2, ease: 'power3.out' });
-  gsap.fromTo('.ph-hero-subtitle', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 1, delay: 0.3, ease: 'power3.out' });
+  const tl = gsap.timeline();
   
-  // Image reveal
-  gsap.fromTo('.ph-image-wrapper', 
-    { opacity: 0, scale: 0.95 }, 
-    { opacity: 1, scale: 1, duration: 1.5, delay: 0.5, ease: 'power3.out' }
+  // 1. Hero Background Video & Overlay Reveal
+  tl.fromTo('.ph-hero-bg', 
+    { scale: 1.15, filter: 'blur(15px)', opacity: 0 }, 
+    { scale: 1, filter: 'blur(0px)', opacity: 0.6, duration: 2.5, ease: 'power3.out' }
+  )
+  .fromTo('.ph-hero-tag', 
+    { opacity: 0, y: 30, letterSpacing: '0em' }, 
+    { opacity: 1, y: 0, letterSpacing: '0.3em', duration: 1.5, ease: 'power3.out' }, '-=1.5'
+  )
+  // 2. Title Character Reveal (Staggered)
+  .fromTo('.char', 
+    { opacity: 0, y: 50, rotateX: -90 }, 
+    { opacity: 1, y: 0, rotateX: 0, duration: 1, stagger: 0.05, ease: 'back.out(1.5)' }, '-=1.2'
+  )
+  // 3. Subtitle Reveal
+  .fromTo('.ph-hero-subtitle', 
+    { opacity: 0, y: 30 }, 
+    { opacity: 1, y: 0, duration: 1.5, ease: 'power3.out' }, '-=0.8'
   );
 
-  // Content stagger
-  gsap.fromTo('.ph-content-block', 
-    { opacity: 0, y: 40 }, 
-    { 
-      opacity: 1, y: 0, duration: 1, stagger: 0.2, ease: 'power3.out', 
-      scrollTrigger: { trigger: '.ph-content', start: 'top 85%' } 
-    }
-  );
+  // Stats Counter Animation (Triggered on Scroll)
+  gsap.utils.toArray('.stat-num').forEach((el: any) => {
+    const endValue = parseInt(el.getAttribute('data-val'));
+    const suffix = el.getAttribute('data-suffix') || '';
+    
+    ScrollTrigger.create({
+      trigger: '.ph-stats-section',
+      start: 'top 85%',
+      onEnter: () => {
+        gsap.to(el, {
+          innerHTML: endValue,
+          duration: 2.5,
+          ease: 'power3.out',
+          snap: { innerHTML: 1 },
+          onUpdate: function() {
+            el.innerHTML = Math.round(Number(el.innerHTML)) + suffix;
+          }
+        });
+      },
+      once: true
+    });
+  });
+
+  // Sticky Section & Scroll Reveal Text
+  gsap.utils.toArray('.reveal-text').forEach((text: any) => {
+    gsap.fromTo(text, 
+      { opacity: 0.1, y: 40 }, 
+      { 
+        opacity: 1, y: 0, 
+        scrollTrigger: { 
+          trigger: text, 
+          start: 'top 85%', 
+          end: 'bottom 60%', 
+          scrub: 1 
+        } 
+      }
+    );
+  });
+
+  // Image Parallax Reveal
+  gsap.utils.toArray('.ph-image-reveal').forEach((wrapper: any) => {
+    const img = wrapper.querySelector('img');
+    
+    const tlImg = gsap.timeline({
+      scrollTrigger: { trigger: wrapper, start: 'top 80%' }
+    });
+    
+    tlImg.fromTo(wrapper, 
+      { clipPath: 'inset(100% 0 0 0)' }, 
+      { clipPath: 'inset(0% 0 0 0)', duration: 1.5, ease: 'power3.inOut' }
+    );
+    
+    tlImg.fromTo(img, 
+      { scale: 1.3 }, 
+      { scale: 1, duration: 2, ease: 'power3.out' }, '<'
+    );
+  });
+
+  // Line Animations
+  gsap.utils.toArray('.anim-line').forEach((line: any) => {
+    gsap.fromTo(line, 
+      { scaleX: 0 }, 
+      { scaleX: 1, duration: 1.5, ease: 'power3.inOut', transformOrigin: 'left center', scrollTrigger: { trigger: line, start: 'top 90%' } }
+    );
+  });
 });
 
 onUnmounted(() => {
@@ -35,292 +108,393 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <section class="powerhouse-section section-padding">
-    <div class="container ph-container">
+  <div class="powerhouse-layout">
+    
+    <!-- Hero Section with Video Background -->
+    <section class="ph-hero">
+      <video class="ph-hero-bg" autoplay loop muted playsinline>
+        <source :src="heroVideo" type="video/mp4" />
+      </video>
+      <div class="ph-hero-overlay"></div>
       
-      <!-- Hero Header -->
-      <div class="ph-header text-center">
-        <span class="section-tag">EL PROYECTO FUNDADOR</span>
-        <h1 class="ph-hero-title">Powerhouse Biotech</h1>
+      <div class="ph-hero-content text-center">
+        <span class="ph-hero-tag">EL PROYECTO CUMBRE</span>
+        <h1 class="ph-hero-title">
+          <span v-for="(char, index) in splitTitle" :key="index" class="char" v-html="char === ' ' ? '&nbsp;' : char"></span>
+        </h1>
         <p class="ph-hero-subtitle">
           La primera <strong class="gold-text">Health Decision Platform</strong> enfocada en Medicina Regenerativa.
         </p>
       </div>
 
-      <!-- Hero Image / Banner -->
-      <div class="ph-image-wrapper">
-        <img :src="heroImage" alt="Powerhouse Biotech Presentation" class="ph-main-image" loading="lazy" />
-        <div class="overlay-gradient"></div>
-        
-        <!-- Stats Card -->
-        <div class="stats-card">
-          <div class="stat">
-            <span class="num">15+</span>
-            <span class="label">Años de Experiencia</span>
+      <!-- Scroll Indicator -->
+      <div class="scroll-indicator">
+        <span class="scroll-text">DESCUBRE LA PLATAFORMA</span>
+        <div class="scroll-line"></div>
+      </div>
+    </section>
+
+    <!-- Impact Stats Section -->
+    <section class="ph-stats-section">
+      <div class="container">
+        <div class="stats-grid">
+          <div class="stat-item">
+            <span class="stat-num" data-val="15" data-suffix="+">0</span>
+            <div class="stat-divider"></div>
+            <span class="stat-label">Años de Liderazgo<br>en Medicina</span>
           </div>
-          <div class="stat-divider"></div>
-          <div class="stat">
-            <span class="num">100K+</span>
-            <span class="label">Casos Analizados</span>
+          <div class="stat-item">
+            <span class="stat-num" data-val="100" data-suffix="K+">0</span>
+            <div class="stat-divider"></div>
+            <span class="stat-label">Casos Analizados<br>Exitosamente</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-num" data-val="1" data-suffix="ra">0</span>
+            <div class="stat-divider"></div>
+            <span class="stat-label">Health Decision Platform<br>en su clase</span>
           </div>
         </div>
       </div>
+    </section>
 
-      <!-- Detailed Content -->
-      <div class="ph-content">
-        <div class="ph-content-block">
-          <h2 class="block-title">El Cimiento de la Lucidez Directiva</h2>
-          <div class="accent-line"></div>
-          <p class="paragraph">
-            Fundada por <strong class="white-text">Juan Román Garza</strong>, Powerhouse Biotech nace de una convicción inquebrantable: un cuerpo regenerado y optimizado celularmente es el cimiento absoluto de la lucidez directiva. No somos una clínica tradicional; somos una plataforma integral de decisiones de salud diseñada exclusivamente para líderes de alto rendimiento.
-          </p>
-        </div>
-
-        <div class="ph-content-block">
-          <h2 class="block-title">Evaluación de Viabilidad Regenerativa™</h2>
-          <div class="accent-line"></div>
-          <p class="paragraph">
-            Antes de sugerir cualquier tratamiento, realizamos un análisis exhaustivo, brutalmente honesto y puramente científico. Nuestro protocolo patentado de <strong>Evaluación de Viabilidad Regenerativa™</strong> nos permite determinar con precisión si tu cuerpo está verdaderamente listo para repararse a nivel celular, eliminando conjeturas y protegiendo tu inversión biológica.
-          </p>
-        </div>
-        
-        <div class="ph-content-block text-center action-block">
-          <a href="https://www.powerhousebiotech.com/" target="_blank" rel="noopener noreferrer" class="primary-btn">
-            Visitar Plataforma Oficial <i class="fa-solid fa-arrow-up-right-from-square btn-icon"></i>
+    <!-- Sticky Narrative Layout -->
+    <section class="ph-narrative-section container">
+      <div class="sticky-grid">
+        <!-- Left: Sticky Titles -->
+        <div class="sticky-sidebar">
+          <h2 class="sidebar-title">Ciencia al Servicio del <span class="gold-text">Rendimiento</span></h2>
+          <div class="anim-line"></div>
+          <p class="sidebar-desc">Una plataforma integral diseñada exclusivamente para líderes de alto rendimiento, fundada y dirigida por Juan Román Garza.</p>
+          
+          <a href="https://www.powerhousebiotech.com/" target="_blank" rel="noopener noreferrer" class="ph-btn-outline">
+            Ingresar a la Plataforma <i class="fa-solid fa-arrow-right"></i>
           </a>
         </div>
-      </div>
 
-    </div>
-  </section>
+        <!-- Right: Scrolling Content & Imagery -->
+        <div class="scrolling-content">
+          
+          <div class="content-block">
+            <div class="ph-image-reveal">
+              <img :src="imageAuditorium" alt="Conferencia de Longevidad Regenerativa" />
+            </div>
+            <h3 class="reveal-text">El Cimiento de la Lucidez Directiva</h3>
+            <p class="reveal-text">Powerhouse Biotech nace de una convicción inquebrantable: un cuerpo regenerado y optimizado celularmente es el cimiento absoluto de la lucidez directiva. No somos una clínica tradicional; somos una entidad tecnológica-médica.</p>
+          </div>
+
+          <div class="content-block">
+            <div class="ph-image-reveal">
+              <img :src="imagePresentation" alt="Presentación de Powerhouse Biotech" />
+            </div>
+            <h3 class="reveal-text">Evaluación de Viabilidad Regenerativa™</h3>
+            <p class="reveal-text">Antes de sugerir cualquier tratamiento, realizamos un análisis exhaustivo, brutalmente honesto y puramente científico. Nuestro protocolo patentado nos permite determinar con precisión si tu cuerpo está verdaderamente listo para repararse a nivel celular.</p>
+            <p class="reveal-text highlight-quote">"Eliminamos conjeturas para proteger tu inversión biológica."</p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </div>
 </template>
 
 <style lang="scss" scoped>
-.powerhouse-section {
-  background-color: var(--bg);
-  min-height: 100vh;
-  padding-top: 150px;
+.powerhouse-layout {
+  background-color: #030303; // Ultra dark background for premium feel
+  color: var(--text);
+  overflow: hidden;
   padding-bottom: 120px;
+}
+
+/* --- Hero Section --- */
+.ph-hero {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
 }
 
-.ph-container {
+.ph-hero-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+}
+
+.ph-hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at center, rgba(3,3,3,0.5) 0%, rgba(3,3,3,0.95) 100%);
+  z-index: 2;
+}
+
+.ph-hero-content {
+  position: relative;
+  z-index: 3;
+  max-width: 1000px;
+  padding: 0 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6rem;
 }
 
-/* --- Hero Header --- */
-.ph-header {
-  max-width: 900px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.section-tag {
+.ph-hero-tag {
   font-family: var(--font-principal);
   font-size: 0.9rem;
   font-weight: 700;
   color: var(--accent-gold);
-  letter-spacing: 0.2em;
-  margin-bottom: 1.5rem;
-  display: inline-block;
   border: 1px solid rgba(212, 175, 55, 0.4);
-  padding: 0.5rem 1.5rem;
+  padding: 0.6rem 2rem;
   border-radius: 50px;
+  margin-bottom: 2rem;
   text-transform: uppercase;
+  background: rgba(15, 15, 15, 0.4);
+  backdrop-filter: blur(5px);
 }
 
 .ph-hero-title {
-  font-size: 5rem;
+  font-size: 6vw;
   font-weight: 800;
-  color: var(--text);
+  color: #fff;
   text-transform: uppercase;
-  line-height: 1.1;
-  margin-bottom: 1.5rem;
-  letter-spacing: 0.02em;
+  line-height: 1;
+  margin-bottom: 2rem;
+  perspective: 1000px;
+  
+  @media (max-width: 768px) { font-size: 10vw; }
+}
 
-  @media (max-width: 768px) { font-size: 3rem; }
+.char {
+  display: inline-block;
+  transform-style: preserve-3d;
 }
 
 .ph-hero-subtitle {
-  font-size: 1.5rem;
-  color: var(--text-muted);
-  line-height: 1.6;
-  max-width: 700px;
+  font-size: 1.8rem;
+  color: #cccccc;
+  line-height: 1.5;
+  font-weight: 300;
   
-  .gold-text { color: var(--accent-gold); font-weight: 700; }
+  .gold-text { color: var(--accent-gold); font-weight: 600; }
   
-  @media (max-width: 768px) { font-size: 1.2rem; }
+  @media (max-width: 768px) { font-size: 1.3rem; }
 }
 
-/* --- Image Wrapper --- */
-.ph-image-wrapper {
-  width: 100%;
-  max-width: 1200px;
-  height: 60vh;
-  min-height: 500px;
-  position: relative;
-  border-radius: 20px;
-  overflow: hidden;
-  box-shadow: 0 40px 80px rgba(0,0,0,0.6);
-
-  .ph-main-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-    transition: transform 1s ease;
-  }
-
-  &:hover .ph-main-image {
-    transform: scale(1.03);
-  }
-
-  .overlay-gradient {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to top, rgba(5,5,5,0.9) 0%, rgba(5,5,5,0.2) 50%, transparent 100%);
-    z-index: 1;
-  }
-}
-
-.stats-card {
+.scroll-indicator {
   position: absolute;
   bottom: 40px;
   left: 50%;
   transform: translateX(-50%);
-  background: rgba(15, 15, 15, 0.85);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(212, 175, 55, 0.3);
-  border-radius: 16px;
-  padding: 2rem 4rem;
-  display: flex;
-  align-items: center;
-  gap: 4rem;
-  z-index: 2;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-    gap: 2rem;
-    padding: 1.5rem 3rem;
-    bottom: 20px;
-  }
-
-  .stat {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
-
-  .num {
-    font-family: var(--font-principal);
-    font-size: 3.5rem;
-    font-weight: 800;
-    color: var(--accent-gold);
-    line-height: 1;
-    margin-bottom: 0.5rem;
-  }
-
-  .label {
-    font-size: 0.9rem;
-    font-weight: 700;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: #fff;
-  }
-
-  .stat-divider {
-    width: 1px;
-    height: 60px;
-    background-color: rgba(255, 255, 255, 0.2);
-    
-    @media (max-width: 768px) {
-      width: 60px;
-      height: 1px;
-    }
-  }
-}
-
-/* --- Content --- */
-.ph-content {
-  width: 100%;
-  max-width: 900px;
+  z-index: 3;
   display: flex;
   flex-direction: column;
-  gap: 5rem;
+  align-items: center;
+  gap: 1rem;
+  
+  .scroll-text {
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    color: var(--accent-gold);
+    font-weight: 700;
+  }
+  
+  .scroll-line {
+    width: 1px;
+    height: 60px;
+    background: linear-gradient(to bottom, var(--accent-gold) 0%, transparent 100%);
+    animation: scrollDrop 2s infinite ease-in-out;
+  }
 }
 
-.ph-content-block {
+@keyframes scrollDrop {
+  0% { transform: scaleY(0); transform-origin: top; }
+  50% { transform: scaleY(1); transform-origin: top; }
+  50.1% { transform: scaleY(1); transform-origin: bottom; }
+  100% { transform: scaleY(0); transform-origin: bottom; }
+}
+
+/* --- Stats Section --- */
+.ph-stats-section {
+  padding: 6rem 0;
+  background: linear-gradient(to bottom, transparent, rgba(212, 175, 55, 0.03), transparent);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 4rem;
+  }
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1.5rem;
+}
+
+.stat-num {
+  font-family: var(--font-principal);
+  font-size: 5rem;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1;
+  text-shadow: 0 10px 30px rgba(212, 175, 55, 0.2);
+}
+
+.stat-divider {
+  width: 40px;
+  height: 2px;
+  background-color: var(--accent-gold);
+}
+
+.stat-label {
+  font-size: 1rem;
+  color: var(--text-muted);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+/* --- Sticky Narrative Section --- */
+.ph-narrative-section {
+  padding: 10rem 1.5rem;
+}
+
+.sticky-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6rem;
+  
+  @media (max-width: 992px) {
+    grid-template-columns: 1fr;
+    gap: 4rem;
+  }
+}
+
+.sticky-sidebar {
+  position: sticky;
+  top: 150px;
+  height: fit-content;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-
-  &.text-center { align-items: center; text-align: center; }
+  gap: 2rem;
+  
+  @media (max-width: 992px) { position: relative; top: 0; }
 }
 
-.block-title {
-  font-size: 2.5rem;
+.sidebar-title {
+  font-size: 3.5rem;
   font-weight: 800;
-  color: var(--text);
-  margin-bottom: 1.5rem;
   text-transform: uppercase;
-  @media (max-width: 768px) { font-size: 2rem; }
+  line-height: 1.1;
+  
+  .gold-text { color: var(--accent-gold); }
+  @media (max-width: 768px) { font-size: 2.5rem; }
 }
 
-.accent-line {
-  width: 60px;
+.anim-line {
+  width: 100%;
+  max-width: 150px;
   height: 3px;
   background-color: var(--accent-gold);
-  margin-bottom: 2rem;
 }
 
-.paragraph {
+.sidebar-desc {
   font-size: 1.3rem;
-  line-height: 1.8;
   color: var(--text-muted);
-  
-  strong { color: var(--accent-gold); font-weight: 700; }
-  .white-text { color: var(--text); font-weight: 700; }
+  line-height: 1.7;
 }
 
-.action-block {
-  margin-top: 2rem;
-}
-
-.primary-btn {
+.ph-btn-outline {
   display: inline-flex;
   align-items: center;
   gap: 1rem;
-  background: transparent;
-  color: var(--accent-gold);
+  padding: 1.2rem 2.5rem;
   border: 1px solid var(--accent-gold);
-  padding: 1.2rem 3rem;
-  font-size: 1.1rem;
+  color: var(--accent-gold);
+  font-size: 1rem;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   text-decoration: none;
-  border-radius: 4px;
   transition: all 0.4s ease;
-
-  .btn-icon {
-    font-size: 1.2rem;
-    transition: transform 0.4s ease;
-  }
-
+  margin-top: 1rem;
+  
   &:hover {
     background: var(--accent-gold);
-    color: var(--bg);
-    box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
-
-    .btn-icon {
-      transform: translate(3px, -3px);
-    }
+    color: #030303;
+    box-shadow: 0 10px 30px rgba(212, 175, 55, 0.2);
+    
+    i { transform: translateX(5px); }
   }
+}
+
+.scrolling-content {
+  display: flex;
+  flex-direction: column;
+  gap: 10rem;
+}
+
+.content-block {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.ph-image-reveal {
+  width: 100%;
+  aspect-ratio: 4/3;
+  overflow: hidden;
+  position: relative;
+  margin-bottom: 1rem;
+  
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform-origin: center;
+  }
+}
+
+.reveal-text {
+  font-size: 1.4rem;
+  color: var(--text-muted);
+  line-height: 1.8;
+  
+  &.highlight-quote {
+    font-size: 1.6rem;
+    font-style: italic;
+    color: var(--accent-gold);
+    border-left: 3px solid var(--accent-gold);
+    padding-left: 2rem;
+    margin-top: 1rem;
+  }
+}
+
+h3.reveal-text {
+  font-size: 2.2rem;
+  color: #fff;
+  font-weight: 800;
+  text-transform: uppercase;
+  margin-bottom: -1rem;
 }
 </style>

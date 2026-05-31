@@ -9,10 +9,10 @@ gsap.registerPlugin(ScrollTrigger);
 const router = useRouter();
 
 const gates = [
-  { num: '01', path: '/sobre-mi', label: 'Biografía & Trayectoria', title: 'Sobre Mí', icon: 'fa-user-tie' },
-  { num: '02', path: '/longevidad-regenerativa', label: 'Ciencia Celular', title: 'Longevidad', icon: 'fa-dna' },
-  { num: '03', path: '/empresas', label: 'Ecosistema de Salud', title: 'Empresas', icon: 'fa-building-shield' },
-  { num: '04', path: '/contacto', label: 'Consultas & Clínicas', title: 'Contacto', icon: 'fa-calendar-days' },
+  { num: '01', path: '/sobre-mi', label: 'Biografía & Trayectoria', title: 'Sobre Mí', image: 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095160/assets-juan/1fdb1f14-5799-4c12-ba46-8590a824770b.jpg' },
+  { num: '02', path: '/powerhouse', label: 'Proyecto Cumbre', title: 'Powerhouse', image: 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095165/assets-juan/71a520fc-beb0-4eb0-b7b6-3e97fef04266.jpg' },
+  { num: '03', path: '/longevidad-regenerativa', label: 'Ciencia Celular', title: 'Longevidad', image: 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095163/assets-juan/5dfa62f2-170e-42eb-867b-f98a1c816781.jpg' },
+  { num: '04', path: '/empresas', label: 'Ecosistema de Salud', title: 'Empresas', image: 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095170/assets-juan/c13684b0-ba0e-4bd2-954f-f2ec6756421d.jpg' },
 ];
 
 onMounted(() => {
@@ -28,11 +28,11 @@ onMounted(() => {
     }
   );
 
-  // Cards Staggered Entrance
+  // Cards Entrance Animation
   gsap.fromTo('.gate-card',
-    { opacity: 0, y: 80, scale: 0.95 },
+    { opacity: 0, y: 100 },
     {
-      opacity: 1, y: 0, scale: 1, duration: 1.2, stagger: 0.15, ease: 'power3.out',
+      opacity: 1, y: 0, duration: 1.5, stagger: 0.15, ease: 'power4.out',
       scrollTrigger: {
         trigger: '.gateways-grid',
         start: 'top 75%',
@@ -49,12 +49,14 @@ onUnmounted(() => {
 <template>
   <section class="gateways-section section-padding">
     <div class="container gateways-container">
+      
       <div class="gateways-header">
         <span class="section-tag">EXPLORAR CONTENIDO</span>
         <h2 class="section-title text-center">Navegación Estratégica</h2>
         <div class="accent-line"></div>
       </div>
 
+      <!-- Awwwards Expanding Accordion Layout -->
       <div class="gateways-grid">
         <div
           v-for="gate in gates"
@@ -62,29 +64,40 @@ onUnmounted(() => {
           class="gate-card"
           @click="router.push(gate.path)"
         >
-          <div class="card-bg-gradient"></div>
-          <span class="gate-num">{{ gate.num }}</span>
-          <div class="gate-icon-box">
-            <i class="fa-solid" :class="gate.icon"></i>
-          </div>
-          <h3 class="gate-title">{{ gate.title }}</h3>
-          <p class="gate-label">{{ gate.label }}</p>
-          <div class="gate-arrow">
-            Explorar <i class="fa-solid fa-arrow-right arrow-icon"></i>
+          <!-- Background Image -->
+          <img :src="gate.image" :alt="gate.title" class="gate-bg-img" loading="lazy" />
+          
+          <!-- Content Overlay -->
+          <div class="gate-content">
+            <div class="gate-num">{{ gate.num }}</div>
+            <div class="gate-text-content">
+              <h3 class="gate-title">{{ gate.title }}</h3>
+              <p class="gate-label">{{ gate.label }}</p>
+            </div>
+            
+            <div class="gate-arrow">
+              <i class="fa-solid fa-arrow-right"></i>
+            </div>
           </div>
         </div>
       </div>
+
     </div>
   </section>
 </template>
 
 <style lang="scss" scoped>
-.gateways-section { background-color: var(--bg); transition: background-color 0.3s ease; width: 100%; padding: 120px 0; }
+.gateways-section { 
+  background-color: var(--bg); 
+  width: 100%; 
+  padding: 150px 0; 
+  overflow: hidden;
+}
 
 .gateways-container {
   display: flex;
   flex-direction: column;
-  align-items: center; // strictly centered
+  align-items: center;
 }
 
 .gateways-header {
@@ -93,63 +106,174 @@ onUnmounted(() => {
   
   .section-tag {
     font-family: var(--font-principal); font-size: 0.85rem; font-weight: 700;
-    color: var(--accent-gold); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 1.5rem; display: inline-block;
-    border: 1px solid rgba(229, 213, 181, 0.3); padding: 0.5rem 1.2rem; border-radius: 50px;
+    color: var(--accent-gold); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 1.5rem; display: inline-block;
+    border: 1px solid rgba(212, 175, 55, 0.4); padding: 0.5rem 1.5rem; border-radius: 50px;
   }
-  .section-title { font-size: 3.5rem; color: var(--text); margin-bottom: 1.5rem; font-weight: 800; text-transform: uppercase; @media (max-width: 768px) { font-size: 2.2rem; } }
-  .accent-line { width: 60px; height: 2px; background-color: var(--accent-gold); margin: 0 auto; }
+  .section-title { 
+    font-size: 4rem; color: var(--text); margin-bottom: 1.5rem; font-weight: 800; text-transform: uppercase; 
+    @media (max-width: 768px) { font-size: 2.5rem; } 
+  }
+  .accent-line { width: 80px; height: 3px; background-color: var(--accent-gold); margin: 0 auto; }
 }
 
+/* --- Expanding Accordion Grid --- */
 .gateways-grid {
-  display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; width: 100%;
-  max-width: 1200px;
-  @media (max-width: 992px) { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
-  @media (max-width: 576px) { grid-template-columns: 1fr; }
+  display: flex;
+  height: 600px;
+  width: 100%;
+  max-width: 1400px;
+  gap: 1.5rem;
+  
+  @media (max-width: 992px) {
+    flex-direction: column;
+    height: 1000px;
+  }
 }
 
 .gate-card {
-  background: rgba(15, 15, 15, 0.6); 
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.05); 
-  padding: 3.5rem 2rem;
-  border-radius: 24px; position: relative; overflow: hidden; cursor: pointer;
-  display: flex; flex-direction: column; align-items: center; text-align: center; // strictly centered
-  transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
-  will-change: transform;
-
+  flex: 1;
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: flex 0.7s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.5s ease;
+  background-color: #050505;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  
   &:hover {
-    transform: translateY(-10px); border-color: rgba(229, 213, 181, 0.3);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-    background: rgba(20, 20, 20, 0.9);
+    flex: 3;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+    border: 1px solid rgba(212, 175, 55, 0.3);
     
-    .gate-arrow { color: var(--accent-gold); .arrow-icon { transform: translateX(5px); } }
-    .gate-icon-box { background: rgba(229, 213, 181, 0.1); color: var(--accent-gold); transform: scale(1.1); }
-    .card-bg-gradient { opacity: 1; }
+    .gate-bg-img {
+      transform: scale(1.05);
+      filter: grayscale(0%) brightness(0.8);
+      opacity: 0.7;
+    }
+    
+    .gate-content {
+      background: linear-gradient(to top, rgba(5,5,5,0.95) 0%, rgba(5,5,5,0.4) 50%, transparent 100%);
+    }
+
+    .gate-label {
+      opacity: 1;
+      transform: translateY(0);
+      max-height: 50px;
+    }
+    
+    .gate-num {
+      color: var(--accent-gold);
+    }
+    
+    .gate-arrow {
+      opacity: 1;
+      transform: scale(1) rotate(-45deg);
+      background-color: var(--accent-gold);
+      color: #000;
+    }
+    
+    .gate-title {
+      color: #fff;
+      letter-spacing: 0.05em;
+    }
+  }
+  
+  @media (max-width: 992px) {
+    &:hover { flex: 2; }
   }
 }
 
-.card-bg-gradient {
-  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-  background: radial-gradient(circle at top right, rgba(229, 213, 181, 0.05) 0%, transparent 60%);
-  opacity: 0; transition: opacity 0.5s ease; pointer-events: none;
+/* --- Card Background Image --- */
+.gate-bg-img {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  filter: grayscale(100%) brightness(0.4);
+  opacity: 0.4;
+  transition: all 0.7s cubic-bezier(0.25, 1, 0.5, 1);
+  z-index: 1;
 }
 
-.gate-num { font-family: var(--font-principal); font-size: 1rem; font-weight: 700; color: var(--accent-gold); margin-bottom: 2rem; letter-spacing: 0.1em; }
-
-.gate-icon-box {
-  width: 60px; height: 60px; border-radius: 50%; background: rgba(255, 255, 255, 0.03);
-  color: #fff; display: flex; align-items: center; justify-content: center;
-  font-size: 1.5rem; margin-bottom: 2rem; transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+/* --- Card Content --- */
+.gate-content {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  background: linear-gradient(to top, rgba(5,5,5,0.8) 0%, transparent 80%);
+  transition: background 0.7s ease;
+  z-index: 2;
+  
+  @media (max-width: 768px) { padding: 1.5rem; }
 }
 
-.gate-title { font-size: 1.6rem; font-weight: 800; color: #ffffff; margin-bottom: 0.75rem; }
-.gate-label { font-size: 0.9rem; color: #a1a1aa; font-weight: 500; margin-bottom: 2.5rem; }
+.gate-num {
+  font-family: var(--font-principal); 
+  font-size: 1.5rem; 
+  font-weight: 800; 
+  color: rgba(255, 255, 255, 0.4); 
+  position: absolute;
+  top: 2.5rem;
+  left: 2.5rem;
+  transition: color 0.5s ease;
+  
+  @media (max-width: 768px) { top: 1.5rem; left: 1.5rem; }
+}
+
+.gate-text-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  position: relative;
+  z-index: 3;
+}
+
+.gate-title { 
+  font-size: 2rem; 
+  font-weight: 800; 
+  color: #dddddd;
+  text-transform: uppercase; 
+  transition: all 0.5s ease;
+  white-space: nowrap;
+  
+  @media (max-width: 1200px) { font-size: 1.5rem; }
+  @media (max-width: 992px) { white-space: normal; }
+}
+
+.gate-label { 
+  font-size: 1.1rem; 
+  color: var(--accent-gold); 
+  font-weight: 600; 
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  opacity: 0;
+  transform: translateY(20px);
+  max-height: 0;
+  overflow: hidden;
+  transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+  white-space: nowrap;
+}
 
 .gate-arrow {
-  font-family: var(--font-principal); font-size: 0.85rem; font-weight: 700; color: #e4e4e7;
-  display: flex; align-items: center; gap: 0.5rem; text-transform: uppercase;
-  letter-spacing: 0.1em; margin-top: auto; transition: color 0.3s ease;
+  position: absolute;
+  bottom: 2.5rem;
+  right: 2.5rem;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  opacity: 0;
+  transform: scale(0.5) rotate(0deg);
+  transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
   
-  .arrow-icon { transition: transform 0.3s ease; }
+  @media (max-width: 768px) { bottom: 1.5rem; right: 1.5rem; }
 }
 </style>
