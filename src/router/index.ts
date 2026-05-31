@@ -14,6 +14,12 @@ const routes: Array<RouteRecordRaw> = [
     meta: { title: 'Sobre Mí | Juan Román Garza' },
   },
   {
+    path: '/powerhouse',
+    name: 'Powerhouse',
+    component: () => import('../views/PowerhouseView.vue'),
+    meta: { title: 'Powerhouse Biotech | Juan Román Garza' },
+  },
+  {
     path: '/longevidad-regenerativa',
     name: 'Approach',
     component: () => import('../views/ApproachView.vue'),

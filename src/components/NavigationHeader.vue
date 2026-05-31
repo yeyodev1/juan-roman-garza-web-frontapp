@@ -11,10 +11,11 @@ const isMenuOpen = ref(false);
 const navItems = [
   { path: '/', label: 'Inicio', num: '01' },
   { path: '/sobre-mi', label: 'Sobre Mí', num: '02' },
-  { path: '/longevidad-regenerativa', label: 'Longevidad', num: '03' },
-  { path: '/empresas', label: 'Empresas', num: '04' },
-  { path: '/prensa-y-eventos', label: 'Prensa', num: '05' },
-  { path: '/contacto', label: 'Contacto', num: '06' },
+  { path: '/powerhouse', label: 'Powerhouse', num: '03' },
+  { path: '/longevidad-regenerativa', label: 'Longevidad', num: '04' },
+  { path: '/empresas', label: 'Empresas', num: '05' },
+  { path: '/prensa-y-eventos', label: 'Prensa', num: '06' },
+  { path: '/contacto', label: 'Contacto', num: '07' },
 ];
 
 function toggleMenu() {
