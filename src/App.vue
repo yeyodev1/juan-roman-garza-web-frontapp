@@ -3,6 +3,7 @@ import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import NavigationHeader from '@/components/NavigationHeader.vue';
 import GlobalFooter from '@/components/GlobalFooter.vue';
+import Preloader from '@/components/Preloader.vue';
 
 const route = useRoute();
 const isDark = ref(true);
@@ -28,6 +29,8 @@ onMounted(() => {
 
 <template>
   <div class="app-container">
+    <Preloader />
+    
     <!-- Global Header Menu -->
     <NavigationHeader
       :active-section="route.name?.toString().toLowerCase() || 'home'"
