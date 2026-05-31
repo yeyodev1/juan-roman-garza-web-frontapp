@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import NavigationHeader from '@/components/NavigationHeader.vue';
+import GlobalFooter from '@/components/GlobalFooter.vue';
 
 const route = useRoute();
 const isDark = ref(true);
@@ -39,6 +40,8 @@ onMounted(() => {
         <component :is="Component" />
       </transition>
     </router-view>
+
+    <GlobalFooter />
   </div>
 </template>
 

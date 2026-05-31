@@ -60,13 +60,6 @@ onMounted(() => {
           <ContactForm />
         </div>
       </div>
-
-      <footer class="footer-block">
-        <p>&copy; 2026 Juan Román Garza. Todos los derechos reservados. Longevidad Regenerativa para Liderazgo.</p>
-        <p class="powerhouse-footer">
-          Un proyecto impulsado por <a href="https://www.powerhousebiotech.com/" target="_blank" class="gold-link">Powerhouse Biotech</a>
-        </p>
-      </footer>
     </div>
   </section>
 </template>
