@@ -1,10 +1,17 @@
 <script setup lang="ts">
+import { onMounted } from 'vue';
+import { gsap } from 'gsap';
 import ContactForm from './ContactForm.vue';
+
+onMounted(() => {
+  gsap.fromTo('.contact-info', { opacity: 0, x: -50 }, { opacity: 1, x: 0, duration: 1.2, ease: 'power3.out' });
+  gsap.fromTo('.footer-block', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 1, ease: 'power3.out', delay: 0.5 });
+});
 </script>
 
 <template>
   <section id="contact" class="contact-section section-padding">
-    <div class="container">
+    <div class="container contact-container">
       <div class="contact-grid">
         <!-- Contact Info & Locations (Left) -->
         <div class="contact-info">
@@ -19,7 +26,7 @@ import ContactForm from './ContactForm.vue';
             <h3 class="group-title">Clínicas Eternal Regenerative Center</h3>
             
             <div class="location-item">
-              <i class="fa-solid fa-hotel location-icon"></i>
+              <div class="icon-box"><i class="fa-solid fa-hotel"></i></div>
               <div class="location-text">
                 <h4>Sede Monterrey</h4>
                 <p>Av. Vasconcelos, San Pedro Garza García, N.L., México</p>
@@ -27,7 +34,7 @@ import ContactForm from './ContactForm.vue';
             </div>
 
             <div class="location-item">
-              <i class="fa-solid fa-hospital location-icon"></i>
+              <div class="icon-box"><i class="fa-solid fa-hospital"></i></div>
               <div class="location-text">
                 <h4>Sede Montemorelos</h4>
                 <p>Centro Médico Eternal, Montemorelos, N.L., México</p>
@@ -49,65 +56,93 @@ import ContactForm from './ContactForm.vue';
         </div>
 
         <!-- Glassmorphic Form (Right) -->
-        <ContactForm />
+        <div class="form-wrapper">
+          <ContactForm />
+        </div>
       </div>
 
       <footer class="footer-block">
         <p>&copy; 2026 Juan Román Garza. Todos los derechos reservados. Longevidad Regenerativa para Liderazgo.</p>
+        <p class="powerhouse-footer">
+          Un proyecto impulsado por <a href="https://www.powerhousebiotech.com/" target="_blank" class="gold-link">Powerhouse Biotech</a>
+        </p>
       </footer>
     </div>
   </section>
 </template>
 
 <style lang="scss" scoped>
-.contact-section { background-color: var(--bg); transition: background-color 0.3s ease; }
+.contact-section { background-color: var(--bg); transition: background-color 0.3s ease; padding-top: 150px; min-height: 100vh; padding-bottom: 60px; }
 
 .contact-grid {
   display: grid; grid-template-columns: 1fr 1.1fr; gap: 7rem; align-items: flex-start;
-  @media (max-width: 992px) { grid-template-columns: 1fr; gap: 4rem; }
+  max-width: 1200px; margin: 0 auto;
+  @media (max-width: 992px) { grid-template-columns: 1fr; gap: 5rem; }
 }
 
 .contact-info { text-align: left; }
 
 .section-tag {
-  font-family: var(--font-principal); font-size: 0.85rem; font-weight: 700;
-  color: var(--accent); letter-spacing: 0.1em; margin-bottom: 0.5rem; display: inline-block;
+  font-family: var(--font-principal); font-size: 0.9rem; font-weight: 700;
+  color: var(--accent-gold); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 1.5rem; display: inline-block;
+  border: 1px solid rgba(212, 175, 55, 0.4); padding: 0.5rem 1.5rem; border-radius: 50px;
 }
 
 .contact-title {
-  font-size: 2.5rem; margin-bottom: 1.5rem; color: var(--text);
-  @media (max-width: 768px) { font-size: 1.8rem; }
+  font-size: 3.5rem; margin-bottom: 1.5rem; color: var(--text); font-weight: 800; text-transform: uppercase; line-height: 1.1;
+  @media (max-width: 768px) { font-size: 2.2rem; }
 }
 
-.accent-bar { width: 55px; height: 3px; background-color: var(--accent-gold); margin-bottom: 2.5rem; }
-.contact-subtitle { font-size: 1.1rem; line-height: 1.7; color: var(--text-muted); margin-bottom: 3.5rem; }
-.locations-group { margin-bottom: 3.5rem; }
-.group-title { font-size: 1.25rem; font-weight: 700; margin-bottom: 2rem; color: var(--text); }
+.accent-bar { width: 60px; height: 3px; background-color: var(--accent-gold); margin-bottom: 2.5rem; }
+.contact-subtitle { font-size: 1.25rem; line-height: 1.8; color: var(--text-muted); margin-bottom: 3.5rem; }
+
+.locations-group { margin-bottom: 4rem; }
+.group-title { font-size: 1.4rem; font-weight: 800; margin-bottom: 2.5rem; color: var(--text); text-transform: uppercase; letter-spacing: 0.05em; }
 
 .location-item {
-  display: flex; gap: 1rem; align-items: flex-start; margin-bottom: 2rem;
-  .location-icon { font-size: 1.3rem; color: var(--accent); margin-top: 0.2rem; }
+  display: flex; gap: 1.5rem; align-items: flex-start; margin-bottom: 2.5rem;
+  .icon-box { 
+    width: 50px; height: 50px; border-radius: 12px; background: rgba(212, 175, 55, 0.1); color: var(--accent-gold);
+    display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0;
+  }
   .location-text {
-    h4 { font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: 0.25rem; }
-    p { font-size: 0.9rem; color: var(--text-muted); }
+    h4 { font-size: 1.15rem; font-weight: 800; color: var(--text); margin-bottom: 0.25rem; }
+    p { font-size: 1rem; color: var(--text-muted); line-height: 1.5; }
   }
 }
 
-.social-channels { border-top: 1px solid var(--border); padding-top: 2.5rem; }
-.channels-title { font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: 1.5rem; }
+.social-channels { border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 3rem; }
+.channels-title { font-size: 1.2rem; font-weight: 800; color: var(--text); margin-bottom: 2rem; text-transform: uppercase; letter-spacing: 0.05em; }
 .social-links { display: flex; gap: 1.5rem; flex-wrap: wrap; }
 
 .social-link {
-  text-decoration: none; font-weight: 600; font-size: 0.9rem; padding: 0.6rem 1.2rem;
-  border-radius: 50px; display: inline-flex; align-items: center; gap: 0.5rem;
-  transition: all 0.3s ease; border: 1px solid var(--border);
+  text-decoration: none; font-weight: 700; font-size: 1rem; padding: 0.8rem 1.5rem;
+  border-radius: 50px; display: inline-flex; align-items: center; gap: 0.75rem;
+  transition: all 0.3s ease; border: 1px solid rgba(255, 255, 255, 0.2); background: rgba(20, 20, 20, 0.5);
 
-  &.instagram { color: var(--text); &:hover { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); color: #ffffff; border-color: transparent; } }
-  &.linkedin { color: var(--text); &:hover { background-color: #0077b5; color: #ffffff; border-color: transparent; } }
+  &.instagram { color: var(--text); &:hover { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); color: #ffffff; border-color: transparent; transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.3); } }
+  &.linkedin { color: var(--text); &:hover { background-color: #0077b5; color: #ffffff; border-color: transparent; transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.3); } }
 }
 
 .footer-block {
-  margin-top: 8rem; border-top: 1px solid var(--border); padding: 2.5rem 0 0; text-align: center;
-  font-size: 0.8rem; color: var(--text-muted);
+  margin-top: 8rem; border-top: 1px solid rgba(255, 255, 255, 0.1); padding: 3rem 0 0; text-align: center;
+  font-size: 0.9rem; color: var(--text-muted);
+  
+  .powerhouse-footer {
+    margin-top: 1rem;
+    font-size: 1rem;
+    color: var(--text);
+    
+    .gold-link {
+      color: var(--accent-gold);
+      text-decoration: none;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      border-bottom: 1px dashed var(--accent-gold);
+      transition: all 0.3s ease;
+      
+      &:hover { color: #fff; border-color: #fff; }
+    }
+  }
 }
 </style>
