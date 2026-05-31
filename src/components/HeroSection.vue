@@ -1,5 +1,7 @@
 <script setup lang="ts">
-const emit = defineEmits(['navigate']);
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 const profileImage = 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095167/assets-juan/99f4f652-01b1-4bf3-91af-9e73da8e6c0d.jpg';
 </script>
 
@@ -19,11 +21,11 @@ const profileImage = 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095
           Conectando Psicología Organizacional, Tecnología y Medicina Regenerativa para potenciar el rendimiento de los líderes del siglo XXI. Mantén tu rendimiento frente a los desafíos corporativos.
         </p>
         <div class="hero-actions">
-          <button class="btn-primary" @click="emit('navigate', 'contact')">
+          <button class="btn-primary" @click="router.push('/contacto')">
             <i class="fa-regular fa-calendar-check"></i> Agenda una Consulta
           </button>
-          <button class="btn-secondary" @click="emit('navigate', 'approach')">
-            Descubre el Enfoque <i class="fa-solid fa-arrow-down"></i>
+          <button class="btn-secondary" @click="router.push('/longevidad-regenerativa')">
+            Descubre el Enfoque <i class="fa-solid fa-arrow-right"></i>
           </button>
         </div>
       </div>
@@ -54,6 +56,7 @@ const profileImage = 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095
   align-items: center;
   overflow: hidden;
   background-color: var(--bg);
+  width: 100%;
   @media (max-width: 768px) { padding: 120px 0 60px; }
 }
 
@@ -75,6 +78,7 @@ const profileImage = 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095
   align-items: center;
   position: relative;
   z-index: 2;
+  width: 100%;
   @media (max-width: 992px) { grid-template-columns: 1fr; gap: 4rem; text-align: center; }
 }
 

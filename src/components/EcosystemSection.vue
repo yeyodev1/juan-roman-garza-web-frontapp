@@ -21,6 +21,7 @@ const entities = [
     image: 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095170/assets-juan/c13684b0-ba0e-4bd2-954f-f2ec6756421d.jpg',
     badge: 'TECNOLOGÍA DIGITAL',
     badgeClass: 'gold',
+    link: 'https://www.powerhousebiotech.com/',
     details: [
       { icon: 'fa-database', text: '250k+ Casos de Estudio Clínicos' },
       { icon: 'fa-laptop-code', text: 'Telemetría y Fidelización' },
@@ -53,13 +54,13 @@ const entities = [
 </template>
 
 <style lang="scss" scoped>
-.ecosystem-section { background-color: var(--bg); transition: background-color 0.3s ease; }
+.ecosystem-section { background-color: var(--bg); transition: background-color 0.3s ease; width: 100%; }
 
 .section-header {
   text-align: center; max-width: 800px; margin: 0 auto 5rem;
   .section-tag {
     font-family: var(--font-principal); font-size: 0.85rem; font-weight: 700;
-    color: var(--accent); letter-spacing: 0.1em; margin-bottom: 0.5rem; display: inline-block;
+    color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.5rem; display: inline-block;
   }
   .section-title { font-size: 2.5rem; color: var(--text); margin-bottom: 1.5rem; @media (max-width: 768px) { font-size: 1.8rem; } }
   .accent-line { width: 55px; height: 3px; background-color: var(--accent-gold); margin: 0 auto 2rem; }
@@ -67,7 +68,7 @@ const entities = [
 }
 
 .ecosystem-grid {
-  display: grid; grid-template-columns: repeat(2, 1fr); gap: 4rem;
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 4rem; width: 100%;
   @media (max-width: 992px) { grid-template-columns: 1fr; gap: 3rem; }
 }
 </style>

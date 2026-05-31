@@ -14,6 +14,7 @@ const props = defineProps({
   badge: { type: String, required: true },
   badgeClass: { type: String, default: '' },
   details: { type: Array as PropType<DetailItem[]>, required: true },
+  link: { type: String, default: '' },
 });
 </script>
 
@@ -28,6 +29,12 @@ const props = defineProps({
       <h3 class="entity-name">{{ name }}</h3>
       <span class="entity-lead">{{ lead }}</span>
       <p class="entity-desc">{{ desc }}</p>
+      
+      <!-- Premium external portal link -->
+      <a v-if="link" :href="link" target="_blank" rel="noopener noreferrer" class="visit-link">
+        Visitar Sitio Web <i class="fa-solid fa-arrow-up-right-from-square link-arrow"></i>
+      </a>
+
       <div class="entity-details">
         <span v-for="(item, idx) in details" :key="idx" class="detail-item">
           <i class="fa-solid" :class="item.icon"></i> {{ item.text }}
@@ -60,14 +67,22 @@ const props = defineProps({
   position: absolute; top: 20px; left: 20px; background: var(--accent); color: #ffffff;
   padding: 0.4rem 1rem; border-radius: 50px; font-family: var(--font-principal); font-size: 0.75rem; font-weight: 700;
   letter-spacing: 0.05em; z-index: 2;
-
   &.gold { background: var(--accent-gold); }
 }
 
 .card-body { padding: 3rem 2.5rem; text-align: left; }
 .entity-name { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--text); }
 .entity-lead { display: block; font-size: 0.9rem; font-weight: 600; color: var(--accent-gold); margin-bottom: 1.75rem; }
-.entity-desc { font-size: 0.95rem; line-height: 1.6; color: var(--text-muted); margin-bottom: 2.25rem; min-height: 75px; }
+.entity-desc { font-size: 0.95rem; line-height: 1.6; color: var(--text-muted); margin-bottom: 1.5rem; min-height: 75px; }
+
+.visit-link {
+  display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none;
+  color: var(--accent-gold); font-weight: 700; font-size: 0.9rem; margin-bottom: 2rem;
+  transition: all 0.3s ease;
+  
+  &:hover { color: lighten(#D4AF37, 10%); .link-arrow { transform: translate(2px, -2px); } }
+  .link-arrow { font-size: 0.8rem; transition: transform 0.3s ease; }
+}
 
 .entity-details {
   display: flex; flex-direction: column; gap: 0.75rem; border-top: 1px solid var(--border); padding-top: 2rem;

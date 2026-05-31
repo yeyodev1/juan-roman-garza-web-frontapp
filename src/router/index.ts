@@ -5,7 +5,37 @@ const routes: Array<RouteRecordRaw> = [
     path: '/',
     name: 'Home',
     component: () => import('../views/HomeView.vue'),
-    meta: { title: 'Home' },
+    meta: { title: 'Inicio | Juan Román Garza' },
+  },
+  {
+    path: '/sobre-mi',
+    name: 'About',
+    component: () => import('../views/AboutView.vue'),
+    meta: { title: 'Sobre Mí | Juan Román Garza' },
+  },
+  {
+    path: '/longevidad-regenerativa',
+    name: 'Approach',
+    component: () => import('../views/ApproachView.vue'),
+    meta: { title: 'Longevidad Regenerativa | Juan Román Garza' },
+  },
+  {
+    path: '/empresas',
+    name: 'Ecosystem',
+    component: () => import('../views/EcosystemView.vue'),
+    meta: { title: 'Empresas | Juan Román Garza' },
+  },
+  {
+    path: '/prensa-y-eventos',
+    name: 'Press',
+    component: () => import('../views/PressView.vue'),
+    meta: { title: 'Prensa y Eventos | Juan Román Garza' },
+  },
+  {
+    path: '/contacto',
+    name: 'Contact',
+    component: () => import('../views/ContactView.vue'),
+    meta: { title: 'Contacto | Juan Román Garza' },
   },
 ]
 
@@ -18,17 +48,9 @@ const router = createRouter({
 })
 
 router.beforeEach((to, _from, next) => {
-  const hasToken = !!localStorage.getItem('access_token')
-  const requiresAuth = to.matched.some((record) => record.meta?.requiresAuth)
-
-  if (requiresAuth && !hasToken) {
-    return next({ path: '/login', replace: true })
+  if (to.meta?.title) {
+    document.title = to.meta.title as string
   }
-
-  if (to.path === '/login' && hasToken) {
-    return next({ path: '/', replace: true })
-  }
-
   next()
 })
 
