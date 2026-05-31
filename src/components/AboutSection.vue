@@ -127,6 +127,8 @@ onUnmounted(() => {
   flex-direction: column;
   align-items: center;
   gap: 10rem;
+  padding: 0 1.5rem;
+  width: 100%;
 }
 
 /* --- Split Bio Grid --- */
