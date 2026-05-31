@@ -7,10 +7,12 @@ const profileImage = 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095
 
 <template>
   <section id="home" class="hero-section">
+    <!-- Abstract glowing circles for premium styling -->
     <div class="glow-sphere glow-primary"></div>
     <div class="glow-sphere glow-gold"></div>
 
-    <div class="container hero-grid">
+    <div class="container hero-container">
+      <!-- Centered Text Content -->
       <div class="hero-content">
         <span class="hero-tag">LIDERAZGO & SALUD PIONERA</span>
         <h1 class="hero-title">
@@ -30,6 +32,7 @@ const profileImage = 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095
         </div>
       </div>
 
+      <!-- Centered Media Portrait -->
       <div class="hero-media">
         <div class="media-frame">
           <img :src="profileImage" alt="Juan Román Garza" class="profile-photo" />
@@ -54,6 +57,7 @@ const profileImage = 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095
   padding: 160px 0 100px;
   display: flex;
   align-items: center;
+  justify-content: center; // Ensure container is centered on large screens
   overflow: hidden;
   background-color: var(--bg);
   width: 100%;
@@ -71,22 +75,23 @@ const profileImage = 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095
   &.glow-gold { width: 400px; height: 400px; bottom: -10%; left: -10%; background: radial-gradient(circle, var(--accent-gold) 0%, transparent 70%); }
 }
 
-.hero-grid {
-  display: grid;
-  grid-template-columns: 1.25fr 0.75fr;
-  gap: 6rem;
+.hero-container {
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  position: relative;
+  justify-content: center;
+  gap: 4.5rem;
   z-index: 2;
   width: 100%;
-  @media (max-width: 992px) { grid-template-columns: 1fr; gap: 4rem; text-align: center; }
 }
 
 .hero-content {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  @media (max-width: 992px) { align-items: center; }
+  align-items: center;
+  text-align: center; // Center text inside elements
+  max-width: 850px;
+  width: 100%;
 }
 
 .hero-tag {
@@ -122,7 +127,7 @@ const profileImage = 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095
 .hero-desc {
   font-size: 1.1rem;
   color: var(--text-muted);
-  max-width: 600px;
+  max-width: 650px;
   margin-bottom: 3rem;
   line-height: 1.6;
 }
@@ -130,6 +135,7 @@ const profileImage = 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095
 .hero-actions {
   display: flex;
   gap: 1.5rem;
+  justify-content: center;
   @media (max-width: 480px) { flex-direction: column; width: 100%; }
 }
 
@@ -172,7 +178,7 @@ const profileImage = 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095
 .media-frame {
   position: relative;
   width: 100%;
-  max-width: 340px;
+  max-width: 320px;
   aspect-ratio: 1 / 1;
 
   .profile-photo {
