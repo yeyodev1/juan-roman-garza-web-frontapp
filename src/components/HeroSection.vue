@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted } from 'vue';
+import { onMounted, onUnmounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -12,6 +12,8 @@ const router = useRouter();
 const heroBgImage = 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095160/assets-juan/1fdb1f14-5799-4c12-ba46-8590a824770b.jpg';
 // Forbes mockup for credibility badge
 const forbesMockup = 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095167/assets-juan/WhatsApp_Image_2026-05-27_at_7_08_51_PM.jpg';
+
+const forbesCard = ref<HTMLElement | null>(null);
 
 onMounted(() => {
   const tl = gsap.timeline();
@@ -28,7 +30,7 @@ onMounted(() => {
     .fromTo('.subtitle-block', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 1 }, 1.1)
     .fromTo('.hero-desc', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 1 }, 1.3)
     .fromTo('.hero-actions', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 1 }, 1.5)
-    .fromTo('.credibility-badge', { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 1, ease: 'back.out(1.7)' }, 1.8);
+    .fromTo('.credibility-badge', { opacity: 0, x: 100, rotationY: 20, scale: 0.8 }, { opacity: 1, x: 0, rotationY: -5, scale: 1, duration: 1.5, ease: 'back.out(1.2)' }, 1.8);
 
   // Background Parallax on scroll
   gsap.to('.hero-bg-img', {
@@ -54,6 +56,48 @@ onMounted(() => {
       scrub: true
     }
   });
+
+  // 3D Interactive Hover Effect for Forbes Card
+  if (forbesCard.value) {
+    forbesCard.value.addEventListener('mousemove', (e) => {
+      const rect = forbesCard.value!.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      
+      const xPercent = x / rect.width;
+      const yPercent = y / rect.height;
+      
+      // Calculate rotation (max 15 degrees)
+      const rotateX = (0.5 - yPercent) * 30; 
+      const rotateY = (xPercent - 0.5) * 30; 
+
+      gsap.to(forbesCard.value, {
+        rotationX: rotateX,
+        rotationY: rotateY,
+        duration: 0.4,
+        ease: 'power2.out',
+        transformPerspective: 1000
+      });
+      
+      // Move glare exactly to mouse position
+      gsap.to('.forbes-glare', {
+        x: x,
+        y: y,
+        opacity: 1,
+        duration: 0.1
+      });
+    });
+
+    forbesCard.value.addEventListener('mouseleave', () => {
+      gsap.to(forbesCard.value, {
+        rotationX: -5, // Default resting state
+        rotationY: -5,
+        duration: 0.8,
+        ease: 'power2.out'
+      });
+      gsap.to('.forbes-glare', { opacity: 0, duration: 0.8 });
+    });
+  }
 });
 
 onUnmounted(() => {
@@ -97,12 +141,17 @@ onUnmounted(() => {
         </div>
       </div>
 
-      <!-- Floating Credibility Badge -->
-      <div class="credibility-badge">
-        <img :src="forbesMockup" alt="Forbes Magazine" class="badge-cover" />
-        <div class="badge-info">
-          <span class="badge-title">Reconocimiento</span>
-          <span class="badge-subtitle">Destacado en Medios</span>
+      <!-- Massive Interactive Forbes Card -->
+      <div class="credibility-badge" ref="forbesCard">
+        <div class="badge-content">
+          <img :src="forbesMockup" alt="Forbes Magazine" class="badge-cover-large" />
+          <div class="forbes-glare"></div>
+        </div>
+        
+        <!-- 3D Pop-out Label -->
+        <div class="badge-info-floating">
+          <span class="badge-title">Destacado en</span>
+          <span class="badge-subtitle">Forbes Magazine</span>
         </div>
       </div>
       
@@ -261,43 +310,76 @@ onUnmounted(() => {
   &:hover { background-color: #fff; color: #000; }
 }
 
-/* Floating Credibility Badge */
+/* Massive Interactive Forbes Card */
 .credibility-badge {
   position: absolute;
-  bottom: 50px;
-  right: 50px;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  background: rgba(10, 10, 10, 0.6);
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 0.8rem 1.5rem 0.8rem 0.8rem;
-  border-radius: 100px;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+  bottom: 8%;
+  right: 5%;
+  width: 280px; // massive scale
+  border-radius: 16px;
+  transform-style: preserve-3d;
+  cursor: pointer;
+  z-index: 10;
+  box-shadow: 0 40px 80px rgba(0,0,0,0.6);
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  transform: perspective(1000px) rotateY(-5deg) rotateX(-5deg); // default 3D tilt
 
+  @media (max-width: 1400px) { width: 240px; right: 3%; }
   @media (max-width: 992px) {
     position: relative;
     bottom: auto; right: auto;
-    margin-top: 5rem;
+    margin-top: 6rem;
+    transform: none;
   }
 
-  .badge-cover {
-    width: 45px;
-    height: 60px;
-    object-fit: cover;
-    border-radius: 4px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+  .badge-content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 16px;
+    overflow: hidden;
   }
 
-  .badge-info {
-    display: flex;
-    flex-direction: column;
-    text-align: left;
+  .badge-cover-large {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 16px;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+  }
 
-    .badge-title { color: #fff; font-family: var(--font-principal); font-weight: 700; font-size: 0.95rem; }
-    .badge-subtitle { color: var(--accent-gold); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; }
+  .forbes-glare {
+    position: absolute;
+    top: 0; left: 0;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 70%);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 5;
+    mix-blend-mode: overlay;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+  }
+
+  /* 3D Pop-out label */
+  .badge-info-floating {
+    position: absolute;
+    bottom: -25px;
+    left: 50%;
+    transform: translateX(-50%) translateZ(60px); // pops out of the screen
+    background: rgba(10, 10, 10, 0.85);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(212, 175, 55, 0.6);
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    white-space: nowrap;
+    text-align: center;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.7);
+
+    .badge-title { display: block; color: #a1a1aa; font-family: var(--font-principal); font-size: 0.85rem; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.2rem; }
+    .badge-subtitle { display: block; color: #fff; font-size: 1.25rem; font-weight: 800; text-transform: uppercase; text-shadow: 0 2px 10px rgba(212, 175, 55, 0.5); }
   }
 }
 </style>
