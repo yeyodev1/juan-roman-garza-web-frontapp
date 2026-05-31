@@ -7,27 +7,32 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 const router = useRouter();
+
+// High quality studio headshot for background
+const heroBgImage = 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095160/assets-juan/1fdb1f14-5799-4c12-ba46-8590a824770b.jpg';
+// Forbes mockup for credibility badge
 const forbesMockup = 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095167/assets-juan/WhatsApp_Image_2026-05-27_at_7_08_51_PM.jpg';
-const profileImage = 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095167/assets-juan/99f4f652-01b1-4bf3-91af-9e73da8e6c0d.jpg';
 
 onMounted(() => {
   const tl = gsap.timeline();
   
+  // Background Image Scale-in Effect
+  gsap.fromTo('.hero-bg-img', 
+    { scale: 1.15, filter: 'blur(10px)' }, 
+    { scale: 1, filter: 'blur(0px)', duration: 2.5, ease: 'power3.out' }
+  );
+  
   // Initial entrance animation - Everything centered
-  tl.fromTo('.hero-tag', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 1, ease: 'power3.out' }, 0.2)
-    .fromTo('.hero-title .line', { opacity: 0, y: 80, rotationX: 20 }, { opacity: 1, y: 0, rotationX: 0, duration: 1.2, stagger: 0.15, ease: 'power3.out' }, 0.4)
-    .fromTo('.hero-desc', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 1 }, 0.8)
-    .fromTo('.hero-actions', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 1 }, 1.0)
-    .fromTo('.hero-media-content', 
-      { opacity: 0, y: 150, scale: 0.9 }, 
-      { opacity: 1, y: 0, scale: 1, duration: 1.5, ease: 'power3.out' }, 
-      1.2
-    );
+  tl.fromTo('.hero-tag', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 1, ease: 'power3.out' }, 0.5)
+    .fromTo('.hero-title .line', { opacity: 0, y: 80, rotationX: 20 }, { opacity: 1, y: 0, rotationX: 0, duration: 1.2, stagger: 0.15, ease: 'power3.out' }, 0.7)
+    .fromTo('.subtitle-block', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 1 }, 1.1)
+    .fromTo('.hero-desc', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 1 }, 1.3)
+    .fromTo('.hero-actions', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 1 }, 1.5)
+    .fromTo('.credibility-badge', { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 1, ease: 'back.out(1.7)' }, 1.8);
 
-  // Parallax on scroll
-  gsap.to('.hero-media-content', {
-    yPercent: -20, // Moves up faster than the background
-    scale: 1.05,
+  // Background Parallax on scroll
+  gsap.to('.hero-bg-img', {
+    yPercent: 20, // Moves down slightly as user scrolls down
     ease: 'none',
     scrollTrigger: {
       trigger: '.hero-section',
@@ -37,8 +42,9 @@ onMounted(() => {
     }
   });
 
-  gsap.to('.hero-text-content', {
-    yPercent: 30, // Moves down slower, creating parallax separation
+  // Text Content Parallax on scroll
+  gsap.to('.hero-container', {
+    yPercent: 35, // Moves down slower than scroll
     opacity: 0,
     ease: 'none',
     scrollTrigger: {
@@ -57,13 +63,16 @@ onUnmounted(() => {
 
 <template>
   <section id="home" class="hero-section">
-    <!-- Subtle Background Elements -->
-    <div class="bg-noise"></div>
-    <div class="glow-sphere glow-primary"></div>
+    
+    <!-- Fullscreen Background Media -->
+    <div class="hero-bg-wrapper">
+      <img :src="heroBgImage" class="hero-bg-img" alt="Juan Román Garza Background" loading="eager" />
+      <!-- Dark Gradient Overlay for Text Readability -->
+      <div class="hero-bg-overlay"></div>
+    </div>
     
     <div class="container hero-container">
-      
-      <!-- Text Content (Centered) -->
+      <!-- Text Content (Perfectly Centered) -->
       <div class="hero-text-content">
         <span class="hero-tag">LIDERAZGO & SALUD PIONERA</span>
         
@@ -88,20 +97,12 @@ onUnmounted(() => {
         </div>
       </div>
 
-      <!-- Media Content (Centered below text) -->
-      <div class="hero-media-content">
-        <div class="forbes-wrapper">
-          <img :src="forbesMockup" alt="Forbes Magazine Cover" class="forbes-img" />
-          <div class="glow-border"></div>
-          
-          <!-- Glassmorphism Badge -->
-          <div class="glass-badge">
-             <img :src="profileImage" alt="Juan Román Garza" class="badge-img" />
-             <div class="badge-text">
-               <strong>Juan Román Garza</strong>
-               <span>Fundador</span>
-             </div>
-          </div>
+      <!-- Floating Credibility Badge -->
+      <div class="credibility-badge">
+        <img :src="forbesMockup" alt="Forbes Magazine" class="badge-cover" />
+        <div class="badge-info">
+          <span class="badge-title">Reconocimiento</span>
+          <span class="badge-subtitle">Destacado en Medios</span>
         </div>
       </div>
       
@@ -119,61 +120,81 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-top: 150px; // Offset for header + extra space
-  padding-bottom: 100px;
+  padding-top: 100px; 
 }
 
-.bg-noise {
-  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-  background-image: url('data:image/svg+xml;utf8,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)" opacity="0.05"/%3E%3C/svg%3E');
-  z-index: 0; pointer-events: none;
+/* Background Image & Overlay */
+.hero-bg-wrapper {
+  position: absolute;
+  top: -10%; left: -5%;
+  width: 110%; height: 120%;
+  z-index: 0;
+  overflow: hidden;
 }
 
-.glow-sphere {
-  position: absolute; border-radius: 50%; filter: blur(140px); opacity: 0.15; z-index: 1; pointer-events: none;
-  &.glow-primary { width: 800px; height: 800px; top: -20%; left: 50%; transform: translateX(-50%); background: radial-gradient(circle, var(--accent) 0%, transparent 70%); }
+.hero-bg-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  will-change: transform, filter;
 }
 
+.hero-bg-overlay {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  /* Elegant deep vignette gradient */
+  background: radial-gradient(circle at center, rgba(5,5,5,0.4) 0%, rgba(5,5,5,0.85) 70%, rgba(5,5,5,0.95) 100%);
+  z-index: 1;
+}
+
+/* Main Container */
 .hero-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 5rem;
   z-index: 2;
   position: relative;
   width: 100%;
+  height: 100%;
   text-align: center;
 }
 
 /* Typography (Centered) */
 .hero-text-content {
   width: 100%;
-  max-width: 900px;
+  max-width: 1000px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  position: relative;
 }
 
 .hero-tag {
-  font-family: var(--font-principal); font-size: 0.85rem; font-weight: 700; letter-spacing: 0.2em;
-  color: var(--accent-gold); margin-bottom: 2.5rem; padding: 0.5rem 1.2rem;
-  border: 1px solid rgba(229, 213, 181, 0.3); border-radius: 50px; background: rgba(229, 213, 181, 0.05);
+  font-family: var(--font-principal); font-size: 0.9rem; font-weight: 700; letter-spacing: 0.25em;
+  color: var(--accent-gold); margin-bottom: 2.5rem; padding: 0.6rem 1.5rem;
+  border: 1px solid rgba(229, 213, 181, 0.4); border-radius: 50px; 
+  background: rgba(20, 20, 20, 0.5);
+  backdrop-filter: blur(10px);
   display: inline-block;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
 
 .hero-title {
-  font-size: 5.5rem;
+  font-size: 6.5rem;
   line-height: 1.05;
   margin-bottom: 0.5rem;
   font-weight: 800;
   text-transform: uppercase;
-  color: var(--text);
+  color: #ffffff;
   perspective: 1000px;
+  text-shadow: 0 20px 50px rgba(0,0,0,0.8);
   
-  @media (max-width: 1200px) { font-size: 4.5rem; }
-  @media (max-width: 768px) { font-size: 3rem; }
+  @media (max-width: 1200px) { font-size: 5rem; }
+  @media (max-width: 768px) { font-size: 3.2rem; }
+  @media (max-width: 480px) { font-size: 2.5rem; }
 
   .line-wrapper {
     overflow: hidden;
@@ -188,7 +209,7 @@ onUnmounted(() => {
 
   .text-gold {
     color: transparent;
-    -webkit-text-stroke: 1px var(--accent-gold);
+    -webkit-text-stroke: 1px rgba(229, 213, 181, 0.8);
     background: linear-gradient(135deg, var(--accent-gold) 0%, #b89528 100%);
     -webkit-background-clip: text;
     background-clip: text;
@@ -196,114 +217,87 @@ onUnmounted(() => {
 }
 
 .subtitle-block {
-  font-size: 2rem;
-  font-weight: 400;
-  margin-bottom: 2rem;
-  color: var(--text-muted);
+  font-size: 2.2rem;
+  font-weight: 300;
+  margin-bottom: 2.5rem;
+  color: #e4e4e7;
   font-family: var(--font-secondary);
   letter-spacing: -0.02em;
+  text-shadow: 0 10px 20px rgba(0,0,0,0.8);
 
   @media (max-width: 768px) { font-size: 1.5rem; }
 }
 
 .hero-desc { 
-  font-size: 1.25rem; 
-  color: var(--text-muted); 
-  max-width: 700px; 
-  margin-bottom: 3.5rem; 
+  font-size: 1.35rem; 
+  color: #a1a1aa; 
+  max-width: 750px; 
+  margin-bottom: 4rem; 
   line-height: 1.8; 
+  text-shadow: 0 5px 15px rgba(0,0,0,0.9);
+  
+  @media (max-width: 768px) { font-size: 1.1rem; }
 }
 
 .hero-actions { 
   display: flex; gap: 1.5rem; justify-content: center;
-  @media (max-width: 480px) { flex-direction: column; width: 100%; } 
+  @media (max-width: 480px) { flex-direction: column; width: 100%; max-width: 300px; margin: 0 auto; } 
 }
 
 .btn-primary {
   background: var(--text); color: var(--bg); border: none;
-  padding: 1.2rem 2.5rem; border-radius: 50px; font-size: 1rem; font-weight: 600; cursor: pointer;
+  padding: 1.2rem 2.5rem; border-radius: 50px; font-size: 1.05rem; font-weight: 700; cursor: pointer;
   display: flex; align-items: center; justify-content: center; gap: 0.75rem;
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-  &:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.15); background: var(--accent-gold); color: #111; }
+  box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+  &:hover { transform: translateY(-3px); box-shadow: 0 20px 40px rgba(0,0,0,0.6); background: var(--accent-gold); color: #111; }
 }
 
 .btn-secondary {
-  background: transparent; color: var(--text); border: 1px solid var(--border); 
-  padding: 1.2rem 2.5rem; border-radius: 50px; font-size: 1rem; font-weight: 600; cursor: pointer; 
+  background: rgba(20, 20, 20, 0.4); color: #fff; border: 1px solid rgba(255,255,255,0.2); 
+  backdrop-filter: blur(10px);
+  padding: 1.2rem 2.5rem; border-radius: 50px; font-size: 1.05rem; font-weight: 600; cursor: pointer; 
   transition: all 0.3s ease;
-  &:hover { background-color: var(--text); color: var(--bg); border-color: var(--text); }
+  &:hover { background-color: #fff; color: #000; }
 }
 
-
-/* Centered Media / Forbes Cover */
-.hero-media-content { 
-  width: 100%; 
-  display: flex; justify-content: center; align-items: center; 
-  perspective: 1200px; 
-  margin-top: 2rem;
-}
-
-.forbes-wrapper {
-  position: relative; 
-  width: 100%; 
-  max-width: 350px;
-  aspect-ratio: 3 / 4;
-  border-radius: 20px;
-  overflow: hidden;
-  box-shadow: 0 40px 80px rgba(0, 0, 0, 0.4);
-  transform-style: preserve-3d;
-  will-change: transform;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-
-  @media (max-width: 768px) { max-width: 280px; }
-}
-
-.forbes-img {
-  width: 100%; height: 100%; object-fit: cover;
-}
-
-.glow-border {
-  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-  box-shadow: inset 0 0 50px rgba(229, 213, 181, 0.2); pointer-events: none;
-  border-radius: 20px;
-}
-
-/* Glassmorphism Profile Badge */
-.glass-badge {
+/* Floating Credibility Badge */
+.credibility-badge {
   position: absolute;
-  bottom: -25px;
-  right: -40px;
-  background: rgba(10, 10, 10, 0.7);
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 100px;
-  padding: 1rem 1.5rem 1rem 1rem;
+  bottom: 50px;
+  right: 50px;
   display: flex;
   align-items: center;
   gap: 1rem;
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
-  transform: translateZ(60px); 
-  
-  @media (max-width: 768px) {
-    right: 50%;
-    transform: translateX(50%) translateZ(60px);
-    bottom: -30px;
+  background: rgba(10, 10, 10, 0.6);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.8rem 1.5rem 0.8rem 0.8rem;
+  border-radius: 100px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+
+  @media (max-width: 992px) {
+    position: relative;
+    bottom: auto; right: auto;
+    margin-top: 5rem;
   }
-  
-  .badge-img {
-    width: 65px; height: 65px;
-    border-radius: 50%;
+
+  .badge-cover {
+    width: 45px;
+    height: 60px;
     object-fit: cover;
-    border: 2px solid var(--accent-gold);
+    border-radius: 4px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
   }
-  
-  .badge-text {
-    display: flex; flex-direction: column;
+
+  .badge-info {
+    display: flex;
+    flex-direction: column;
     text-align: left;
-    
-    strong { font-family: var(--font-principal); color: #fff; font-size: 1.05rem; line-height: 1.2; }
-    span { color: var(--accent-gold); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; margin-top: 0.2rem; }
+
+    .badge-title { color: #fff; font-family: var(--font-principal); font-weight: 700; font-size: 0.95rem; }
+    .badge-subtitle { color: var(--accent-gold); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; }
   }
 }
 </style>
