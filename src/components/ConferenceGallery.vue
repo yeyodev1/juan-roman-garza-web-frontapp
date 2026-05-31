@@ -48,7 +48,7 @@ const selectedImage = ref<string | null>(null);
   &::after { content: ''; position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); width: 40px; height: 2px; background-color: var(--accent-gold); }
 }
 
-.gallery-wrapper { margin-bottom: 8rem; @media (max-width: 768px) { margin-bottom: 6rem; } }
+.gallery-wrapper { margin-bottom: 8rem; padding: 0 1.5rem; @media (max-width: 768px) { margin-bottom: 6rem; } }
 
 .gallery-grid {
   display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;

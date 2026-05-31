@@ -21,7 +21,7 @@ const videoPoster = 'https://res.cloudinary.com/drw5sn8qw/image/upload/v17800951
 </template>
 
 <style lang="scss" scoped>
-.video-section { max-width: 800px; margin: 0 auto; }
+.video-section { max-width: 800px; margin: 0 auto; padding: 0 1.5rem; }
 
 .video-subtitle {
   font-size: 1.8rem; font-weight: 700; color: var(--text); margin-bottom: 3rem; text-align: center; position: relative;
