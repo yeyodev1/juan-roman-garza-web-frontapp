@@ -13,6 +13,7 @@ const galleryPhotos = [
     url: 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095162/assets-juan/3899b4aa-2b3b-43ec-94c7-9fda3dba6209.jpg',
     title: 'Trayectoria Ejecutiva',
     category: 'BIOGRAFÍA',
+    position: 'top'
   },
   {
     url: 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095161/assets-juan/2a75d856-0b98-440f-8187-df8df9a08112.jpg',
@@ -23,6 +24,7 @@ const galleryPhotos = [
     url: 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095175/assets-juan/e218f195-9aeb-4e69-a502-38a0cc524535.jpg',
     title: 'Presencia Internacional',
     category: 'MIAMI',
+    position: 'top'
   },
   {
     url: 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095174/assets-juan/db808425-b579-4ae3-bca6-1cb1cc73fa7d.jpg',
@@ -93,7 +95,13 @@ onUnmounted(() => {
         <!-- Photo items -->
         <div v-for="(photo, idx) in galleryPhotos" :key="idx" class="gallery-item-horizontal photo-item">
           <div class="image-wrapper">
-            <img :src="photo.url" :alt="photo.title" class="legacy-img" loading="lazy" />
+            <img 
+              :src="photo.url" 
+              :alt="photo.title" 
+              class="legacy-img" 
+              :style="{ objectPosition: photo.position || 'center' }"
+              loading="lazy" 
+            />
             <div class="hover-tint"></div>
             <div class="item-meta">
               <span class="item-cat">{{ photo.category }}</span>
