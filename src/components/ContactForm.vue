@@ -4,10 +4,15 @@ import { VueTelInput } from 'vue-tel-input';
 import 'vue-tel-input/vue-tel-input.css';
 
 const form = ref({ firstName: '', lastName: '', phone: '', email: '', message: '' });
+const fullPhoneInfo = ref<any>(null);
 const isSubmitting = ref(false);
 const submitStatus = ref<'idle' | 'success' | 'error'>('idle');
 const defaultCountry = ref('MX');
 const isCountryLoaded = ref(false);
+
+function onPhoneInput(phone: string, phoneObject: any) {
+  fullPhoneInfo.value = phoneObject;
+}
 
 onMounted(async () => {
   try {
@@ -39,10 +44,16 @@ async function handleSubmit() {
     const dateOptions: Intl.DateTimeFormatOptions = { day: '2-digit', month: '2-digit', year: '2-digit', hour: 'numeric', minute: '2-digit', hour12: true };
     const formattedDate = now.toLocaleString('es-MX', dateOptions);
 
+    // Extract exact parsed number (e.g. +593995254965)
+    let parsedPhone = form.value.phone;
+    if (fullPhoneInfo.value && fullPhoneInfo.value.number) {
+      parsedPhone = fullPhoneInfo.value.number.replace(/\s+/g, '');
+    }
+
     const payload = {
       nombre: `${form.value.firstName} ${form.value.lastName}`,
       email: form.value.email,
-      telefono: form.value.phone,
+      telefono: parsedPhone,
       source: "PHB Web",
       nota: `🏥 PowerHouse Biotech — Formulario PHB\n📌 Fuente: PHB Web\n🕐 Actualizado: ${formattedDate}\n💬 Mensaje: ${form.value.message}`,
       paso: "paso-0",
@@ -96,6 +107,7 @@ async function handleSubmit() {
         <vue-tel-input 
           v-if="isCountryLoaded"
           v-model="form.phone" 
+          @on-input="onPhoneInput"
           mode="international"
           :defaultCountry="defaultCountry"
           :inputOptions="{ placeholder: '+52 55 1234 5678', required: true }"
