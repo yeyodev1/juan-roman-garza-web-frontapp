@@ -1,11 +1,24 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { VueTelInput } from 'vue-tel-input';
 import 'vue-tel-input/vue-tel-input.css';
 
 const form = ref({ firstName: '', lastName: '', phone: '', email: '', message: '' });
 const isSubmitting = ref(false);
 const submitStatus = ref<'idle' | 'success' | 'error'>('idle');
+const defaultCountry = ref('MX');
+
+onMounted(async () => {
+  try {
+    const res = await fetch('https://ipapi.co/json/');
+    const data = await res.json();
+    if (data && data.country_code) {
+      defaultCountry.value = data.country_code;
+    }
+  } catch (error) {
+    console.warn('Could not auto-detect country for phone input');
+  }
+});
 
 async function handleSubmit() {
   if (!form.value.firstName || !form.value.lastName || !form.value.email || !form.value.phone || !form.value.message) {
@@ -80,8 +93,9 @@ async function handleSubmit() {
         <vue-tel-input 
           v-model="form.phone" 
           mode="international"
-          defaultCountry="MX"
+          :defaultCountry="defaultCountry"
           :inputOptions="{ placeholder: '+52 55 1234 5678', required: true }"
+          :dropdownOptions="{ showSearchBox: true, searchBoxPlaceholder: 'Buscar país...', showFlags: true, showDialCodeInSelection: true }"
           class="custom-tel-input"
         ></vue-tel-input>
       </div>
@@ -159,6 +173,20 @@ async function handleSubmit() {
     border-radius: 8px;
     z-index: 100;
     max-width: 300px;
+    
+    .vti__search_box {
+      width: 90%;
+      margin: 10px auto;
+      display: block;
+      background: rgba(255, 255, 255, 0.05) !important;
+      border: 1px solid var(--border) !important;
+      color: #fff !important;
+      border-radius: 6px;
+      padding: 0.5rem;
+      outline: none;
+      
+      &:focus { border-color: var(--accent-gold) !important; }
+    }
     
     .vti__dropdown-item {
       color: #fff;
