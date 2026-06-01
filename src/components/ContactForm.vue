@@ -10,7 +10,7 @@ const submitStatus = ref<'idle' | 'success' | 'error'>('idle');
 const defaultCountry = ref('MX');
 const isCountryLoaded = ref(false);
 
-function onPhoneInput(phone: string, phoneObject: any) {
+function onPhoneInput(_phone: string, phoneObject: any) {
   fullPhoneInfo.value = phoneObject;
 }
 
