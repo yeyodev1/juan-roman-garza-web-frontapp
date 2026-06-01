@@ -1,0 +1,6 @@
+# https://juanromangarza.com/robots.txt
+User-agent: *
+Allow: /
+
+Sitemap: https://juanromangarza.com/sitemap.xml
+Sitemap: https://juanromangarza.com/llms.txt

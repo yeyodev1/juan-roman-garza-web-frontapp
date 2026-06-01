@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xmlns:geo="http://www.w3.org/2000/1999/xhtml">
+  <!-- Home -->
+  <url>
+    <loc>https://juanromangarza.com/</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://juanromangarza.com/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://juanromangarza.com/en/"/>
+    <image:image>
+      <image:loc>https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095169/assets-juan/profile-og.jpg</image:loc>
+      <image:title>Juan Román Garza - Longevidad Regenerativa</image:title>
+    </image:image>
+  </url>
+
+  <!-- About -->
+  <url>
+    <loc>https://juanromangarza.com/about</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://juanromangarza.com/about"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://juanromangarza.com/en/about"/>
+  </url>
+
+  <!-- Ecosystem -->
+  <url>
+    <loc>https://juanromangarza.com/ecosystem</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://juanromangarza.com/ecosystem"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://juanromangarza.com/en/ecosystem"/>
+  </url>
+
+  <!-- Approach -->
+  <url>
+    <loc>https://juanromangarza.com/approach</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://juanromangarza.com/approach"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://juanromangarza.com/en/approach"/>
+  </url>
+
+  <!-- Press -->
+  <url>
+    <loc>https://juanromangarza.com/press</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://juanromangarza.com/press"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://juanromangarza.com/en/press"/>
+  </url>
+
+  <!-- Powerhouse -->
+  <url>
+    <loc>https://juanromangarza.com/powerhouse</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://juanromangarza.com/powerhouse"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://juanromangarza.com/en/powerhouse"/>
+  </url>
+
+  <!-- Contact -->
+  <url>
+    <loc>https://juanromangarza.com/contact</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://juanromangarza.com/contact"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://juanromangarza.com/en/contact"/>
+  </url>
+
+  <!-- Contact (high priority for lead gen) -->
+  <url>
+    <loc>https://juanromangarza.com/contacto</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://juanromangarza.com/contacto"/>
+  </url>
+</urlset>

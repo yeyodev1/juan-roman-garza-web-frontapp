@@ -1,0 +1,9 @@
+# https://juanromangarza.com/.htaccess / vercel.json rewrite rules
+# For Vercel: vercel.json handles rewrites, but for SEO on Apache/similar:
+
+# Redirect /es/ paths to root (single language for now)
+# Redirect 301 /en https://juanromangarza.com/
+
+# Security headers (add to vercel.json or nginx.conf)
+# X-Robots-Tag: noindex, nofollow
+# X-Content-Type-Options: nosniff

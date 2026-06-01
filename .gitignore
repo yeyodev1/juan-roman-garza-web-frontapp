@@ -2,3 +2,5 @@ node_modules
 dist
 .env
 *.local
+
+node-compile-cache
