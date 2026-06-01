@@ -7,6 +7,7 @@ const form = ref({ firstName: '', lastName: '', phone: '', email: '', message: '
 const isSubmitting = ref(false);
 const submitStatus = ref<'idle' | 'success' | 'error'>('idle');
 const defaultCountry = ref('MX');
+const isCountryLoaded = ref(false);
 
 onMounted(async () => {
   try {
@@ -17,6 +18,8 @@ onMounted(async () => {
     }
   } catch (error) {
     console.warn('Could not auto-detect country for phone input');
+  } finally {
+    isCountryLoaded.value = true;
   }
 });
 
@@ -91,6 +94,7 @@ async function handleSubmit() {
         <label>Teléfono (WhatsApp) *</label>
         <!-- vue-tel-input component for full country code parsing -->
         <vue-tel-input 
+          v-if="isCountryLoaded"
           v-model="form.phone" 
           mode="international"
           :defaultCountry="defaultCountry"
@@ -98,6 +102,9 @@ async function handleSubmit() {
           :dropdownOptions="{ showSearchBox: true, searchBoxPlaceholder: 'Buscar país...', showFlags: true, showDialCodeInSelection: true }"
           class="custom-tel-input"
         ></vue-tel-input>
+        <div v-else class="tel-skeleton">
+          <i class="fa-solid fa-spinner fa-spin"></i> Detectando región...
+        </div>
       </div>
 
       <div class="form-group">
@@ -143,6 +150,18 @@ async function handleSubmit() {
     padding: 0.95rem 1.2rem; border-radius: 10px; font-size: 0.95rem; outline: none; transition: all 0.3s ease;
     &:focus { border-color: var(--accent-gold); background-color: rgba(255, 255, 255, 0.06); box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15); }
   }
+}
+
+.tel-skeleton {
+  background-color: rgba(255, 255, 255, 0.03);
+  border: 1px dashed var(--border);
+  color: var(--text-muted);
+  padding: 0.95rem 1.2rem;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 /* Custom styling for vue-tel-input to match the premium theme */
