@@ -23,21 +23,13 @@ onMounted(() => {
           </p>
 
           <div class="locations-group">
-            <h3 class="group-title">Clínicas Eternal Regenerative Center</h3>
+            <h3 class="group-title">Atención Digital y Global</h3>
             
             <div class="location-item">
-              <div class="icon-box"><i class="fa-solid fa-hotel"></i></div>
+              <div class="icon-box"><i class="fa-solid fa-globe"></i></div>
               <div class="location-text">
-                <h4>Sede Monterrey</h4>
-                <p>Av. Vasconcelos, San Pedro Garza García, N.L., México</p>
-              </div>
-            </div>
-
-            <div class="location-item">
-              <div class="icon-box"><i class="fa-solid fa-hospital"></i></div>
-              <div class="location-text">
-                <h4>Sede Montemorelos</h4>
-                <p>Centro Médico Eternal, Montemorelos, N.L., México</p>
+                <h4>Asesoría Sin Fronteras</h4>
+                <p>Para agilizar nuestra respuesta y brindarle atención confidencial en cualquier parte del mundo, operamos exclusivamente a través de nuestros canales digitales y este portal seguro.</p>
               </div>
             </div>
           </div>
@@ -66,6 +58,11 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .contact-section { background-color: var(--bg); transition: background-color 0.3s ease; padding-top: 150px; min-height: 100vh; padding-bottom: 60px; }
+
+.contact-container {
+  padding: 0 1.5rem;
+  width: 100%;
+}
 
 .contact-grid {
   display: grid; grid-template-columns: 1fr 1.1fr; gap: 7rem; align-items: flex-start;

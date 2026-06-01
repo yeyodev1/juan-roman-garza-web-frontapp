@@ -10,10 +10,10 @@ const defaultCountry = ref('MX');
 
 onMounted(async () => {
   try {
-    const res = await fetch('https://ipapi.co/json/');
+    const res = await fetch('https://services.leadconnectorhq.com/funnels/funnel/geo-location/');
     const data = await res.json();
-    if (data && data.country_code) {
-      defaultCountry.value = data.country_code;
+    if (data && data.country) {
+      defaultCountry.value = data.country;
     }
   } catch (error) {
     console.warn('Could not auto-detect country for phone input');
