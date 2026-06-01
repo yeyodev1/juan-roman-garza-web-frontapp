@@ -4,9 +4,13 @@ import { useRoute } from 'vue-router';
 import NavigationHeader from '@/components/NavigationHeader.vue';
 import GlobalFooter from '@/components/GlobalFooter.vue';
 import Preloader from '@/components/Preloader.vue';
+import { useSeoMeta } from '@/composables/useSeoMeta';
 
 const route = useRoute();
 const isDark = ref(true);
+
+// SEO meta tags — updates per route
+useSeoMeta();
 
 function toggleTheme() {
   isDark.value = !isDark.value;
