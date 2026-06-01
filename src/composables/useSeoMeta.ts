@@ -12,79 +12,68 @@ interface SeoMeta {
   canonical?: string
 }
 
-const defaultMeta: SeoMeta = {
-  title: 'Juan Román Garza | Longevidad Regenerativa para CEOs y Líderes Empresariales',
-  description: 'Juan Román Garza conecta Psicología Organizacional, Tecnología y Medicina Regenerativa para potenciar el rendimiento físico e intelectual de CEOs y líderes empresariales.',
-  ogTitle: 'Juan Román Garza | Longevidad Regenerativa para Líderes Empresariales',
-  ogDescription: 'Health Decision Platform enfocada en Medicina Regenerativa. Potencia tu rendimiento como CEO con ciencia de última generación.',
-  ogImage: 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095169/assets-juan/profile-og.jpg',
-  canonical: 'https://juanromangarza.com/'
-}
-
 const pageMetaMap: Record<string, SeoMeta> = {
   '/': {
-    title: 'Juan Román Garza | Longevidad Regenerativa para CEOs y Líderes Empresariales',
-    description: 'Juan Román Garza conecta Psicología Organizacional, Tecnología y Medicina Regenerativa para potenciar el rendimiento de CEOs. Health Decision Platform, Células Madre, Exosomas.',
-    ogTitle: 'Juan Román Garza | Longevidad Regenerativa para Líderes',
-    ogDescription: 'La primera Health Decision Platform enfocada en Medicina Regenerativa para líderes empresariales. Ciencia de frontera al servicio del rendimiento.',
+    title: 'Juan Román Garza | Longevidad Regenerativa y Medicina de Frontera',
+    description: 'Juan Román Garza conecta Psicología, Tecnología y Medicina Regenerativa para ayudarte a optimizar tu salud celular. Células Madre, Exosomas, evaluación de viabilidad. Para quien lo necesite.',
+    ogTitle: 'Juan Román Garza | Longevidad Regenerativa',
+    ogDescription: 'Evaluación de Viabilidad Regenerativa™. Medicina de frontera para cualquiera que busque optimizar su salud celular y vivir con más claridad.',
     ogImage: 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095169/assets-juan/profile-og.jpg',
     canonical: 'https://juanromangarza.com/'
   },
   '/sobre-mi': {
-    title: 'Sobre Juan Román Garza | Líder en Medicina Regenerativa y longevity',
-    description: '15+ años de liderazgo en medicina regenerativa. +100K casos analizados. Powerhouse Biotech — la primera Health Decision Platform en su clase. Psicólogo Organizacional, Tecnológico de Monterrey.',
-    ogTitle: 'Sobre Juan Román Garza | Medicine Regenerativa',
-    ogDescription: 'Conoce la trayectoria de Juan Román Garza: Psicología Organizacional, medicina regenerativa y la visión que fundó Powerhouse Biotech.',
+    title: 'Sobre Juan Román Garza | Medicina Regenerativa y Longevidad',
+    description: '15+ años de experiencia en medicina regenerativa. +100K casos analizados. Psicólogo Organizacional del Tecnológico de Monterrey. Powerhouse Biotech — Health Decision Platform.',
+    ogTitle: 'Sobre Juan Román Garza | Medicina Regenerativa',
+    ogDescription: 'Conoce la trayectoria de Juan Román Garza: psicología organizacional, medicina regenerativa y la visión de salud celular que fundó Powerhouse Biotech.',
     ogImage: 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095164/assets-juan/5e7c35cb-17e2-4244-ab47-c3f4d3edff54.jpg',
     canonical: 'https://juanromangarza.com/sobre-mi'
   },
   '/powerhouse': {
-    title: 'Powerhouse Biotech | Health Decision Platform — Longevidad Regenerativa',
-    description: 'La primera Health Decision Platform enfocada en Evaluación de Viabilidad Regenerativa™. Ciencia al servicio del rendimiento de CEOs. No somos una clínica tradicional; somos una entidad tecnológica-médica.',
+    title: 'Powerhouse Biotech | Health Decision Platform — Evaluación de Viabilidad Regenerativa',
+    description: 'La primera Health Decision Platform enfocada en Evaluación de Viabilidad Regenerativa™. No somos una clínica tradicional; somos una entidad tecnológica-médica. Evaluación brutalmente honesta.',
     ogTitle: 'Powerhouse Biotech | Health Decision Platform',
-    ogDescription: 'La primera Health Decision Platform enfocada en Medicina Regenerativa. Evaluación de Viabilidad Regenerativa™ — Eliminamos conjeturas para proteger tu inversión biológica.',
+    ogDescription: 'Evaluación de Viabilidad Regenerativa™ — Determinamos si tu cuerpo está verdaderamente listo para repararse a nivel celular. Eliminamos conjeturas.',
     ogImage: 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095166/assets-juan/c875b275-008f-42eb-8828-799b8d573ae1.jpg',
     canonical: 'https://juanromangarza.com/powerhouse'
   },
   '/longevidad-regenerativa': {
-    title: 'Longevidad Regenerativa | Medicina de Frontera para CEOs',
-    description: 'Psicología Organizacional + Tecnología + Medicina Regenerativa. Un enfoque integral para el rendimiento del líder moderno. Células Madre, Exosomas, Health Decision Platform.',
-    ogTitle: 'Longevidad Regenerativa | Enfoque Integral para el Rendimiento',
-    ogDescription: 'Medicina Regenerativa al servicio del liderazgo. Células madre, exosomas y ciencia de última generación para CEOs y líderes empresariales.',
+    title: 'Longevidad Regenerativa | Células Madre, Exosomas y Medicina de Precisión',
+    description: 'Psicología + Tecnología + Medicina Regenerativa. Un enfoque integral para optimizar tu salud celular. Células Madre, Exosomas, evaluación de viabilidad. Para todos.',
+    ogTitle: 'Longevidad Regenerativa | Medicina de Frontera',
+    ogDescription: 'Medicina Regenerativa al servicio de tu salud. Células madre, exosomas y ciencia de última generación para cualquiera que busque vivir mejor.',
     ogImage: 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095169/assets-juan/profile-og.jpg',
     canonical: 'https://juanromangarza.com/longevidad-regenerativa'
   },
   '/empresas': {
-    title: 'Empresas | Ecosystem JRG — Health Decision Platform',
-    description: 'Ecosistema completo: Health Decision Platform, conferencias, contenido educativo y comunidad de líderes de alto rendimiento. Powerhouse Biotech, medios y programas para empresas.',
-    ogTitle: 'Ecosystem | Health Decision Platform para Empresas',
-    ogDescription: 'Ecosistema de Juan Román Garza: Powerhouse Biotech, conferencias y programas para el rendimiento de equipos empresariales.',
+    title: 'Ecosystem | Powerhouse Biotech — Health Decision Platform para Equipos',
+    description: 'Ecosistema completo: Health Decision Platform, conferencias, contenido educativo y programas de longevity para equipos. Powerhouse Biotech y comunidad de salud celular.',
+    ogTitle: 'Ecosystem | Health Decision Platform',
+    ogDescription: 'Ecosistema de Juan Román Garza: Health Decision Platform, conferencias y programas de longevidad para equipos y organizaciones.',
     ogImage: 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095169/assets-juan/profile-og.jpg',
     canonical: 'https://juanromangarza.com/empresas'
   },
   '/prensa-y-eventos': {
-    title: 'Prensa y Eventos | Juan Román Garza — Cobertura y Medios',
-    description: 'Entrevistas, podcasts y apariciones en medios sobre longevidad regenerativa y rendimiento humano. Encuentra a Juan Román Garza en medios nacionales e internacionales.',
+    title: 'Prensa y Eventos | Juan Román Garza — Longevidad Regenerativa en Medios',
+    description: 'Entrevistas, podcasts y apariciones en medios sobre longevidad regenerativa, salud celular y medicina regenerativa. Juan Román Garza en medios nacionales e internacionales.',
     ogTitle: 'Prensa y Eventos | Juan Román Garza',
-    ogDescription: 'Cobertura de medios, entrevistas y apariciones de Juan Román Garza en podcasts y foros empresariales sobre longevidad regenerativa.',
+    ogDescription: 'Cobertura de medios, entrevistas y apariciones de Juan Román Garza sobre longevidad regenerativa, medicina de precisión y salud celular.',
     ogImage: 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095169/assets-juan/profile-og.jpg',
     canonical: 'https://juanromangarza.com/prensa-y-eventos'
   },
   '/contacto': {
     title: 'Contacto | Juan Román Garza — Health Decision Platform',
-    description: 'Contacto directo para consultas sobre Medicina Regenerativa, partnerships y evaluación de viabilidad regenerativa. Health Decision Platform para CEOs y líderes.',
+    description: 'Consulta sobre Medicina Regenerativa, evaluación de viabilidad y salud celular. Comunícate directamente para resolver tus dudas sobre Células Madre, Exosomas y más.',
     ogTitle: 'Contacto | Juan Román Garza',
-    ogDescription: 'Comunícate directamente con Juan Román Garza para consultas sobre Medicina Regenerativa, evaluación de viabilidad y partnerships.',
+    ogDescription: 'Comunícate directamente con Juan Román Garza para consultas sobre Medicina Regenerativa, evaluación de viabilidad y salud celular.',
     ogImage: 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095169/assets-juan/profile-og.jpg',
     canonical: 'https://juanromangarza.com/contacto'
   }
 }
 
 function updateMeta(meta: SeoMeta) {
-  // Update document title
   document.title = meta.title
 
-  // Helper to find or create meta tag
   const setMetaContent = (selector: string, content: string, property = false) => {
     let el = document.querySelector(selector) as HTMLMetaElement | null
     if (!el) {
@@ -99,20 +88,14 @@ function updateMeta(meta: SeoMeta) {
     el.setAttribute('content', content)
   }
 
-  // Description
   setMetaContent('description', meta.description)
-
-  // OG tags
   if (meta.ogTitle) setMetaContent('og:title', meta.ogTitle, true)
   if (meta.ogDescription) setMetaContent('og:description', meta.ogDescription, true)
   if (meta.ogImage) setMetaContent('og:image', meta.ogImage, true)
-
-  // Twitter
   setMetaContent('twitter:title', meta.ogTitle || meta.title)
   setMetaContent('twitter:description', meta.ogDescription || meta.description)
   if (meta.ogImage) setMetaContent('twitter:image', meta.ogImage)
 
-  // Canonical
   if (meta.canonical) {
     let canonEl = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null
     if (!canonEl) {
@@ -126,14 +109,11 @@ function updateMeta(meta: SeoMeta) {
 
 export function useSeoMeta() {
   const route = useRoute()
-
   const applyMeta = () => {
     const path = route.path
     const pageMeta = pageMetaMap[path]
-    updateMeta(pageMeta || defaultMeta)
+    if (pageMeta) updateMeta(pageMeta)
   }
-
   watch(() => route.path, applyMeta, { immediate: true })
-
   return { applyMeta }
 }
