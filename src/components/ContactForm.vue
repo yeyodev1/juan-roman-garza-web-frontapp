@@ -50,12 +50,17 @@ async function handleSubmit() {
       parsedPhone = fullPhoneInfo.value.number.replace(/\s+/g, '');
     }
 
+    const notaContent = `👑 Juan Román Garza — Contacto Ejecutivo\n📌 Fuente: Web Oficial JRG\n🕐 Actualizado: ${formattedDate}\n💬 Mensaje: ${form.value.message}`;
+
     const payload = {
       nombre: `${form.value.firstName} ${form.value.lastName}`,
       email: form.value.email,
       telefono: parsedPhone,
-      source: "PHB Web",
-      nota: `🏥 PowerHouse Biotech — Formulario PHB\n📌 Fuente: PHB Web\n🕐 Actualizado: ${formattedDate}\n💬 Mensaje: ${form.value.message}`,
+      source: "Web Oficial JRG",
+      nota: notaContent,
+      notes: notaContent,
+      tags: ["web-juan-roman", "lead-contacto"],
+      etiquetas: ["web-juan-roman", "lead-contacto"],
       paso: "paso-0",
       timestamp: now.toISOString()
     };
