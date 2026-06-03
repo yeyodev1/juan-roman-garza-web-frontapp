@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref } from 'vue';
+import { onMounted, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -10,8 +10,7 @@ const router = useRouter();
 
 // High quality studio headshot for background
 const heroBgImage = 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095160/assets-juan/1fdb1f14-5799-4c12-ba46-8590a824770b.jpg';
-// Forbes mockup for credibility badge (kept in case it's used elsewhere, but badge is now text-based)
-const forbesMockup = 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095167/assets-juan/WhatsApp_Image_2026-05-27_at_7_08_51_PM.jpg';
+// Forbes mockup removed (using text-based badge now)
 
 onMounted(() => {
   const tl = gsap.timeline();
