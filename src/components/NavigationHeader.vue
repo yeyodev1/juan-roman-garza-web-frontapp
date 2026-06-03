@@ -5,7 +5,6 @@ const props = defineProps({
   activeSection: { type: String, required: true },
 });
 
-const emit = defineEmits(['toggle-theme']);
 const isMenuOpen = ref(false);
 
 const navItems = [
@@ -35,9 +34,6 @@ function handleLinkClick() {
       </RouterLink>
 
       <div class="right-controls">
-        <button class="theme-btn" @click="emit('toggle-theme')" aria-label="Toggle Theme">
-          <i class="fa-solid fa-circle-half-stroke"></i>
-        </button>
         <button class="burger-menu" :class="{ open: isMenuOpen }" @click="toggleMenu" aria-label="Toggle Navigation">
           <span class="bar"></span>
           <span class="bar"></span>
@@ -142,21 +138,6 @@ function handleLinkClick() {
   z-index: 1002;
 }
 
-.theme-btn {
-  background: none;
-  border: none;
-  color: var(--text);
-  font-size: 1.2rem;
-  cursor: pointer;
-  opacity: 0.8;
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-
-  &:hover {
-    opacity: 1;
-    color: var(--accent-gold);
-    transform: rotate(15deg) scale(1.1);
-  }
-}
 
 .burger-menu {
   background: none;
@@ -177,7 +158,7 @@ function handleLinkClick() {
   &:hover {
     .bar:nth-child(2) {
       transform: translateX(4px);
-      background-color: var(--accent-gold);
+      background-color: var(--color-cyan);
     }
   }
 
@@ -271,7 +252,7 @@ function handleLinkClick() {
   .link-number {
     font-size: 0.9rem;
     font-weight: 600;
-    color: var(--accent-gold);
+    color: var(--color-cyan);
     opacity: 0.8;
     margin-top: -0.5rem;
     transition: color 0.4s ease;
@@ -294,14 +275,14 @@ function handleLinkClick() {
       left: 0;
       width: 0%;
       height: 3px;
-      background-color: var(--accent-gold);
+      background-color: var(--color-cyan);
       transition: width 0.4s cubic-bezier(0.25, 1, 0.5, 1);
     }
   }
 
   &:hover,
   &.active {
-    color: var(--accent-gold);
+    color: var(--color-cyan);
     transform: translateX(15px);
     letter-spacing: 0.05em;
 
@@ -343,7 +324,7 @@ function handleLinkClick() {
     font-family: var(--font-principal);
     font-size: 0.8rem;
     font-weight: 700;
-    color: var(--accent-gold);
+    color: var(--color-cyan);
     letter-spacing: 0.1em;
   }
 

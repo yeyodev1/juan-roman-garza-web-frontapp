@@ -165,7 +165,7 @@ async function handleSubmit() {
   input, textarea {
     background-color: rgba(255, 255, 255, 0.03); border: 1px solid var(--border); color: var(--text);
     padding: 0.95rem 1.2rem; border-radius: 10px; font-size: 0.95rem; outline: none; transition: all 0.3s ease;
-    &:focus { border-color: var(--accent-gold); background-color: rgba(255, 255, 255, 0.06); box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15); }
+    &:focus { border-color: var(--color-cyan); background-color: rgba(255, 255, 255, 0.06); box-shadow: 0 0 0 3px rgba(56, 182, 255, 0.15); }
   }
 }
 
@@ -189,9 +189,9 @@ async function handleSubmit() {
   transition: all 0.3s ease;
   
   &:focus-within {
-    border-color: var(--accent-gold) !important;
+    border-color: var(--color-cyan) !important;
     background-color: rgba(255, 255, 255, 0.06) !important;
-    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15) !important;
+    box-shadow: 0 0 0 3px rgba(56, 182, 255, 0.15) !important;
   }
 
   .vti__dropdown {
@@ -204,7 +204,7 @@ async function handleSubmit() {
   }
 
   .vti__dropdown-list {
-    background-color: #1a1a1a;
+    background-color: rgba(255, 255, 255, 0.05);
     border: 1px solid var(--border);
     border-radius: 8px;
     z-index: 100;
@@ -221,14 +221,14 @@ async function handleSubmit() {
       padding: 0.5rem;
       outline: none;
       
-      &:focus { border-color: var(--accent-gold) !important; }
+      &:focus { border-color: var(--color-cyan) !important; }
     }
     
     .vti__dropdown-item {
       color: #fff;
       padding: 10px;
       &.highlighted {
-        background-color: rgba(212, 175, 55, 0.2);
+        background-color: rgba(56, 182, 255, 0.2);
       }
     }
   }
@@ -248,7 +248,7 @@ async function handleSubmit() {
 .submit-btn {
   background: var(--text); color: var(--bg); border: none; padding: 1rem; border-radius: 12px;
   font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.3s ease; margin-top: 0.5rem;
-  &:hover:not(:disabled) { background-color: var(--accent-gold); color: #ffffff; box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3); }
+  &:hover:not(:disabled) { background-color: var(--color-cyan); color: #ffffff; box-shadow: 0 5px 15px rgba(56, 182, 255, 0.3); }
   &:disabled { opacity: 0.6; cursor: not-allowed; }
 }
 

@@ -51,7 +51,7 @@ const props = defineProps({
   transition: transform 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
 
   &:hover {
-    transform: translateY(-8px); border-color: var(--accent-gold); box-shadow: 0 20px 45px rgba(0, 0, 0, 0.08);
+    transform: translateY(-8px); border-color: var(--color-cyan); box-shadow: 0 20px 45px rgba(0, 0, 0, 0.08);
     .card-img { transform: scale(1.05); }
   }
 }
@@ -67,20 +67,20 @@ const props = defineProps({
   position: absolute; top: 20px; left: 20px; background: var(--accent); color: #ffffff;
   padding: 0.4rem 1rem; border-radius: 50px; font-family: var(--font-principal); font-size: 0.75rem; font-weight: 700;
   letter-spacing: 0.05em; z-index: 2;
-  &.gold { background: var(--accent-gold); }
+  &.cyan { background: var(--color-cyan); }
 }
 
 .card-body { padding: 3rem 2.5rem; text-align: left; }
 .entity-name { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--text); }
-.entity-lead { display: block; font-size: 0.9rem; font-weight: 600; color: var(--accent-gold); margin-bottom: 1.75rem; }
+.entity-lead { display: block; font-size: 0.9rem; font-weight: 600; color: var(--color-cyan); margin-bottom: 1.75rem; }
 .entity-desc { font-size: 0.95rem; line-height: 1.6; color: var(--text-muted); margin-bottom: 1.5rem; min-height: 75px; }
 
 .visit-link {
   display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none;
-  color: var(--accent-gold); font-weight: 700; font-size: 0.9rem; margin-bottom: 2rem;
+  color: var(--color-cyan); font-weight: 700; font-size: 0.9rem; margin-bottom: 2rem;
   transition: all 0.3s ease;
   
-  &:hover { color: lighten(#D4AF37, 10%); .link-arrow { transform: translate(2px, -2px); } }
+  &:hover { color: lighten(#38b6ff, 10%); .link-arrow { transform: translate(2px, -2px); } }
   .link-arrow { font-size: 0.8rem; transition: transform 0.3s ease; }
 }
 
@@ -89,7 +89,7 @@ const props = defineProps({
 
   .detail-item {
     font-size: 0.85rem; color: var(--text); font-weight: 600; display: flex; align-items: center; gap: 0.65rem;
-    i { color: var(--accent-gold); width: 16px; }
+    i { color: var(--color-cyan); width: 16px; }
   }
 }
 </style>

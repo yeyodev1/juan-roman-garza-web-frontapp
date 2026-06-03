@@ -112,8 +112,8 @@ onUnmounted(() => {
               <p class="card-desc">{{ pillar.desc }}</p>
               
               <ul class="pillar-features">
-                <li><i class="fa-solid fa-arrow-right text-gold"></i> Enfoque Estratégico</li>
-                <li><i class="fa-solid fa-arrow-right text-gold"></i> Basado en Evidencia</li>
+                <li><i class="fa-solid fa-arrow-right text-cyan"></i> Enfoque Estratégico</li>
+                <li><i class="fa-solid fa-arrow-right text-cyan"></i> Basado en Evidencia</li>
               </ul>
             </div>
           </div>
@@ -172,7 +172,7 @@ onUnmounted(() => {
   letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 1rem; display: inline-block;
 }
 .section-title { font-size: 3.5rem; margin-bottom: 2rem; color: var(--text); line-height: 1.1; @media (max-width: 768px) { font-size: 2.2rem; } }
-.title-divider { width: 80px; height: 4px; background-color: var(--accent-gold); margin: 0 auto 2.5rem; }
+.title-divider { width: 80px; height: 4px; background-color: var(--color-cyan); margin: 0 auto 2.5rem; }
 .intro-text { font-size: 1.3rem; line-height: 1.8; color: var(--text-muted); .highlight { color: var(--text); font-weight: 700; } @media (max-width: 768px) { font-size: 1.1rem; } }
 
 
@@ -236,10 +236,10 @@ onUnmounted(() => {
 .card-icon-wrapper {
   width: 80px; height: 80px; border-radius: 50%; 
   background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1);
-  display: flex; align-items: center; justify-content: center; font-size: 2rem; margin-bottom: 2rem; color: var(--accent-gold);
+  display: flex; align-items: center; justify-content: center; font-size: 2rem; margin-bottom: 2rem; color: var(--color-cyan);
 }
 
-.card-subtitle { font-family: var(--font-principal); font-size: 0.85rem; font-weight: 700; color: var(--accent-gold); letter-spacing: 0.15em; text-transform: uppercase; display: block; margin-bottom: 0.8rem; }
+.card-subtitle { font-family: var(--font-principal); font-size: 0.85rem; font-weight: 700; color: var(--color-cyan); letter-spacing: 0.15em; text-transform: uppercase; display: block; margin-bottom: 0.8rem; }
 .card-title { font-size: 3rem; font-weight: 700; margin-bottom: 1.5rem; color: var(--text); line-height: 1.1; }
 .card-desc { font-size: 1.15rem; line-height: 1.7; color: var(--text-muted); margin-bottom: 2.5rem; }
 
@@ -247,7 +247,7 @@ onUnmounted(() => {
   list-style: none; padding: 0; margin: 0;
   li { 
     margin-bottom: 1rem; font-size: 1.05rem; color: var(--text); font-weight: 500; display: flex; align-items: center; gap: 1rem;
-    .text-gold { font-size: 0.9rem; }
+    .text-cyan { font-size: 0.9rem; }
   }
 }
 

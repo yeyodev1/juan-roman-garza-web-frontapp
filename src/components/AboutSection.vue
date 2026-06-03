@@ -56,7 +56,7 @@ onUnmounted(() => {
           <div class="accent-line"></div>
 
           <p class="paragraph">
-            Graduado de <strong class="bold-text">Psicología Organizacional en el Tecnológico de Monterrey</strong>, Juan Román Garza es el visionario detrás de <a href="https://www.powerhousebiotech.com/" target="_blank" class="gold-link">Powerhouse Biotech</a>. Ha dedicado su carrera a descifrar cómo interactúan el comportamiento humano, la tecnología de punta y las ciencias médicas.
+            Graduado de <strong class="bold-text">Psicología Organizacional en el Tecnológico de Monterrey</strong>, Juan Román Garza es el visionario detrás de <a href="https://www.powerhousebiotech.com/" target="_blank" class="cyan-link">Powerhouse Biotech</a>. Ha dedicado su carrera a descifrar cómo interactúan el comportamiento humano, la tecnología de punta y las ciencias médicas.
           </p>
 
           <p class="paragraph">
@@ -152,8 +152,8 @@ onUnmounted(() => {
 
 .section-tag {
   font-family: var(--font-principal); font-size: 0.9rem; font-weight: 700;
-  color: var(--accent-gold); letter-spacing: 0.2em; margin-bottom: 1.5rem; display: inline-block;
-  border: 1px solid rgba(212, 175, 55, 0.4); padding: 0.5rem 1.5rem; border-radius: 50px; text-transform: uppercase;
+  color: var(--color-cyan); letter-spacing: 0.2em; margin-bottom: 1.5rem; display: inline-block;
+  border: 1px solid rgba(56, 182, 255, 0.4); padding: 0.5rem 1.5rem; border-radius: 50px; text-transform: uppercase;
 }
 
 .about-title {
@@ -161,29 +161,29 @@ onUnmounted(() => {
   @media (max-width: 768px) { font-size: 2.5rem; }
 }
 
-.accent-line { width: 80px; height: 3px; background-color: var(--accent-gold); margin-bottom: 2.5rem; }
+.accent-line { width: 80px; height: 3px; background-color: var(--color-cyan); margin-bottom: 2.5rem; }
 .mx-auto { margin-left: auto; margin-right: auto; }
 
 .paragraph {
   font-size: 1.25rem; line-height: 1.8; color: var(--text-muted); margin-bottom: 2rem;
   strong { color: var(--text); font-weight: 700; }
-  .gold-link { color: var(--accent-gold); text-decoration: none; font-weight: 700; transition: color 0.3s ease; border-bottom: 1px dashed var(--accent-gold); }
-  .gold-link:hover { color: #fff; border-bottom-color: #fff; }
+  .cyan-link, .cyan-link:visited, .cyan-link:active { color: var(--color-cyan); text-decoration: none; font-weight: 700; transition: color 0.3s ease; border-bottom: 1px dashed var(--color-cyan); }
+  .cyan-link:hover { color: #fff; border-bottom-color: #fff; }
 }
 
 .legacy-quote {
-  border-left: 3px solid var(--accent-gold);
+  border-left: 3px solid var(--color-cyan);
   padding: 1.5rem 0 1.5rem 2.5rem; margin: 3rem 0;
   position: relative;
 
-  .quote-icon { position: absolute; top: -10px; left: 0px; font-size: 2.5rem; color: rgba(212, 175, 55, 0.2); }
+  .quote-icon { position: absolute; top: -10px; left: 0px; font-size: 2.5rem; color: rgba(56, 182, 255, 0.2); }
   p { font-style: italic; font-size: 1.4rem; line-height: 1.7; color: var(--text); font-weight: 300; }
 }
 
 .signature-block {
   margin-top: 2rem; display: flex; flex-direction: column; align-items: flex-start;
   .name { font-family: var(--font-principal); font-size: 1.8rem; font-weight: 700; color: var(--text); }
-  .role { font-size: 1rem; color: var(--accent-gold); font-weight: 600; text-transform: uppercase; letter-spacing: 0.15em; margin-top: 0.5rem; }
+  .role { font-size: 1rem; color: var(--color-cyan); font-weight: 600; text-transform: uppercase; letter-spacing: 0.15em; margin-top: 0.5rem; }
 }
 
 /* --- Bio Visuals (Awwwards Image Collage) --- */
@@ -223,7 +223,7 @@ onUnmounted(() => {
   z-index: 3;
   right: -5%;
   bottom: 5%;
-  border: 2px solid var(--accent-gold);
+  border: 2px solid var(--color-cyan);
 }
 
 .img-tertiary {
@@ -240,7 +240,7 @@ onUnmounted(() => {
   top: 15%; left: -10%;
   background: rgba(10, 10, 10, 0.95);
   backdrop-filter: blur(15px);
-  border: 1px solid rgba(212, 175, 55, 0.4);
+  border: 1px solid rgba(56, 182, 255, 0.4);
   padding: 1.5rem;
   border-radius: 50%;
   width: 140px; height: 140px;
@@ -250,9 +250,9 @@ onUnmounted(() => {
   justify-content: center;
   text-align: center;
   z-index: 4;
-  box-shadow: 0 20px 40px rgba(212, 175, 55, 0.2);
+  box-shadow: 0 20px 40px rgba(56, 182, 255, 0.2);
 
-  .exp-number { font-family: var(--font-principal); font-size: 2.5rem; font-weight: 800; color: var(--accent-gold); line-height: 1; }
+  .exp-number { font-family: var(--font-principal); font-size: 2.5rem; font-weight: 800; color: var(--color-cyan); line-height: 1; }
   .exp-text { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #fff; margin-top: 0.3rem; }
 }
 
@@ -297,7 +297,7 @@ onUnmounted(() => {
   &::before {
     content: '';
     position: absolute; top: 0; left: 0; width: 0%; height: 100%;
-    background: linear-gradient(90deg, rgba(212, 175, 55, 0.05) 0%, transparent 100%);
+    background: linear-gradient(90deg, rgba(56, 182, 255, 0.05) 0%, transparent 100%);
     transition: width 0.5s cubic-bezier(0.25, 1, 0.5, 1);
     z-index: 0;
   }
@@ -305,13 +305,13 @@ onUnmounted(() => {
   &:hover {
     padding-left: 3rem;
     padding-right: 1rem;
-    border-color: var(--accent-gold);
+    border-color: var(--color-cyan);
     
     &::before { width: 100%; }
     
-    .p-number { color: var(--accent-gold); transform: scale(1.1) translateX(10px); }
+    .p-number { color: var(--color-cyan); transform: scale(1.1) translateX(10px); }
     .p-title { color: #fff; letter-spacing: 0.1em; }
-    .p-arrow { opacity: 1; transform: translateX(0); color: var(--accent-gold); }
+    .p-arrow { opacity: 1; transform: translateX(0); color: var(--color-cyan); }
   }
   
   @media (max-width: 768px) {

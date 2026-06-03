@@ -25,14 +25,14 @@ const videoPoster = 'https://res.cloudinary.com/drw5sn8qw/image/upload/v17800951
 
 .video-subtitle {
   font-size: 1.8rem; font-weight: 700; color: var(--text); margin-bottom: 3rem; text-align: center; position: relative;
-  &::after { content: ''; position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); width: 40px; height: 2px; background-color: var(--accent-gold); }
+  &::after { content: ''; position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); width: 40px; height: 2px; background-color: var(--color-cyan); }
 }
 
 .video-container-wrapper { position: relative; border-radius: 20px; overflow: visible; margin-bottom: 2rem; }
 
 .video-glow {
   position: absolute; top: -15px; left: -15px; right: -15px; bottom: -15px;
-  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-gold) 100%);
+  background: linear-gradient(135deg, var(--accent) 0%, var(--color-cyan) 100%);
   filter: blur(20px); border-radius: 24px; opacity: 0.15; z-index: 1;
 }
 

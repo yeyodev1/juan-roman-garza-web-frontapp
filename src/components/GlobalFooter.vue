@@ -7,7 +7,7 @@
       <div class="footer-info">
         <p class="copyright">&copy; {{ new Date().getFullYear() }} Juan Román Garza. Todos los derechos reservados.</p>
         <p class="powerhouse-footer">
-          Fundador del proyecto <router-link to="/powerhouse" class="gold-link">Powerhouse Biotech</router-link>
+          Fundador del proyecto <router-link to="/powerhouse" class="cyan-link">Powerhouse Biotech</router-link>
         </p>
         <p class="creator-credit">
           Diseñado y desarrollado por <a href="https://yeyo.dev/" target="_blank" class="yeyo-link">yeyo.dev</a> desde Ecuador 🇪🇨
@@ -59,12 +59,12 @@
   color: var(--text);
   margin-bottom: 0.5rem;
 
-  .gold-link {
-    color: var(--accent-gold);
+  .cyan-link, .cyan-link:visited, .cyan-link:active {
+    color: var(--color-cyan);
     text-decoration: none;
     font-weight: 800;
     letter-spacing: 0.05em;
-    border-bottom: 1px dashed var(--accent-gold);
+    border-bottom: 1px dashed var(--color-cyan);
     transition: all 0.3s ease;
 
     &:hover {
@@ -79,7 +79,7 @@
   color: var(--text-muted);
   margin-top: 1rem;
 
-  .yeyo-link {
+  .yeyo-link, .yeyo-link:visited, .yeyo-link:active {
     color: var(--text);
     text-decoration: none;
     font-weight: 700;
@@ -87,8 +87,8 @@
     transition: all 0.3s ease;
 
     &:hover {
-      color: var(--accent-gold);
-      border-color: var(--accent-gold);
+      color: var(--color-cyan);
+      border-color: var(--color-cyan);
     }
   }
 }
@@ -110,11 +110,11 @@
 
   i {
     font-size: 1.2rem;
-    color: var(--accent-gold);
+    color: var(--color-cyan);
   }
 
   &:hover {
-    color: var(--accent-gold);
+    color: var(--color-cyan);
     transform: translateY(-2px);
   }
 }

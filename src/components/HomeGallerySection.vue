@@ -144,11 +144,11 @@ onUnmounted(() => {
   
   .section-tag {
     font-family: var(--font-principal); font-size: 0.9rem; font-weight: 700;
-    color: var(--accent-gold); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 1.5rem; display: inline-block;
-    border: 1px solid rgba(212, 175, 55, 0.4); padding: 0.5rem 1.5rem; border-radius: 50px;
+    color: var(--color-cyan); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 1.5rem; display: inline-block;
+    border: 1px solid rgba(56, 182, 255, 0.4); padding: 0.5rem 1.5rem; border-radius: 50px;
   }
   .section-title { font-size: 4rem; color: var(--text); margin-bottom: 1.5rem; font-weight: 800; text-transform: uppercase; line-height: 1.1; @media (max-width: 768px) { font-size: 2.5rem; } }
-  .accent-line { width: 80px; height: 3px; background-color: var(--accent-gold); }
+  .accent-line { width: 80px; height: 3px; background-color: var(--color-cyan); }
 }
 
 .horizontal-scroll-wrapper {
@@ -224,7 +224,7 @@ onUnmounted(() => {
   opacity: 0;
   width: 90%;
 
-  .item-cat { font-family: var(--font-principal); font-size: 0.9rem; font-weight: 800; color: var(--accent-gold); letter-spacing: 0.2em; display: block; margin-bottom: 0.5rem; text-transform: uppercase; }
+  .item-cat { font-family: var(--font-principal); font-size: 0.9rem; font-weight: 800; color: var(--color-cyan); letter-spacing: 0.2em; display: block; margin-bottom: 0.5rem; text-transform: uppercase; }
   .item-title { font-size: 2.5rem; font-weight: 800; color: #ffffff; text-transform: uppercase; line-height: 1.1; text-shadow: 0 10px 20px rgba(0,0,0,0.5); @media (max-width: 768px) { font-size: 1.8rem; } }
 }
 </style>

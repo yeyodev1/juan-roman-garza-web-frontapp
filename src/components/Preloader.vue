@@ -88,7 +88,7 @@ onMounted(() => {
 .preloader-container {
   position: fixed;
   top: 0; left: 0; width: 100vw; height: 100vh;
-  background-color: #050505; // Deep dark elite theme
+  background-color: var(--bg);
   z-index: 9999;
   display: flex;
   flex-direction: column;
@@ -144,9 +144,9 @@ onMounted(() => {
 
 .progress-bar-fill {
   height: 100%;
-  background-color: var(--accent-gold);
+  background-color: var(--color-cyan);
   transition: width 0.1s cubic-bezier(0.25, 0.8, 0.25, 1);
-  box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+  box-shadow: 0 0 10px rgba(56, 182, 255, 0.5);
 }
 
 .progress-footer {
@@ -168,7 +168,7 @@ onMounted(() => {
   font-family: var(--font-principal);
   font-size: 1rem;
   font-weight: 800;
-  color: var(--accent-gold);
+  color: var(--color-cyan);
   letter-spacing: 0.1em;
   font-variant-numeric: tabular-nums;
 }

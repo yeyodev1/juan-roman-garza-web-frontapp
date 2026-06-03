@@ -36,14 +36,14 @@ const forbesMockup = 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095
   border-radius: 16px; overflow: hidden; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
 
   .forbes-img { width: 100%; height: auto; display: block; }
-  .glow-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; box-shadow: inset 0 0 20px rgba(212, 175, 55, 0.35); pointer-events: none; }
+  .glow-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; box-shadow: inset 0 0 20px rgba(56, 182, 255, 0.35); pointer-events: none; }
 }
 
 .forbes-content {
   text-align: left;
 
   .feature-badge {
-    font-family: var(--font-principal); font-size: 0.75rem; font-weight: 700; color: var(--accent-gold);
+    font-family: var(--font-principal); font-size: 0.75rem; font-weight: 700; color: var(--color-cyan);
     letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 1rem; display: inline-flex; align-items: center; gap: 0.5rem;
   }
   .feature-title { font-size: 1.8rem; font-weight: 700; margin-bottom: 1rem; color: var(--text); }

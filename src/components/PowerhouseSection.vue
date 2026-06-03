@@ -120,7 +120,7 @@ onUnmounted(() => {
         <span class="ph-hero-tag">EL PROYECTO CUMBRE</span>
         <img :src="powerhouseLogo" alt="Powerhouse Biotech" class="ph-hero-logo" />
         <p class="ph-hero-subtitle">
-          La primera <strong class="gold-text">Health Decision Platform</strong> enfocada en Medicina Regenerativa.
+          La primera <strong class="text-cyan">Health Decision Platform</strong> enfocada en Medicina Regenerativa.
         </p>
       </div>
 
@@ -160,7 +160,7 @@ onUnmounted(() => {
         <div class="sticky-grid">
         <!-- Left: Sticky Titles -->
         <div class="sticky-sidebar">
-          <h2 class="sidebar-title">Ciencia al Servicio del <span class="gold-text">Rendimiento</span></h2>
+          <h2 class="sidebar-title">Ciencia al Servicio del <span class="text-cyan">Rendimiento</span></h2>
           <div class="anim-line"></div>
           <p class="sidebar-desc">Una plataforma integral diseñada exclusivamente para líderes de alto rendimiento, fundada y dirigida por Juan Román Garza.</p>
           
@@ -199,7 +199,7 @@ onUnmounted(() => {
 
 <style lang="scss" scoped>
 .powerhouse-layout {
-  background-color: #030303; // Ultra dark background for premium feel
+  background-color: var(--bg);
   color: var(--text);
   /* overflow: hidden; removed to fix sticky positioning */
   padding-bottom: 120px;
@@ -251,8 +251,8 @@ onUnmounted(() => {
   font-family: var(--font-principal);
   font-size: 0.9rem;
   font-weight: 700;
-  color: var(--accent-gold);
-  border: 1px solid rgba(212, 175, 55, 0.4);
+  color: var(--color-cyan);
+  border: 1px solid rgba(56, 182, 255, 0.4);
   padding: 0.6rem 2rem;
   border-radius: 50px;
   margin-bottom: 2rem;
@@ -279,7 +279,7 @@ onUnmounted(() => {
   line-height: 1.5;
   font-weight: 300;
   
-  .gold-text { color: var(--accent-gold); font-weight: 600; }
+  .text-cyan { color: var(--color-cyan); font-weight: 600; }
   
   @media (max-width: 768px) { font-size: 1.3rem; }
 }
@@ -298,14 +298,14 @@ onUnmounted(() => {
   .scroll-text {
     font-size: 0.7rem;
     letter-spacing: 0.3em;
-    color: var(--accent-gold);
+    color: var(--color-cyan);
     font-weight: 700;
   }
   
   .scroll-line {
     width: 1px;
     height: 60px;
-    background: linear-gradient(to bottom, var(--accent-gold) 0%, transparent 100%);
+    background: linear-gradient(to bottom, var(--color-cyan) 0%, transparent 100%);
     animation: scrollDrop 2s infinite ease-in-out;
   }
 }
@@ -323,7 +323,7 @@ onUnmounted(() => {
   display: flex;
   justify-content: center;
   padding: 6rem 0;
-  background: linear-gradient(to bottom, transparent, rgba(212, 175, 55, 0.03), transparent);
+  background: linear-gradient(to bottom, transparent, rgba(56, 182, 255, 0.03), transparent);
   border-top: 1px solid rgba(255, 255, 255, 0.05);
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
@@ -354,13 +354,13 @@ onUnmounted(() => {
   font-weight: 800;
   color: #fff;
   line-height: 1;
-  text-shadow: 0 10px 30px rgba(212, 175, 55, 0.2);
+  text-shadow: 0 10px 30px rgba(56, 182, 255, 0.2);
 }
 
 .stat-divider {
   width: 40px;
   height: 2px;
-  background-color: var(--accent-gold);
+  background-color: var(--color-cyan);
 }
 
 .stat-label {
@@ -410,7 +410,7 @@ onUnmounted(() => {
   text-transform: uppercase;
   line-height: 1.1;
   
-  .gold-text { color: var(--accent-gold); }
+  .text-cyan { color: var(--color-cyan); }
   @media (max-width: 768px) { font-size: 2.5rem; }
 }
 
@@ -418,7 +418,7 @@ onUnmounted(() => {
   width: 100%;
   max-width: 150px;
   height: 3px;
-  background-color: var(--accent-gold);
+  background-color: var(--color-cyan);
 }
 
 .sidebar-desc {
@@ -432,8 +432,8 @@ onUnmounted(() => {
   align-items: center;
   gap: 1rem;
   padding: 1.2rem 2.5rem;
-  border: 1px solid var(--accent-gold);
-  color: var(--accent-gold);
+  border: 1px solid var(--color-cyan);
+  color: var(--color-cyan);
   font-size: 1rem;
   font-weight: 700;
   letter-spacing: 0.1em;
@@ -443,9 +443,9 @@ onUnmounted(() => {
   margin-top: 1rem;
   
   &:hover {
-    background: var(--accent-gold);
+    background: var(--color-cyan);
     color: #030303;
-    box-shadow: 0 10px 30px rgba(212, 175, 55, 0.2);
+    box-shadow: 0 10px 30px rgba(56, 182, 255, 0.2);
     
     i { transform: translateX(5px); }
   }
@@ -486,8 +486,8 @@ onUnmounted(() => {
   &.highlight-quote {
     font-size: 1.6rem;
     font-style: italic;
-    color: var(--accent-gold);
-    border-left: 3px solid var(--accent-gold);
+    color: var(--color-cyan);
+    border-left: 3px solid var(--color-cyan);
     padding-left: 2rem;
     margin-top: 1rem;
   }

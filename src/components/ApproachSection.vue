@@ -88,8 +88,8 @@ onMounted(() => {
 
 .section-tag {
   font-family: var(--font-principal); font-size: 0.9rem; font-weight: 700;
-  color: var(--accent-gold); letter-spacing: 0.2em; margin-bottom: 1.5rem; display: inline-block;
-  border: 1px solid rgba(212, 175, 55, 0.4); padding: 0.5rem 1.5rem; border-radius: 50px;
+  color: var(--color-cyan); letter-spacing: 0.2em; margin-bottom: 1.5rem; display: inline-block;
+  border: 1px solid rgba(56, 182, 255, 0.4); padding: 0.5rem 1.5rem; border-radius: 50px;
 }
 
 .approach-title {
@@ -97,7 +97,7 @@ onMounted(() => {
   @media (max-width: 768px) { font-size: 2.2rem; }
 }
 
-.accent-line { width: 60px; height: 3px; background-color: var(--accent-gold); margin: 0 auto 2.5rem; }
+.accent-line { width: 60px; height: 3px; background-color: var(--color-cyan); margin: 0 auto 2.5rem; }
 
 .approach-grid {
   display: grid;
@@ -117,18 +117,18 @@ onMounted(() => {
 .protocol-card {
   background: rgba(15, 15, 15, 0.6); 
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(212, 175, 55, 0.3); border-left: 4px solid var(--accent-gold);
+  border: 1px solid rgba(56, 182, 255, 0.3); border-left: 4px solid var(--color-cyan);
   padding: 2.5rem; border-radius: 16px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
 
   .protocol-header {
     display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;
-    .protocol-icon { font-size: 1.8rem; color: var(--accent-gold); }
+    .protocol-icon { font-size: 1.8rem; color: var(--color-cyan); }
     h3 { font-size: 1.4rem; font-weight: 800; color: var(--text); }
   }
 
   .protocol-text {
     font-size: 1.05rem; line-height: 1.6; color: var(--text-muted);
-    .highlight-gold { color: var(--accent-gold); font-weight: 600; }
+    .highlight-gold { color: var(--color-cyan); font-weight: 600; }
   }
 }
 
@@ -140,7 +140,7 @@ onMounted(() => {
 .app-subtitle {
   font-size: 1.6rem; font-weight: 800; margin-bottom: 3rem; color: var(--text); text-align: center;
   position: relative; text-transform: uppercase; letter-spacing: 0.05em;
-  &::after { content: ''; position: absolute; bottom: -15px; left: 50%; transform: translateX(-50%); width: 50px; height: 3px; background-color: var(--accent-gold); }
+  &::after { content: ''; position: absolute; bottom: -15px; left: 50%; transform: translateX(-50%); width: 50px; height: 3px; background-color: var(--color-cyan); }
 }
 
 .apps-list { display: flex; flex-direction: column; gap: 2.5rem; }
@@ -149,11 +149,11 @@ onMounted(() => {
   display: flex; gap: 1.5rem; align-items: flex-start;
 
   .app-icon-box {
-    width: 55px; height: 55px; border-radius: 12px; background: rgba(212, 175, 55, 0.1); color: var(--accent-gold);
+    width: 55px; height: 55px; border-radius: 12px; background: rgba(56, 182, 255, 0.1); color: var(--color-cyan);
     display: flex; align-items: center; justify-content: center; font-size: 1.5rem; flex-shrink: 0; transition: all 0.3s ease;
   }
 
-  &:hover .app-icon-box { background: var(--accent-gold); color: #000; transform: scale(1.1); }
+  &:hover .app-icon-box { background: var(--color-cyan); color: #000; transform: scale(1.1); }
 
   .app-details {
     h4 { font-size: 1.15rem; font-weight: 800; margin-bottom: 0.5rem; color: var(--text); }

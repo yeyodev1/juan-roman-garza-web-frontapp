@@ -74,8 +74,8 @@ onMounted(() => {
 
 .section-tag {
   font-family: var(--font-principal); font-size: 0.9rem; font-weight: 700;
-  color: var(--accent-gold); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 1.5rem; display: inline-block;
-  border: 1px solid rgba(212, 175, 55, 0.4); padding: 0.5rem 1.5rem; border-radius: 50px;
+  color: var(--color-cyan); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 1.5rem; display: inline-block;
+  border: 1px solid rgba(56, 182, 255, 0.4); padding: 0.5rem 1.5rem; border-radius: 50px;
 }
 
 .contact-title {
@@ -83,7 +83,7 @@ onMounted(() => {
   @media (max-width: 768px) { font-size: 2.2rem; }
 }
 
-.accent-bar { width: 60px; height: 3px; background-color: var(--accent-gold); margin-bottom: 2.5rem; }
+.accent-bar { width: 60px; height: 3px; background-color: var(--color-cyan); margin-bottom: 2.5rem; }
 .contact-subtitle { font-size: 1.25rem; line-height: 1.8; color: var(--text-muted); margin-bottom: 3.5rem; }
 
 .locations-group { margin-bottom: 4rem; }
@@ -92,7 +92,7 @@ onMounted(() => {
 .location-item {
   display: flex; gap: 1.5rem; align-items: flex-start; margin-bottom: 2.5rem;
   .icon-box { 
-    width: 50px; height: 50px; border-radius: 12px; background: rgba(212, 175, 55, 0.1); color: var(--accent-gold);
+    width: 50px; height: 50px; border-radius: 12px; background: rgba(56, 182, 255, 0.1); color: var(--color-cyan);
     display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0;
   }
   .location-text {
@@ -123,12 +123,12 @@ onMounted(() => {
     font-size: 1rem;
     color: var(--text);
     
-    .gold-link {
-      color: var(--accent-gold);
+    .cyan-link {
+      color: var(--color-cyan);
       text-decoration: none;
       font-weight: 800;
       letter-spacing: 0.05em;
-      border-bottom: 1px dashed var(--accent-gold);
+      border-bottom: 1px dashed var(--color-cyan);
       transition: all 0.3s ease;
       
       &:hover { color: #fff; border-color: #fff; }

@@ -2,33 +2,25 @@
 @use './fonts.module.scss' as *;
 
 :root {
-  // Theme Light (Default but customizable)
-  --bg: #ffffff;
-  --bg-offset: #f4f4f5;
-  --text: #09090b;
-  --text-muted: #71717a;
-  --border: rgba(9, 9, 11, 0.08);
-  --accent: #e4e4e7; // pastel gray
-  --accent-gold: #e5d5b5; // pastel beige/gold
-  --accent-gold-rgb: 229, 213, 181;
-  --card-bg: #ffffff;
-  --header-bg: rgba(255, 255, 255, 0.8);
+  // Theme Light (Unified Single Version)
+  --bg: #243261;
+  --bg-offset: #1a254a; // slightly darker blue
+  --text: #ffffff;
+  --text-muted: #9ba6cc;
+  --border: rgba(255, 255, 255, 0.1);
+  --accent: #38b6ff; // Cyan is now predominant
+  --color-cyan: #38b6ff;
+  --color-cyan-rgb: 56, 182, 255;
+  --color-darkblue: #243261;
+  --color-darkblue-rgb: 36, 50, 97;
+  --card-bg: #1e2a52;
+  --header-bg: rgba(36, 50, 97, 0.85);
   --font-principal: 'Poppins', sans-serif;
   --font-secondary: 'Poppins', sans-serif;
 }
 
-[data-theme='dark'] {
-  --bg: #050505; // deep black instead of blue
-  --bg-offset: #0e0e0e; // dark grey
-  --text: #fafafa;
-  --text-muted: #a1a1aa;
-  --border: rgba(250, 250, 250, 0.1);
-  --accent: #27272a; // dark pastel gray
-  --accent-gold: #e5d5b5; // pastel beige/gold
-  --accent-gold-rgb: 229, 213, 181;
-  --card-bg: #0a0a0a; // slightly lighter black
-  --header-bg: rgba(5, 5, 5, 0.85);
-}
+// Remove dark theme completely to enforce a single version
+
 
 // Force a default elegant dark layout matching the premium health/biotech look (blue, gold, black, white)
 html {
@@ -62,11 +54,11 @@ h1, h2, h3, h4, h5, h6 {
   background: var(--bg);
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--accent-gold);
+  background: var(--color-darkblue);
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: lighten(#D4AF37, 10%);
+  background: var(--color-cyan);
 }
 
 // Helper utility classes
@@ -80,11 +72,15 @@ h1, h2, h3, h4, h5, h6 {
   align-items: center; // Center children by default to prevent left alignment
 }
 
-.text-gold {
-  color: var(--accent-gold);
-  background: linear-gradient(135deg, var(--accent-gold) 0%, #f3e5ab 100%);
+.text-cyan {
+  color: var(--color-cyan);
+  background: linear-gradient(135deg, var(--color-cyan) 0%, #70c9ff 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+.text-darkblue {
+  color: var(--color-darkblue);
 }
 
 .section-padding {

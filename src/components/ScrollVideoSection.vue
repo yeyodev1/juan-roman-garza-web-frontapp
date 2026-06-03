@@ -127,7 +127,7 @@ onUnmounted(() => {
 .dark-overlay {
   position: absolute;
   top: 0; left: 0; width: 100%; height: 100%;
-  background-color: #000000;
+  background-color: var(--bg);
   z-index: 2;
   pointer-events: none;
 }
@@ -149,7 +149,7 @@ onUnmounted(() => {
     font-family: var(--font-principal);
     font-size: 0.8rem;
     font-weight: 700;
-    color: var(--accent-gold);
+    color: var(--color-cyan);
     letter-spacing: 0.2em;
     margin-bottom: 1rem;
   }

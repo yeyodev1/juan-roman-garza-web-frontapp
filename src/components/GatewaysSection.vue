@@ -106,14 +106,14 @@ onUnmounted(() => {
   
   .section-tag {
     font-family: var(--font-principal); font-size: 0.85rem; font-weight: 700;
-    color: var(--accent-gold); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 1.5rem; display: inline-block;
-    border: 1px solid rgba(212, 175, 55, 0.4); padding: 0.5rem 1.5rem; border-radius: 50px;
+    color: var(--color-cyan); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 1.5rem; display: inline-block;
+    border: 1px solid rgba(56, 182, 255, 0.4); padding: 0.5rem 1.5rem; border-radius: 50px;
   }
   .section-title { 
     font-size: 4rem; color: var(--text); margin-bottom: 1.5rem; font-weight: 800; text-transform: uppercase; 
     @media (max-width: 768px) { font-size: 2.5rem; } 
   }
-  .accent-line { width: 80px; height: 3px; background-color: var(--accent-gold); margin: 0 auto; }
+  .accent-line { width: 80px; height: 3px; background-color: var(--color-cyan); margin: 0 auto; }
 }
 
 /* --- Expanding Accordion Grid --- */
@@ -137,13 +137,13 @@ onUnmounted(() => {
   overflow: hidden;
   cursor: pointer;
   transition: flex 0.7s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.5s ease;
-  background-color: #050505;
+  background-color: var(--bg);
   box-shadow: 0 10px 30px rgba(0,0,0,0.3);
   
   &:hover {
     flex: 3;
     box-shadow: 0 30px 60px rgba(0,0,0,0.6);
-    border: 1px solid rgba(212, 175, 55, 0.3);
+    border: 1px solid rgba(56, 182, 255, 0.3);
     
     .gate-bg-img {
       transform: scale(1.05);
@@ -162,13 +162,13 @@ onUnmounted(() => {
     }
     
     .gate-num {
-      color: var(--accent-gold);
+      color: var(--color-cyan);
     }
     
     .gate-arrow {
       opacity: 1;
       transform: scale(1) rotate(-45deg);
-      background-color: var(--accent-gold);
+      background-color: var(--color-cyan);
       color: #000;
     }
     
@@ -245,7 +245,7 @@ onUnmounted(() => {
 
 .gate-label { 
   font-size: 1.1rem; 
-  color: var(--accent-gold); 
+  color: var(--color-cyan); 
   font-weight: 600; 
   text-transform: uppercase;
   letter-spacing: 0.1em;

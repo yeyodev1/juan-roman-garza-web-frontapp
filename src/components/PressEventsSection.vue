@@ -35,10 +35,10 @@ onMounted(() => {
   
   .section-tag {
     font-family: var(--font-principal); font-size: 0.9rem; font-weight: 700;
-    color: var(--accent-gold); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 1.5rem; display: inline-block;
-    border: 1px solid rgba(212, 175, 55, 0.4); padding: 0.5rem 1.5rem; border-radius: 50px;
+    color: var(--color-cyan); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 1.5rem; display: inline-block;
+    border: 1px solid rgba(56, 182, 255, 0.4); padding: 0.5rem 1.5rem; border-radius: 50px;
   }
   .section-title { font-size: 3.5rem; color: var(--text); margin-bottom: 1.5rem; font-weight: 800; text-transform: uppercase; line-height: 1.1; @media (max-width: 768px) { font-size: 2.2rem; } }
-  .accent-line { width: 60px; height: 3px; background-color: var(--accent-gold); margin: 0 auto; }
+  .accent-line { width: 60px; height: 3px; background-color: var(--color-cyan); margin: 0 auto; }
 }
 </style>

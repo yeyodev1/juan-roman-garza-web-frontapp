@@ -79,7 +79,7 @@ onUnmounted(() => {
         
         <h1 class="hero-title">
           <div class="line-wrapper"><span class="line">LONGEVIDAD</span></div>
-          <div class="line-wrapper"><span class="line text-cyan">REGENERATIVA</span></div>
+          <div class="line-wrapper"><span class="line text-white">REGENERATIVA</span></div>
         </h1>
         
         <div class="subtitle-block">El Nuevo Activo Estratégico</div>
@@ -179,7 +179,7 @@ onUnmounted(() => {
   font-size: 0.9rem;
   font-weight: 700;
   letter-spacing: 0.25em;
-  color: var(--accent-gold);
+  color: var(--color-cyan);
   margin-bottom: 2.5rem;
   padding: 0.6rem 1.5rem;
   border: 1px solid rgba(229, 213, 181, 0.4);
@@ -274,8 +274,8 @@ onUnmounted(() => {
 }
 
 .btn-primary {
-  background: var(--text);
-  color: var(--bg);
+  background: var(--color-cyan);
+  color: #ffffff;
   border: none;
   padding: 1.2rem 2.5rem;
   border-radius: 50px;
@@ -287,13 +287,13 @@ onUnmounted(() => {
   justify-content: center;
   gap: 0.75rem;
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 10px 25px rgba(56, 182, 255, 0.4);
 
   &:hover {
     transform: translateY(-3px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
-    background: var(--accent-gold);
-    color: #111;
+    box-shadow: 0 15px 35px rgba(56, 182, 255, 0.6);
+    background: var(--color-darkblue);
+    color: #ffffff;
   }
 }
 

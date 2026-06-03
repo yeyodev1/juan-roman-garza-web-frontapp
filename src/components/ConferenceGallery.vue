@@ -45,7 +45,7 @@ const selectedImage = ref<string | null>(null);
 <style lang="scss" scoped>
 .gallery-subtitle {
   font-size: 1.8rem; font-weight: 700; color: var(--text); margin-bottom: 3rem; text-align: center; position: relative;
-  &::after { content: ''; position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); width: 40px; height: 2px; background-color: var(--accent-gold); }
+  &::after { content: ''; position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); width: 40px; height: 2px; background-color: var(--color-cyan); }
 }
 
 .gallery-wrapper { margin-bottom: 8rem; padding: 0 1.5rem; @media (max-width: 768px) { margin-bottom: 6rem; } }
@@ -61,7 +61,7 @@ const selectedImage = ref<string | null>(null);
   cursor: pointer; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.03); transition: all 0.3s ease;
 
   &:hover {
-    transform: translateY(-5px); border-color: var(--accent-gold);
+    transform: translateY(-5px); border-color: var(--color-cyan);
     .gallery-img { transform: scale(1.04); }
     .card-hover-overlay { opacity: 1; }
   }
@@ -77,7 +77,7 @@ const selectedImage = ref<string | null>(null);
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem;
   opacity: 0; transition: opacity 0.3s ease;
 
-  .zoom-icon { font-size: 1.8rem; color: var(--accent-gold); }
+  .zoom-icon { font-size: 1.8rem; color: var(--color-cyan); }
   .view-tag { color: #ffffff; font-family: var(--font-principal); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.05em; }
 }
 
@@ -95,7 +95,7 @@ const selectedImage = ref<string | null>(null);
   .close-lightbox {
     position: absolute; top: 25px; right: 35px; background: none; border: none; color: #ffffff;
     font-size: 3rem; cursor: pointer; transition: color 0.3s ease;
-    &:hover { color: var(--accent-gold); }
+    &:hover { color: var(--color-cyan); }
   }
   .lightbox-img { max-width: 90%; max-height: 85%; border-radius: 12px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5); }
 }

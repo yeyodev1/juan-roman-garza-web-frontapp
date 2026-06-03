@@ -42,7 +42,7 @@ onMounted(() => {
     <div class="container">
       <div class="section-header">
         <span class="section-tag">NUESTRO ECOSISTEMA</span>
-        <h2 class="section-title">Ciencia Médica y <a href="https://www.powerhousebiotech.com/" target="_blank" class="gold-link">Powerhouse Biotech</a></h2>
+        <h2 class="section-title">Ciencia Médica y <a href="https://www.powerhousebiotech.com/" target="_blank" class="cyan-link">Powerhouse Biotech</a></h2>
         <div class="accent-line"></div>
         <p class="section-subtitle">
           El puente que conecta más de dos décadas de investigación biomédica de vanguardia con plataformas de salud digitales personalizadas, liderado por el proyecto insignia <strong>Powerhouse Biotech</strong>.
@@ -69,16 +69,16 @@ onMounted(() => {
 
   .section-tag {
     font-family: var(--font-principal); font-size: 0.9rem; font-weight: 700;
-    color: var(--accent-gold); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 1.5rem; display: inline-block;
-    border: 1px solid rgba(212, 175, 55, 0.4); padding: 0.5rem 1.5rem; border-radius: 50px;
+    color: var(--color-cyan); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 1.5rem; display: inline-block;
+    border: 1px solid rgba(56, 182, 255, 0.4); padding: 0.5rem 1.5rem; border-radius: 50px;
   }
   .section-title { 
     font-size: 3.5rem; color: var(--text); margin-bottom: 1.5rem; font-weight: 800; text-transform: uppercase; line-height: 1.1;
     @media (max-width: 768px) { font-size: 2.2rem; } 
-    .gold-link { color: var(--accent-gold); text-decoration: none; border-bottom: 2px dashed var(--accent-gold); transition: all 0.3s ease; }
-    .gold-link:hover { color: #fff; border-color: #fff; }
+    .cyan-link, .cyan-link:visited, .cyan-link:active { color: var(--color-cyan); text-decoration: none; border-bottom: 2px dashed var(--color-cyan); transition: all 0.3s ease; }
+    .cyan-link:hover { color: #fff; border-color: #fff; }
   }
-  .accent-line { width: 60px; height: 3px; background-color: var(--accent-gold); margin: 0 auto 2.5rem; }
+  .accent-line { width: 60px; height: 3px; background-color: var(--color-cyan); margin: 0 auto 2.5rem; }
   .section-subtitle { font-size: 1.25rem; color: var(--text-muted); line-height: 1.8; }
 }
 
