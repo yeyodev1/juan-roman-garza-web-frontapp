@@ -122,7 +122,7 @@ onUnmounted(() => {
         
         <h1 class="hero-title">
           <div class="line-wrapper"><span class="line">LONGEVIDAD</span></div>
-          <div class="line-wrapper"><span class="line text-gold">REGENERATIVA</span></div>
+          <div class="line-wrapper"><span class="line text-cyan">REGENERATIVA</span></div>
         </h1>
         
         <div class="subtitle-block">El Nuevo Activo Estratégico</div>
@@ -140,7 +140,6 @@ onUnmounted(() => {
           </button>
         </div>
       </div>
-
       <!-- Massive Interactive Forbes Card -->
       <div class="credibility-badge" ref="forbesCard">
         <div class="badge-content">
@@ -256,10 +255,10 @@ onUnmounted(() => {
     transform-origin: bottom center;
   }
 
-  .text-gold {
+  .text-cyan {
     color: transparent;
-    -webkit-text-stroke: 1px rgba(229, 213, 181, 0.8);
-    background: linear-gradient(135deg, var(--accent-gold) 0%, #b89528 100%);
+    -webkit-text-stroke: 1px rgba(56, 182, 255, 0.5);
+    background: linear-gradient(135deg, #38b6ff 0%, #007bb5 100%);
     -webkit-background-clip: text;
     background-clip: text;
   }
@@ -313,22 +312,22 @@ onUnmounted(() => {
 /* Massive Interactive Forbes Card */
 .credibility-badge {
   position: absolute;
-  bottom: 8%;
+  bottom: 5%;
   right: 5%;
-  width: 280px; // massive scale
+  width: 220px; /* Reduced scale to prevent overlapping */
   border-radius: 16px;
   transform-style: preserve-3d;
   cursor: pointer;
   z-index: 10;
-  box-shadow: 0 40px 80px rgba(0,0,0,0.6);
-  border: 1px solid rgba(212, 175, 55, 0.4);
-  transform: perspective(1000px) rotateY(-5deg) rotateX(-5deg); // default 3D tilt
+  box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+  border: 1px solid rgba(255, 255, 255, 0.3); /* Silver styling instead of gold */
+  transform: perspective(1000px) rotateY(-5deg) rotateX(-5deg);
 
-  @media (max-width: 1400px) { width: 240px; right: 3%; }
-  @media (max-width: 992px) {
+  @media (max-width: 1400px) { width: 180px; right: 3%; }
+  @media (max-width: 1200px) {
     position: relative;
     bottom: auto; right: auto;
-    margin-top: 6rem;
+    margin-top: 4rem;
     transform: none;
   }
 

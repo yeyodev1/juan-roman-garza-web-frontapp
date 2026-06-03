@@ -75,11 +75,12 @@ function updateMeta(meta: SeoMeta) {
   document.title = meta.title
 
   const setMetaContent = (selector: string, content: string, property = false) => {
-    let el = document.querySelector(selector) as HTMLMetaElement | null
+    const querySelectorStr = property ? `meta[property="${selector}"]` : `meta[name="${selector}"]`
+    let el = document.querySelector(querySelectorStr) as HTMLMetaElement | null
     if (!el) {
       el = document.createElement('meta')
       if (property) {
-        el.setAttribute('property', selector.split(':')[1] || selector)
+        el.setAttribute('property', selector)
       } else {
         el.setAttribute('name', selector)
       }

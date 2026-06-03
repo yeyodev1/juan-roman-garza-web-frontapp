@@ -119,8 +119,8 @@ onUnmounted(() => {
       
       <div class="ph-hero-content text-center">
         <span class="ph-hero-tag">EL PROYECTO CUMBRE</span>
-        <h1 class="ph-hero-title">
-          <span v-for="(char, index) in splitTitle" :key="index" class="char" v-html="char === ' ' ? '&nbsp;' : char"></span>
+        <h1 class="ph-hero-title" style="white-space: pre-wrap; text-align: center;">
+          <span v-for="(char, index) in splitTitle" :key="index" :class="char === ' ' ? '' : 'char'">{{ char }}</span>
         </h1>
         <p class="ph-hero-subtitle">
           La primera <strong class="gold-text">Health Decision Platform</strong> enfocada en Medicina Regenerativa.
@@ -158,8 +158,9 @@ onUnmounted(() => {
     </section>
 
     <!-- Sticky Narrative Layout -->
-    <section class="ph-narrative-section container">
-      <div class="sticky-grid">
+    <section class="ph-narrative-section">
+      <div class="container">
+        <div class="sticky-grid">
         <!-- Left: Sticky Titles -->
         <div class="sticky-sidebar">
           <h2 class="sidebar-title">Ciencia al Servicio del <span class="gold-text">Rendimiento</span></h2>
@@ -202,19 +203,20 @@ onUnmounted(() => {
 .powerhouse-layout {
   background-color: #030303; // Ultra dark background for premium feel
   color: var(--text);
-  overflow: hidden;
+  /* overflow: hidden; removed to fix sticky positioning */
   padding-bottom: 120px;
 }
 
 /* --- Hero Section --- */
 .ph-hero {
   position: relative;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  padding-top: 100px; /* Space for the fixed header */
 }
 
 .ph-hero-bg {
@@ -375,13 +377,14 @@ onUnmounted(() => {
 
 /* --- Sticky Narrative Section --- */
 .ph-narrative-section {
-  padding: 10rem 1.5rem;
+  padding: 6rem 1.5rem;
 }
 
 .sticky-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 6rem;
+  width: 100%;
   
   @media (max-width: 992px) {
     grid-template-columns: 1fr;
