@@ -9,8 +9,7 @@ gsap.registerPlugin(ScrollTrigger);
 const heroVideo = 'https://res.cloudinary.com/drw5sn8qw/video/upload/v1780095169/assets-juan/WhatsApp_Video_2026-05-29_at_12_43_38_PM.mp4';
 const imageAuditorium = 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095166/assets-juan/c875b275-008f-42eb-8828-799b8d573ae1.jpg';
 const imagePresentation = 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095164/assets-juan/65feeba0-0dce-4cff-b63d-eb15952be89c.jpg';
-
-const splitTitle = "Powerhouse Biotech".split('');
+import powerhouseLogo from '@/assets/partners/powerhouse-logo.png';
 
 onMounted(() => {
   const tl = gsap.timeline();
@@ -24,10 +23,10 @@ onMounted(() => {
     { opacity: 0, y: 30, letterSpacing: '0em' }, 
     { opacity: 1, y: 0, letterSpacing: '0.3em', duration: 1.5, ease: 'power3.out' }, '-=1.5'
   )
-  // 2. Title Character Reveal (Staggered)
-  .fromTo('.char', 
-    { opacity: 0, y: 50, rotateX: -90 }, 
-    { opacity: 1, y: 0, rotateX: 0, duration: 1, stagger: 0.05, ease: 'back.out(1.5)' }, '-=1.2'
+  // 2. Title Logo Reveal
+  .fromTo('.ph-hero-logo', 
+    { opacity: 0, y: 50, scale: 0.9 }, 
+    { opacity: 1, y: 0, scale: 1, duration: 1.2, ease: 'back.out(1.5)' }, '-=1.2'
   )
   // 3. Subtitle Reveal
   .fromTo('.ph-hero-subtitle', 
@@ -119,9 +118,7 @@ onUnmounted(() => {
       
       <div class="ph-hero-content text-center">
         <span class="ph-hero-tag">EL PROYECTO CUMBRE</span>
-        <h1 class="ph-hero-title" style="white-space: pre-wrap; text-align: center;">
-          <span v-for="(char, index) in splitTitle" :key="index" :class="char === ' ' ? '' : 'char'">{{ char }}</span>
-        </h1>
+        <img :src="powerhouseLogo" alt="Powerhouse Biotech" class="ph-hero-logo" />
         <p class="ph-hero-subtitle">
           La primera <strong class="gold-text">Health Decision Platform</strong> enfocada en Medicina Regenerativa.
         </p>
@@ -194,6 +191,7 @@ onUnmounted(() => {
 
         </div>
       </div>
+      </div>
     </section>
 
   </div>
@@ -263,21 +261,16 @@ onUnmounted(() => {
   backdrop-filter: blur(5px);
 }
 
-.ph-hero-title {
-  font-size: 6vw;
-  font-weight: 800;
-  color: #fff;
-  text-transform: uppercase;
-  line-height: 1;
+.ph-hero-logo {
+  width: 100%;
+  max-width: 900px;
+  height: auto;
   margin-bottom: 2rem;
-  perspective: 1000px;
+  filter: drop-shadow(0 15px 25px rgba(0,0,0,0.6));
   
-  @media (max-width: 768px) { font-size: 10vw; }
-}
-
-.char {
-  display: inline-block;
-  transform-style: preserve-3d;
+  @media (max-width: 768px) {
+    max-width: 85%;
+  }
 }
 
 .ph-hero-subtitle {
@@ -326,6 +319,9 @@ onUnmounted(() => {
 
 /* --- Stats Section --- */
 .ph-stats-section {
+  width: 100%;
+  display: flex;
+  justify-content: center;
   padding: 6rem 0;
   background: linear-gradient(to bottom, transparent, rgba(212, 175, 55, 0.03), transparent);
   border-top: 1px solid rgba(255, 255, 255, 0.05);
@@ -336,6 +332,7 @@ onUnmounted(() => {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 2rem;
+  width: 100%;
   
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
@@ -377,6 +374,9 @@ onUnmounted(() => {
 
 /* --- Sticky Narrative Section --- */
 .ph-narrative-section {
+  width: 100%;
+  display: flex;
+  justify-content: center;
   padding: 6rem 1.5rem;
 }
 

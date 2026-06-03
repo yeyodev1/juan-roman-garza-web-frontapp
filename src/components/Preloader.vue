@@ -67,8 +67,7 @@ onMounted(() => {
     <div class="loader-content">
       
       <div class="loader-text-wrapper">
-        <span class="loader-text monogram">JRG</span>
-        <span class="loader-text name">JUAN ROMÁN GARZA</span>
+        <img src="@/assets/logo/logo.PNG" alt="Juan Román Garza Logo" class="preloader-logo" />
       </div>
       
       <div class="loader-progress-wrapper">
@@ -113,25 +112,17 @@ onMounted(() => {
   gap: 1rem;
 }
 
-.loader-text {
-  font-family: var(--font-principal);
-  font-weight: 800;
-  text-transform: uppercase;
+.preloader-logo {
+  height: 60px;
+  width: auto;
+  object-fit: contain;
+  animation: pulseLogo 2.5s infinite ease-in-out;
 }
 
-.monogram {
-  font-size: 3rem;
-  letter-spacing: 0.1em;
-  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-gold) 100%);
-  color: transparent;
-  -webkit-background-clip: text;
-  background-clip: text;
-}
-
-.name {
-  font-size: 1.2rem;
-  color: rgba(255, 255, 255, 0.4);
-  letter-spacing: 0.3em;
+@keyframes pulseLogo {
+  0% { transform: scale(1); filter: brightness(1) drop-shadow(0 0 0 rgba(255,255,255,0)); }
+  50% { transform: scale(1.05); filter: brightness(1.1) drop-shadow(0 0 15px rgba(255,255,255,0.2)); }
+  100% { transform: scale(1); filter: brightness(1) drop-shadow(0 0 0 rgba(255,255,255,0)); }
 }
 
 .loader-progress-wrapper {

@@ -31,8 +31,7 @@ function handleLinkClick() {
   <header class="nav-header">
     <div class="nav-container">
       <RouterLink to="/" class="brand" @click="handleLinkClick">
-        <span class="monogram">JRG</span>
-        <span class="full-name">JUAN ROMÁN GARZA</span>
+        <img src="@/assets/logo/logo.PNG" alt="Juan Román Garza Logo" class="brand-logo" />
       </RouterLink>
 
       <div class="right-controls">
@@ -120,30 +119,18 @@ function handleLinkClick() {
   z-index: 1002;
   transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 
-  .monogram {
-    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-gold) 100%);
-    color: #fefefe;
-    padding: 0.35rem 0.65rem;
-    border-radius: 4px;
-    font-size: 0.9rem;
-    font-weight: 800;
-    transition: box-shadow 0.3s ease;
-  }
-
-  .full-name {
-    font-size: 1.05rem;
-    transition: color 0.3s ease;
+  .brand-logo {
+    height: 40px;
+    width: auto;
+    object-fit: contain;
+    transition: transform 0.3s ease, filter 0.3s ease;
   }
 
   &:hover {
-    transform: scale(1.05);
+    transform: scale(1.02);
 
-    .monogram {
-      box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
-    }
-
-    .full-name {
-      color: var(--accent-gold);
+    .brand-logo {
+      filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.2));
     }
   }
 }
