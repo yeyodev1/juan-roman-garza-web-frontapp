@@ -15,17 +15,6 @@ const features = [
   { name: 'The Chicago Gazette', title: 'La Nueva Era de la Medicina: Terapias Celulares y Liderazgo Integral', url: 'https://www.thechicagogazette.com/roman-garza-the-regenerative-entrepreneur-pioneering-regenerative-healthcare-with-a-hearfelt-vision/', icon: 'https://www.thechicagogazette.com/wp-content/uploads/2021/11/cropped-Copy-of-The-New-York-City-Times-2-180x180.png' }
 ];
 
-const revistas = [
-  {
-    title: 'Células Madre - La Nueva Frontera de la Salud',
-    file: '/src/assets/revistas/Células Madre - La Nueva Frontera de la Salud (ESPAÑOL).pdf'
-  },
-  {
-    title: 'Revista Edad Cronológica y Edad Biológica',
-    file: '/src/assets/revistas/REVISTA EDAD CRONOLÓGICA Y EDAD BIOLÓGICA.pdf'
-  }
-];
-
 onMounted(() => {
   gsap.fromTo('.section-header', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 1, ease: 'power3.out' });
 });
@@ -42,27 +31,6 @@ onMounted(() => {
 
       <!-- Forbes Highlight First -->
       <ForbesHighlight />
-
-      <!-- Revistas Section -->
-      <div class="magazines-section">
-        <h3 class="subsection-title">Publicaciones y Revistas</h3>
-        <div class="magazines-grid">
-          <a v-for="(revista, idx) in revistas" :key="idx" :href="revista.file" target="_blank" class="magazine-card">
-            <div class="magazine-icon-wrapper">
-              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                <polyline points="14 2 14 8 20 8"></polyline>
-                <path d="M12 18v-6"></path>
-                <path d="M9 15l3 3 3-3"></path>
-              </svg>
-            </div>
-            <div class="magazine-info">
-              <h4>{{ revista.title }}</h4>
-              <span class="view-pdf-btn">Descargar / Ver PDF</span>
-            </div>
-          </a>
-        </div>
-      </div>
 
       <!-- Marquee Section -->
       <div class="featured-marquee-section">
@@ -150,70 +118,6 @@ onMounted(() => {
   @media (max-width: 768px) {
     font-size: 1.5rem;
   }
-}
-
-/* Magazines Section */
-.magazines-section {
-  margin-bottom: 5rem;
-}
-.magazines-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
-  max-width: 900px;
-  margin: 0 auto;
-}
-.magazine-card {
-  display: flex;
-  align-items: center;
-  background: var(--bg-offset);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 1.5rem;
-  text-decoration: none;
-  transition: all 0.3s ease;
-  
-  &:hover {
-    transform: translateY(-5px);
-    border-color: var(--color-cyan);
-    box-shadow: 0 10px 30px rgba(56, 182, 255, 0.1);
-    
-    .magazine-icon-wrapper {
-      background: var(--color-cyan);
-      color: var(--bg);
-    }
-  }
-}
-.magazine-icon-wrapper {
-  width: 60px;
-  height: 60px;
-  border-radius: 12px;
-  background: rgba(56, 182, 255, 0.1);
-  color: var(--color-cyan);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 1.5rem;
-  flex-shrink: 0;
-  transition: all 0.3s ease;
-}
-.magazine-info {
-  display: flex;
-  flex-direction: column;
-  
-  h4 {
-    font-family: var(--font-secondary);
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: var(--text);
-    margin-bottom: 0.5rem;
-    line-height: 1.3;
-  }
-}
-.view-pdf-btn {
-  font-size: 0.9rem;
-  color: var(--color-cyan);
-  font-weight: 600;
 }
 
 /* Marquee Section */
@@ -331,8 +235,16 @@ onMounted(() => {
 }
 .features-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 2rem;
+  
+  @media (max-width: 992px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
 }
 .feature-card {
   background: var(--bg-offset);
