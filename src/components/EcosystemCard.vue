@@ -59,7 +59,7 @@ const props = defineProps({
 .card-img-wrapper {
   position: relative; width: 100%; height: 280px; overflow: hidden;
 
-  .card-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1); }
+  .card-img { width: 100%; height: 100%; object-fit: cover; object-position: top center; transition: transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1); }
   .img-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, transparent 40%, rgba(1, 13, 39, 0.7) 100%); }
 }
 

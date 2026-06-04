@@ -16,7 +16,7 @@ const pillars = [
   },
   {
     id: 2,
-    icon: 'fa-chart-network',
+    icon: 'fa-network-wired',
     title: 'Tecnología y Datos',
     subtitle: 'Gestión Eficiente de Salud',
     desc: 'Uso de plataformas digitales, telemetría y bases de datos con más de 250,000 casos para el seguimiento preciso de biomarcadores, garantizando decisiones de salud basadas en evidencia.',
@@ -120,7 +120,7 @@ onUnmounted(() => {
           
           <!-- Image Content (Right side on Desktop, background on Mobile) -->
           <div class="panel-right">
-            <img :src="pillar.image" :alt="pillar.title" class="panel-img" loading="lazy" />
+            <img :src="pillar.image" :alt="pillar.title" class="panel-img" :style="{ objectPosition: pillar.id === 1 ? 'top' : 'center' }" loading="lazy" />
             <div class="img-overlay"></div>
           </div>
         </div>

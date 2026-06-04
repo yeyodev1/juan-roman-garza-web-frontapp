@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import HeroSection from '@/components/HeroSection.vue';
+import FeaturedMarquee from '@/components/FeaturedMarquee.vue';
 import ScrollVideoSection from '@/components/ScrollVideoSection.vue';
 import IntroPillarsSection from '@/components/IntroPillarsSection.vue';
 import HomeGallerySection from '@/components/HomeGallerySection.vue';
@@ -9,6 +10,7 @@ import GatewaysSection from '@/components/GatewaysSection.vue';
 <template>
   <div class="home-portal">
     <HeroSection />
+    <FeaturedMarquee />
     <ScrollVideoSection />
     <IntroPillarsSection />
     <HomeGallerySection />

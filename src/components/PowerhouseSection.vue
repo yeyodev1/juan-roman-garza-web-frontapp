@@ -460,7 +460,7 @@ onUnmounted(() => {
 .content-block {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1rem;
 }
 
 .ph-image-reveal {
@@ -498,6 +498,8 @@ h3.reveal-text {
   color: #fff;
   font-weight: 800;
   text-transform: uppercase;
-  margin-bottom: -1rem;
+  line-height: 0.95;
+  margin-top: 0;
+  margin-bottom: 0.2rem;
 }
 </style>

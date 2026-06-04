@@ -18,7 +18,7 @@ const entities = [
     ],
   },
   {
-    name: 'Eternal Regenerative Center',
+    name: 'Ethernal Regenerative Center',
     lead: 'Dirigido por el Dr. Juan Antonio Garza Quintanilla',
     desc: 'Pioneros con más de 20 años de investigación clínica en geriatría y terapias celulares avanzadas. Especialistas en revertir el desgaste fisiológico, enfermedades crónico-degenerativas y trastornos autoinmunes.',
     image: 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095160/assets-juan/19d44cab-fe24-4998-8fa0-7095b1ef858c.jpg',
