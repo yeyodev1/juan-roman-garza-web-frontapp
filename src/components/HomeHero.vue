@@ -1,20 +1,22 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted } from 'vue';
+import { onMounted, onUnmounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import heroVideo from '@/assets/videos/EVENTO-J1-H.mp4';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const router = useRouter();
 
-const heroImage = 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095160/assets-juan/1fdb1f14-5799-4c12-ba46-8590a824770b.jpg';
 const purposeImage = 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095162/assets-juan/3899b4aa-2b3b-43ec-94c7-9fda3dba6209.jpg';
+const videoRef = ref<HTMLVideoElement | null>(null);
+const videoLoaded = ref(false);
 
 onMounted(() => {
   const tl = gsap.timeline();
 
-  gsap.fromTo('.hero-bg-img',
+  gsap.fromTo('.hero-bg-media',
     { scale: 1.15, filter: 'blur(10px)' },
     { scale: 1, filter: 'blur(0px)', duration: 2.5, ease: 'power3.out' }
   );
@@ -26,7 +28,7 @@ onMounted(() => {
     .fromTo('.hero-actions', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 1 }, 1.5)
     .fromTo('.hero-logos', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 1 }, 1.7);
 
-  gsap.to('.hero-bg-img', {
+  gsap.to('.hero-bg-media', {
     yPercent: 20, ease: 'none',
     scrollTrigger: { trigger: '.hero-section', start: 'top top', end: 'bottom top', scrub: true }
   });
@@ -50,6 +52,25 @@ onMounted(() => {
     { opacity: 1, x: 0, duration: 1.2, ease: 'power3.out',
       scrollTrigger: { trigger: '.purpose-section', start: 'top 75%' } }
   );
+
+  // Pause video when out of viewport to save resources
+  const videoEl = videoRef.value;
+  if (videoEl && 'IntersectionObserver' in window) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          videoEl.play().catch(() => { /* autoplay may be blocked */ });
+        } else {
+          videoEl.pause();
+        }
+      });
+    }, { threshold: 0.1 });
+    observer.observe(videoEl);
+
+    onUnmounted(() => {
+      observer.disconnect();
+    });
+  }
 });
 
 onUnmounted(() => {
@@ -60,8 +81,23 @@ onUnmounted(() => {
 <template>
   <section class="hero-section">
     <div class="hero-bg-wrapper">
-      <img :src="heroImage" class="hero-bg-img" alt="Juan Román Garza" loading="eager" />
+      <video
+        ref="videoRef"
+        class="hero-bg-media"
+        :class="{ 'is-loaded': videoLoaded }"
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="auto"
+        poster="https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095160/assets-juan/1fdb1f14-5799-4c12-ba46-8590a824770b.jpg"
+        @loadeddata="videoLoaded = true"
+      >
+        <source :src="heroVideo" type="video/mp4" />
+      </video>
       <div class="hero-bg-overlay"></div>
+      <div class="hero-bg-scanlines" aria-hidden="true"></div>
+      <div class="hero-bg-vignette" aria-hidden="true"></div>
     </div>
 
     <div class="container hero-container">
@@ -152,15 +188,43 @@ onUnmounted(() => {
   position: absolute; top: -10%; left: -5%; width: 110%; height: 120%; z-index: 0; overflow: hidden;
 }
 
-.hero-bg-img {
+.hero-bg-media {
   width: 100%; height: 100%; object-fit: cover; object-position: center top;
   will-change: transform, filter;
+  opacity: 0;
+  transition: opacity 1.2s ease;
+  &.is-loaded { opacity: 1; }
 }
 
 .hero-bg-overlay {
   position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-  background: radial-gradient(circle at center, rgba(5, 5, 5, 0.3) 0%, rgba(5, 5, 5, 0.85) 70%, rgba(5, 5, 5, 0.95) 100%);
+  background:
+    linear-gradient(180deg, rgba(5, 10, 18, 0.2) 0%, rgba(5, 10, 18, 0.5) 60%, rgba(5, 10, 18, 0.92) 100%),
+    radial-gradient(circle at 50% 40%, rgba(0, 123, 181, 0.12) 0%, transparent 55%),
+    radial-gradient(circle at center, rgba(5, 5, 5, 0.2) 0%, rgba(5, 5, 5, 0.8) 65%, rgba(5, 5, 5, 0.97) 100%);
   z-index: 1;
+}
+
+.hero-bg-scanlines {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 0.03) 0px,
+    rgba(255, 255, 255, 0.03) 1px,
+    transparent 1px,
+    transparent 4px
+  );
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0.35;
+}
+
+.hero-bg-vignette {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  box-shadow: inset 0 0 18vw rgba(0, 0, 0, 0.85);
+  pointer-events: none;
+  z-index: 3;
 }
 
 .hero-container {
