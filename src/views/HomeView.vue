@@ -1,20 +1,26 @@
 <script setup lang="ts">
-import HeroSection from '@/components/HeroSection.vue';
+import HomeHero from '@/components/HomeHero.vue';
 import FeaturedMarquee from '@/components/FeaturedMarquee.vue';
-import ScrollVideoSection from '@/components/ScrollVideoSection.vue';
-import IntroPillarsSection from '@/components/IntroPillarsSection.vue';
-import HomeGallerySection from '@/components/HomeGallerySection.vue';
-import GatewaysSection from '@/components/GatewaysSection.vue';
+import HomeLegacy from '@/components/HomeLegacy.vue';
+import HomeResearch from '@/components/HomeResearch.vue';
+import HomePhilosophy from '@/components/HomePhilosophy.vue';
+import HomeCTA from '@/components/HomeCTA.vue';
 </script>
 
 <template>
   <div class="home-portal">
-    <HeroSection />
+    <HomeHero />
+    <div class="section-spacer section-spacer--md"></div>
     <FeaturedMarquee />
-    <ScrollVideoSection />
-    <IntroPillarsSection />
-    <HomeGallerySection />
-    <GatewaysSection />
+    <div class="section-spacer section-spacer--md"></div>
+    <HomeLegacy />
+    <div class="section-spacer section-spacer--sm"></div>
+    <HomeResearch />
+    <div class="section-spacer section-spacer--sm"></div>
+    <HomePhilosophy />
+    <div class="section-spacer section-spacer--md"></div>
+    <HomeCTA />
+    <div class="section-spacer section-spacer--md"></div>
   </div>
 </template>
 

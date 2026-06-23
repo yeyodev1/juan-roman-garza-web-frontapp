@@ -66,10 +66,20 @@ h1, h2, h3, h4, h5, h6 {
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 1.5rem;
+  padding: 0 2rem;
   display: flex;
   flex-direction: column;
-  align-items: center; // Center children by default to prevent left alignment
+  align-items: center;
+
+  @media (max-width: 992px) {
+    padding: 0 2rem;
+  }
+  @media (max-width: 768px) {
+    padding: 0 1.75rem;
+  }
+  @media (max-width: 480px) {
+    padding: 0 1.25rem;
+  }
 }
 
 .text-cyan {
@@ -84,12 +94,30 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .section-padding {
-  padding: 10rem 0;
+  padding: 12rem 0;
   width: 100%;
   display: flex;
   justify-content: center;
   @media (max-width: 768px) {
-    padding: 6rem 0;
+    padding: 8rem 0;
+  }
+}
+
+.section-spacer {
+  width: 100%;
+}
+
+.section-spacer--sm {
+  height: 4rem;
+  @media (max-width: 768px) {
+    height: 3rem;
+  }
+}
+
+.section-spacer--md {
+  height: 8rem;
+  @media (max-width: 768px) {
+    height: 5rem;
   }
 }
 

@@ -12,24 +12,17 @@ const features = [
 
 <template>
   <section class="featured-marquee-section">
-    <div class="marquee-title-wrapper">
-      <span class="marquee-title">DESTACADO EN LA PRENSA</span>
-    </div>
-    
     <div class="marquee-container">
       <div class="marquee-track">
         <!-- Group 1 -->
         <div class="marquee-group">
           <a v-for="(item, idx) in features" :key="`g1-${idx}`" :href="item.url" target="_blank" class="featured-item">
             <img :src="item.icon" :alt="item.name" class="featured-icon" loading="lazy" />
-            <span class="featured-name">{{ item.name }}</span>
           </a>
         </div>
-        <!-- Group 2 (Duplicate for seamless loop) -->
         <div class="marquee-group">
           <a v-for="(item, idx) in features" :key="`g2-${idx}`" :href="item.url" target="_blank" class="featured-item">
             <img :src="item.icon" :alt="item.name" class="featured-icon" loading="lazy" />
-            <span class="featured-name">{{ item.name }}</span>
           </a>
         </div>
       </div>
@@ -53,29 +46,6 @@ const features = [
     flex-direction: column;
     padding: 1.5rem 0;
   }
-}
-
-.marquee-title-wrapper {
-  padding: 0 3rem;
-  position: relative;
-  z-index: 2;
-  background: var(--bg-offset);
-  
-  @media (max-width: 768px) {
-    padding: 0 0 1.5rem 0;
-    width: 100%;
-    text-align: center;
-  }
-}
-
-.marquee-title {
-  font-family: var(--font-principal);
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: var(--color-cyan);
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  white-space: nowrap;
 }
 
 .marquee-container {
@@ -129,15 +99,6 @@ const features = [
   border-radius: 50%;
   object-fit: cover;
   border: 1px solid rgba(255,255,255,0.1);
-}
-
-.featured-name {
-  font-family: var(--font-secondary);
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: var(--text);
-  white-space: nowrap;
-  transition: color 0.3s ease;
 }
 
 @keyframes scrollMarquee {

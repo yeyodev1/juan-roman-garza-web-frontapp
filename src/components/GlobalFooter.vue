@@ -1,12 +1,15 @@
 <script setup lang="ts">
+import pdfCelulas from '@/assets/revistas/Células Madre - La Nueva Frontera de la Salud (ESPAÑOL).pdf?url';
+import pdfEdad from '@/assets/revistas/REVISTA EDAD CRONOLÓGICA Y EDAD BIOLÓGICA.pdf?url';
+
 const revistas = [
   {
     title: 'Células Madre - La Nueva Frontera de la Salud',
-    file: '/src/assets/revistas/Células Madre - La Nueva Frontera de la Salud (ESPAÑOL).pdf'
+    file: pdfCelulas
   },
   {
     title: 'Revista Edad Cronológica y Edad Biológica',
-    file: '/src/assets/revistas/REVISTA EDAD CRONOLÓGICA Y EDAD BIOLÓGICA.pdf'
+    file: pdfEdad
   }
 ];
 </script>
@@ -80,6 +83,7 @@ const revistas = [
 .footer-magazines-section {
   width: 100%;
   margin-bottom: 4rem;
+  @media (max-width: 768px) { padding: 0 0.75rem; }
 }
 
 .footer-title {
