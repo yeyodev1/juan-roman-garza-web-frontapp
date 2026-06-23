@@ -3,12 +3,12 @@ import { onMounted, onUnmounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import heroVideo from '@/assets/videos/EVENTO-J1-H.mp4';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const router = useRouter();
 
+const heroVideoUrl = 'https://res.cloudinary.com/drw5sn8qw/video/upload/v1782231565/assets-juan/uicyiqkjhaoxi7fzoioa.mp4';
 const purposeImage = 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095162/assets-juan/3899b4aa-2b3b-43ec-94c7-9fda3dba6209.jpg';
 const videoRef = ref<HTMLVideoElement | null>(null);
 const videoLoaded = ref(false);
@@ -93,7 +93,7 @@ onUnmounted(() => {
         poster="https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095160/assets-juan/1fdb1f14-5799-4c12-ba46-8590a824770b.jpg"
         @loadeddata="videoLoaded = true"
       >
-        <source :src="heroVideo" type="video/mp4" />
+        <source :src="heroVideoUrl" type="video/mp4" />
       </video>
       <div class="hero-bg-overlay"></div>
       <div class="hero-bg-scanlines" aria-hidden="true"></div>
