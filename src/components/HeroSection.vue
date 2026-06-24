@@ -41,19 +41,6 @@ onMounted(() => {
     }
   });
 
-  // Text Content Parallax on scroll
-  gsap.to('.hero-container', {
-    yPercent: 35, // Moves down slower than scroll
-    opacity: 0,
-    ease: 'none',
-    scrollTrigger: {
-      trigger: '.hero-section',
-      start: 'top top',
-      end: 'bottom top',
-      scrub: true
-    }
-  });
-
 });
 
 onUnmounted(() => {

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import HomeHero from '@/components/HomeHero.vue';
-import FeaturedMarquee from '@/components/FeaturedMarquee.vue';
 import HomeLegacy from '@/components/HomeLegacy.vue';
 import HomeResearch from '@/components/HomeResearch.vue';
 import HomePhilosophy from '@/components/HomePhilosophy.vue';
@@ -10,8 +9,6 @@ import HomeCTA from '@/components/HomeCTA.vue';
 <template>
   <div class="home-portal">
     <HomeHero />
-    <div class="section-spacer section-spacer--md"></div>
-    <FeaturedMarquee />
     <div class="section-spacer section-spacer--md"></div>
     <HomeLegacy />
     <div class="section-spacer section-spacer--sm"></div>

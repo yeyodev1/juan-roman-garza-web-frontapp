@@ -1,12 +1,18 @@
 <script setup lang="ts">
+import logo1 from '@/assets/periodicos/LOGO1.png';
+import logo2 from '@/assets/periodicos/LOGO2.png';
+import logo3 from '@/assets/periodicos/LOGO3.png';
+import logo4 from '@/assets/periodicos/LOGO4.png';
+import logo5 from '@/assets/periodicos/LOGO5.png';
+import logo6 from '@/assets/periodicos/LOGO6.png';
+
 const features = [
-  { name: 'The New York Finance', url: 'https://thenewyorkfinance.com/roman-garza-the-regenerative-entrepreneur-pioneering-regenerative-healthcare-with-a-hearfelt-vision/', icon: 'https://thenewyorkfinance.com/wp-content/uploads/2025/06/cropped-cropped-NYFFINAL-180x180.png' },
-  { name: 'The New Jersey Gazette', url: 'https://thenewjerseygazette.com/roman-garza-the-regenerative-entrepreneur-pioneering-regenerative-healthcare-with-a-hearfelt-vision/', icon: 'https://thenewjerseygazette.com/wp-content/uploads/2021/11/cropped-Copy-of-The-New-York-City-Times-180x180.png' },
-  { name: 'Big Boston News', url: 'https://www.bigbostonnews.com/roman-garza-the-regenerative-entrepreneur-pioneering-regenerative-healthcare-with-a-hearfelt-vision/', icon: 'https://www.bigbostonnews.com/wp-content/uploads/2021/04/cropped-big-boston-news-180x180.png' },
-  { name: 'The Chicago Finance', url: 'https://thechicagofinance.com/roman-garza-the-regenerative-entrepreneur-pioneering-regenerative-healthcare-with-a-hearfelt-vision/', icon: 'https://thechicagofinance.com/wp-content/uploads/2021/04/cropped-The-Chicago-Finane-1-180x180.png' },
-  { name: 'The USA Reporter', url: 'https://theusareporter.com/roman-garza-the-regenerative-entrepreneur-pioneering-regenerative-healthcare-with-a-hearfelt-vision/', icon: 'https://theusareporter.com/wp-content/uploads/2021/02/cropped-ThE-USA-2-180x180.png' },
-  { name: 'Houston Weekly News', url: 'https://houstonweeklynews.com/roman-garza-the-regenerative-entrepreneur-pioneering-regenerative-healthcare-with-a-hearfelt-vision/', icon: 'https://houstonweeklynews.com/wp-content/uploads/2021/01/cropped-ho-180x180.png' },
-  { name: 'The Chicago Gazette', url: 'https://www.thechicagogazette.com/roman-garza-the-regenerative-entrepreneur-pioneering-regenerative-healthcare-with-a-hearfelt-vision/', icon: 'https://www.thechicagogazette.com/wp-content/uploads/2021/11/cropped-Copy-of-The-New-York-City-Times-2-180x180.png' }
+  { name: 'The New York Finance', url: 'https://thenewyorkfinance.com/roman-garza-the-regenerative-entrepreneur-pioneering-regenerative-healthcare-with-a-hearfelt-vision/', icon: logo1 },
+  { name: 'The New Jersey Gazette', url: 'https://thenewjerseygazette.com/roman-garza-the-regenerative-entrepreneur-pioneering-regenerative-healthcare-with-a-hearfelt-vision/', icon: logo2 },
+  { name: 'Big Boston News', url: 'https://www.bigbostonnews.com/roman-garza-the-regenerative-entrepreneur-pioneering-regenerative-healthcare-with-a-hearfelt-vision/', icon: logo3 },
+  { name: 'The Chicago Finance', url: 'https://thechicagofinance.com/roman-garza-the-regenerative-entrepreneur-pioneering-regenerative-healthcare-with-a-hearfelt-vision/', icon: logo4 },
+  { name: 'The USA Reporter', url: 'https://theusareporter.com/roman-garza-the-regenerative-entrepreneur-pioneering-regenerative-healthcare-with-a-hearfelt-vision/', icon: logo5 },
+  { name: 'Houston Weekly News', url: 'https://houstonweeklynews.com/roman-garza-the-regenerative-entrepreneur-pioneering-regenerative-healthcare-with-a-hearfelt-vision/', icon: logo6 }
 ];
 </script>
 
@@ -78,27 +84,25 @@ const features = [
 .featured-item {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  justify-content: center;
   text-decoration: none;
-  filter: grayscale(100%) opacity(0.6);
   transition: all 0.4s ease;
   
   &:hover {
-    filter: grayscale(0%) opacity(1);
-    transform: translateY(-2px);
-    
-    .featured-name {
-      color: var(--color-cyan);
+    transform: translateY(-3px);
+    .featured-icon {
+      filter: grayscale(0%) opacity(1);
     }
   }
 }
 
 .featured-icon {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 1px solid rgba(255,255,255,0.1);
+  height: 45px;
+  width: auto;
+  max-width: 220px;
+  object-fit: contain;
+  filter: grayscale(100%) opacity(0.6);
+  transition: all 0.4s ease;
 }
 
 @keyframes scrollMarquee {

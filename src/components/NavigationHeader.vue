@@ -55,7 +55,6 @@ function handleLinkClick() {
               :class="{ active: activeSection === item.label.toLowerCase() || (item.path === '/' && activeSection === 'home') }"
               @click="handleLinkClick"
             >
-              <span class="link-number">{{ item.num }}</span>
               <span class="link-label">{{ item.label }}</span>
             </RouterLink>
           </nav>
@@ -249,20 +248,6 @@ function handleLinkClick() {
     justify-content: center;
   }
 
-  .link-number {
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: var(--color-cyan);
-    opacity: 0.8;
-    margin-top: -0.5rem;
-    transition: color 0.4s ease;
-
-    @media (min-width: 768px) {
-      font-size: 1.2rem;
-      margin-top: -1.5rem;
-    }
-  }
-
   .link-label {
     position: relative;
     transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
@@ -292,10 +277,6 @@ function handleLinkClick() {
 
     .link-label::after {
       width: 100%;
-    }
-
-    .link-number {
-      color: var(--text);
     }
   }
 }
