@@ -1,13 +1,10 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue';
-import { useRouter } from 'vue-router';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import FeaturedMarquee from './FeaturedMarquee.vue';
 
 gsap.registerPlugin(ScrollTrigger);
-
-const router = useRouter();
 
 const heroVideoUrl = 'https://res.cloudinary.com/drw5sn8qw/video/upload/v1782231565/assets-juan/uicyiqkjhaoxi7fzoioa.mp4';
 const purposeImage = 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095160/assets-juan/1fdb1f14-5799-4c12-ba46-8590a824770b.jpg';

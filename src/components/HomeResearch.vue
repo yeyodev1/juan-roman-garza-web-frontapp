@@ -5,15 +5,6 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const researchAreas = [
-  { icon: 'fa-dna', title: 'Medicina Regenerativa' },
-  { icon: 'fa-hourglass-half', title: 'Biología del Envejecimiento' },
-  { icon: 'fa-chart-line', title: 'Biomarcadores Avanzados' },
-  { icon: 'fa-bullseye', title: 'Medicina de Precisión' },
-  { icon: 'fa-robot', title: 'IA Aplicada a Salud' },
-  { icon: 'fa-heart-pulse', title: 'Longevidad y Optimización Humana' },
-];
-
 const stats = [
   { value: 15, suffix: '+', label: 'Años de experiencia', prefix: '' },
   { value: 15, suffix: 'K+', label: 'Pacientes acompañados', prefix: '' },
