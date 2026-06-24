@@ -5,18 +5,18 @@ import { gsap } from 'gsap';
 const applications = [
   {
     icon: 'fa-brain',
-    title: 'Rendimiento Intelectual y Decisional',
-    desc: 'Optimización de la plasticidad sináptica y oxigenación cerebral. Previene la fatiga ejecutiva y mantiene la agudeza mental en momentos de alta presión.',
+    title: 'Claridad Mental',
+    desc: 'Favorece un estado de enfoque óptimo y agilidad de pensamiento. Ideal para reducir la sensación de agotamiento y mejorar la concentración en el día a día.',
   },
   {
     icon: 'fa-shield-halved',
     title: 'Manejo del Estrés Crónico e Inflamación',
-    desc: 'Regulación del cortisol y reducción del estrés oxidativo celular. Combate la inflamación de bajo grado, detonante principal del envejecimiento prematuro.',
+    desc: 'Regulación del estrés oxidativo a nivel celular. Ayuda a mitigar la inflamación celular, promoviendo un envejecimiento saludable y equilibrado.',
   },
   {
     icon: 'fa-bolt',
-    title: 'Revitalización Física para Líderes Senior (50+)',
-    desc: 'Reconstrucción y reparación de tejidos desgastados a nivel celular. Restaura la vitalidad mitocondrial y la resistencia física del ejecutivo moderno.',
+    title: 'Revitalización y Movilidad Física',
+    desc: 'Promueve la reparación de tejidos celulares y restaura la vitalidad. Ideal para quienes buscan recuperar su energía física y vivir sin limitaciones.',
   },
 ];
 
@@ -39,23 +39,23 @@ onMounted(() => {
         <div class="science-column">
           <p class="explanation-text">
             Lejos de ser una solución cosmética, la medicina regenerativa se enfoca en potenciar la
-            <strong class="highlight">capacidad de autorreparación del propio cuerpo</strong>. Basado en las investigaciones del Premio Nobel <strong class="highlight">Shinya Yamanaka</strong> sobre la reprogramación celular adulta, hoy es posible rejuvenecer tejidos esenciales.
+            <strong class="highlight">capacidad de autorreparación del propio cuerpo</strong>. Basado en las investigaciones del Premio Nobel <strong class="highlight">Shinya Yamanaka</strong> sobre la reprogramación celular adulta, hoy exploramos nuevas fronteras en la optimización biológica celular.
           </p>
 
           <div class="protocol-card">
             <div class="protocol-header">
               <i class="fa-solid fa-microscope protocol-icon"></i>
-              <h3>Protocolos Avanzados de Eternal</h3>
+              <h3>Protocolos Avanzados</h3>
             </div>
             <p class="protocol-text">
-              Utilizando infusiones personalizadas de <strong class="highlight-gold">Exosomas y Células Madre</strong>, nuestros protocolos detienen el daño acumulado y reescriben la trayectoria biológica de su salud.
+              A través de enfoques en <strong class="highlight-gold">medicina celular regenerativa</strong>, nuestros protocolos buscan optimizar las condiciones del organismo para favorecer el bienestar integral y una mejor calidad de vida a largo plazo.
             </p>
           </div>
         </div>
 
         <div class="app-column">
           <div class="apps-container">
-            <h3 class="app-subtitle">Aplicación Ejecutiva de Alto Impacto</h3>
+            <h3 class="app-subtitle">Aplicación Integral para su Salud</h3>
             <div class="apps-list">
               <div v-for="(app, idx) in applications" :key="idx" class="app-item">
                 <div class="app-icon-box"><i class="fa-solid" :class="app.icon"></i></div>

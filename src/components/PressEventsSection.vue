@@ -4,6 +4,7 @@ import { gsap } from 'gsap';
 import ForbesHighlight from './ForbesHighlight.vue';
 import ConferenceGallery from './ConferenceGallery.vue';
 import PanelVideo from './PanelVideo.vue';
+import FeaturedMarquee from './FeaturedMarquee.vue';
 
 const features = [
   { name: 'The New York Finance', title: 'Román Garza: Pionero en la Salud Regenerativa y la Medicina del Futuro', url: 'https://thenewyorkfinance.com/roman-garza-the-regenerative-entrepreneur-pioneering-regenerative-healthcare-with-a-hearfelt-vision/', icon: 'https://thenewyorkfinance.com/wp-content/uploads/2025/06/cropped-cropped-NYFFINAL-180x180.png' },
@@ -26,37 +27,13 @@ onMounted(() => {
       <div class="section-header">
         <span class="section-tag">PRENSA Y EVENTOS</span>
         <h2 class="section-title">Presencia Global e Impacto Mediático</h2>
-        <div class="accent-line"></div>
       </div>
 
       <!-- Forbes Highlight First -->
       <ForbesHighlight />
 
       <!-- Marquee Section -->
-      <div class="featured-marquee-section">
-        <div class="marquee-title-wrapper">
-          <span class="marquee-title">DESTACADO EN LA PRENSA</span>
-        </div>
-        
-        <div class="marquee-container">
-          <div class="marquee-track">
-            <!-- Group 1 -->
-            <div class="marquee-group">
-              <a v-for="(item, idx) in features" :key="`g1-${idx}`" :href="item.url" target="_blank" class="featured-item">
-                <img :src="item.icon" :alt="item.name" class="featured-icon" loading="lazy" />
-                <span class="featured-name">{{ item.name }}</span>
-              </a>
-            </div>
-            <!-- Group 2 (Duplicate for seamless loop) -->
-            <div class="marquee-group">
-              <a v-for="(item, idx) in features" :key="`g2-${idx}`" :href="item.url" target="_blank" class="featured-item">
-                <img :src="item.icon" :alt="item.name" class="featured-icon" loading="lazy" />
-                <span class="featured-name">{{ item.name }}</span>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
+       <FeaturedMarquee/>
 
       <!-- Articulos Grid Section -->
       <div class="features-grid-section">
@@ -91,19 +68,55 @@ onMounted(() => {
 </template>
 
 <style lang="scss" scoped>
-.press-section { background-color: var(--bg); transition: background-color 0.3s ease; padding-top: 150px; min-height: 100vh; padding-bottom: 100px; }
+.press-section {
+  background-color: var(--bg);
+  transition: background-color 0.3s ease;
+  padding-top: 150px;
+  min-height: 100vh;
+  padding-bottom: 100px;
+}
 
 .section-header {
-  text-align: center; max-width: 900px; margin: 0 auto 6rem;
-  display: flex; flex-direction: column; align-items: center;
-  
+  text-align: center;
+  max-width: 900px;
+  margin: 0 auto 6rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
   .section-tag {
-    font-family: var(--font-principal); font-size: 0.9rem; font-weight: 700;
-    color: var(--color-cyan); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 1.5rem; display: inline-block;
-    border: 1px solid rgba(56, 182, 255, 0.4); padding: 0.5rem 1.5rem; border-radius: 50px;
+    font-family: var(--font-principal);
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--color-cyan);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    display: inline-block;
+    border: 1px solid rgba(56, 182, 255, 0.4);
+    padding: 0.5rem 1.5rem;
+    border-radius: 50px;
   }
-  .section-title { font-size: 3.5rem; color: var(--text); margin-bottom: 1.5rem; font-weight: 800; text-transform: uppercase; line-height: 1.1; @media (max-width: 768px) { font-size: 2.2rem; } }
-  .accent-line { width: 60px; height: 3px; background-color: var(--color-cyan); margin: 0 auto; }
+
+  .section-title {
+    font-size: 3.5rem;
+    color: var(--text);
+    margin-bottom: 1.5rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    line-height: 1.1;
+
+    @media (max-width: 768px) {
+      font-size: 2.2rem;
+    }
+  }
+
+  .accent-line {
+    width: 60px;
+    height: 3px;
+    background-color: var(--color-cyan);
+    margin: 0 auto;
+  }
 }
 
 /* Subsection Titles */
@@ -114,7 +127,7 @@ onMounted(() => {
   color: var(--text);
   margin-bottom: 2rem;
   text-align: center;
-  
+
   @media (max-width: 768px) {
     font-size: 1.5rem;
   }
@@ -132,7 +145,7 @@ onMounted(() => {
   align-items: center;
   overflow: hidden;
   position: relative;
-  
+
   @media (max-width: 768px) {
     flex-direction: column;
     padding: 1.5rem 0;
@@ -144,7 +157,7 @@ onMounted(() => {
   position: relative;
   z-index: 2;
   background: var(--bg-offset);
-  
+
   @media (max-width: 768px) {
     padding: 0 0 1.5rem 0;
     width: 100%;
@@ -175,7 +188,7 @@ onMounted(() => {
   display: flex;
   width: max-content;
   animation: scrollMarquee 40s linear infinite;
-  
+
   &:hover {
     animation-play-state: paused;
   }
@@ -196,11 +209,11 @@ onMounted(() => {
   text-decoration: none;
   filter: grayscale(100%) opacity(0.6);
   transition: all 0.4s ease;
-  
+
   &:hover {
     filter: grayscale(0%) opacity(1);
     transform: translateY(-2px);
-    
+
     .featured-name {
       color: var(--color-cyan);
     }
@@ -212,7 +225,7 @@ onMounted(() => {
   height: 32px;
   border-radius: 50%;
   object-fit: cover;
-  border: 1px solid rgba(255,255,255,0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .featured-name {
@@ -225,27 +238,34 @@ onMounted(() => {
 }
 
 @keyframes scrollMarquee {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); } 
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
 }
 
 /* Features Grid Section */
 .features-grid-section {
   margin-bottom: 6rem;
 }
+
 .features-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 2rem;
-  
+
   @media (max-width: 992px) {
     grid-template-columns: repeat(2, 1fr);
   }
-  
+
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
   }
 }
+
 .feature-card {
   background: var(--bg-offset);
   border: 1px solid var(--border);
@@ -255,46 +275,52 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   transition: all 0.3s ease;
-  
+
   &:hover {
     transform: translateY(-5px);
     border-color: var(--color-cyan);
     box-shadow: 0 10px 30px rgba(56, 182, 255, 0.05);
-    
+
     .feature-article-title {
       color: var(--color-cyan);
     }
+
     .read-article-btn {
       color: var(--color-cyan);
-      
+
       svg {
         transform: translateX(3px) translateY(-3px);
       }
     }
   }
 }
+
 .feature-card-header {
   display: flex;
   align-items: center;
   gap: 1rem;
   margin-bottom: 1rem;
 }
+
 .feature-card-icon {
   width: 40px;
   height: 40px;
   border-radius: 50%;
   object-fit: cover;
 }
+
 .feature-source {
   font-family: var(--font-secondary);
   font-size: 1.1rem;
   font-weight: 700;
   color: var(--text);
 }
+
 .feature-card-body {
   flex: 1;
   margin-bottom: 1rem;
 }
+
 .feature-article-title {
   font-family: var(--font-principal);
   font-size: 1.25rem;
@@ -303,11 +329,13 @@ onMounted(() => {
   line-height: 1.4;
   transition: color 0.3s ease;
 }
+
 .feature-card-footer {
   margin-top: auto;
   border-top: 1px solid var(--border);
   padding-top: 1rem;
 }
+
 .read-article-btn {
   display: flex;
   align-items: center;
@@ -317,7 +345,7 @@ onMounted(() => {
   font-weight: 600;
   color: var(--text-muted);
   transition: all 0.3s ease;
-  
+
   svg {
     transition: transform 0.3s ease;
   }
