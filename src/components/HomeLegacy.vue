@@ -2,13 +2,14 @@
 import { onMounted, onUnmounted, ref } from 'vue';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import fatherImage from '@/assets/legado/legado.png';
+
 import equipoImage from '@/assets/team/equipo.jpg';
 import educacionImage from '@/assets/stock/educacion-medica.jpeg';
 import investigacionImage from '@/assets/stock/investigacion.jpeg';
 
 gsap.registerPlugin(ScrollTrigger);
 const powerhouseImage = 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095164/assets-juan/65feeba0-0dce-4cff-b63d-eb15952be89c.jpg';
+const fatherImage = 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1782272608/legado_ydct4l.png';
 
 onMounted(() => {
   gsap.fromTo('.legacy-content',
@@ -456,6 +457,7 @@ const closeModal = () => {
 
 .whatido-card.clickable {
   cursor: pointer;
+
   &::after {
     content: '\f0b2';
     font-family: 'Font Awesome 6 Free';
@@ -469,6 +471,7 @@ const closeModal = () => {
     transform: scale(0.5);
     transition: all 0.3s ease;
   }
+
   &:hover::after {
     opacity: 1;
     transform: scale(1);
@@ -538,7 +541,7 @@ const closeModal = () => {
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  
+
   img.modal-image {
     position: absolute;
     top: 0;
@@ -568,9 +571,9 @@ const closeModal = () => {
   text-transform: uppercase;
   text-align: center;
   padding: 3rem 2rem;
-  text-shadow: 0 4px 20px rgba(0,0,0,0.8);
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
   letter-spacing: 0.02em;
-  
+
   @media (max-width: 768px) {
     font-size: 2rem;
     padding: 2rem 1.5rem;
@@ -591,17 +594,32 @@ const closeModal = () => {
 .modal-fade-enter-active .project-modal-content {
   animation: modal-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
+
 .modal-fade-leave-active .project-modal-content {
   animation: modal-pop-out 0.4s cubic-bezier(0.3, 0, 0.8, 0.15) forwards;
 }
 
 @keyframes modal-pop {
-  0% { opacity: 0; transform: scale(0.8) translateY(40px); }
-  100% { opacity: 1; transform: scale(1) translateY(0); }
+  0% {
+    opacity: 0;
+    transform: scale(0.8) translateY(40px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }
 
 @keyframes modal-pop-out {
-  0% { opacity: 1; transform: scale(1) translateY(0); }
-  100% { opacity: 0; transform: scale(0.9) translateY(20px); }
+  0% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(0.9) translateY(20px);
+  }
 }
 </style>
