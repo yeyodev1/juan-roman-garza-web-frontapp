@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted } from 'vue';
+import { onMounted, onUnmounted, ref } from 'vue';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import fatherImage from '@/assets/legado/legado.png';
 import equipoImage from '@/assets/team/equipo.jpg';
+import educacionImage from '@/assets/stock/educacion-medica.jpeg';
+import investigacionImage from '@/assets/stock/investigacion.jpeg';
 
 gsap.registerPlugin(ScrollTrigger);
 const powerhouseImage = 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095164/assets-juan/65feeba0-0dce-4cff-b63d-eb15952be89c.jpg';
@@ -60,14 +62,35 @@ const projects = [
   {
     title: 'Educación Médica',
     desc: 'Programas de capacitación y divulgación científica.',
+    image: educacionImage,
     icon: 'fa-graduation-cap'
   },
   {
     title: 'Investigación y Desarrollo',
     desc: 'Análisis de biomarcadores, longevidad y tecnologías emergentes.',
+    image: investigacionImage,
     icon: 'fa-flask'
   }
 ];
+
+const selectedProject = ref<any>(null);
+const isModalOpen = ref(false);
+
+const openModal = (item: any) => {
+  if (item.image) {
+    selectedProject.value = item;
+    isModalOpen.value = true;
+    document.body.style.overflow = 'hidden';
+  }
+};
+
+const closeModal = () => {
+  isModalOpen.value = false;
+  setTimeout(() => {
+    selectedProject.value = null;
+  }, 400); // Esperar la animación para limpiar
+  document.body.style.overflow = '';
+};
 </script>
 
 <template>
@@ -109,7 +132,13 @@ const projects = [
       </div>
 
       <div class="whatido-grid">
-        <div v-for="(item, idx) in projects" :key="idx" class="whatido-card">
+        <div 
+          v-for="(item, idx) in projects" 
+          :key="idx" 
+          class="whatido-card" 
+          :class="{ 'clickable': item.image }"
+          @click="openModal(item)"
+        >
           <div class="card-icon">
             <i class="fa-solid" :class="item.icon"></i>
           </div>
@@ -122,6 +151,22 @@ const projects = [
       </div>
     </div>
   </section>
+
+  <!-- Project Modal -->
+  <transition name="modal-fade">
+    <div v-if="isModalOpen" class="project-modal-overlay" @click="closeModal">
+      <div class="project-modal-content" @click.stop>
+        <button class="modal-close-btn" @click="closeModal" aria-label="Cerrar modal">
+          <i class="fa-solid fa-times"></i>
+        </button>
+        <div class="modal-image-wrapper">
+          <img :src="selectedProject?.image" :alt="selectedProject?.title" class="modal-image" />
+          <div class="modal-gradient-overlay"></div>
+          <h2 class="modal-title">{{ selectedProject?.title }}</h2>
+        </div>
+      </div>
+    </div>
+  </transition>
 </template>
 
 <style lang="scss" scoped>
@@ -407,5 +452,156 @@ const projects = [
   .whatido-card:hover & img {
     transform: scale(1.08);
   }
+}
+
+.whatido-card.clickable {
+  cursor: pointer;
+  &::after {
+    content: '\f0b2';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    position: absolute;
+    top: 1rem;
+    right: 1.5rem;
+    color: var(--color-cyan);
+    font-size: 1.2rem;
+    opacity: 0;
+    transform: scale(0.5);
+    transition: all 0.3s ease;
+  }
+  &:hover::after {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Modal Styles */
+.project-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(5, 10, 15, 0.85);
+  backdrop-filter: blur(15px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 2rem;
+}
+
+.project-modal-content {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  background: var(--card-bg);
+  border: 1px solid rgba(56, 182, 255, 0.2);
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.8), 0 0 40px rgba(56, 182, 255, 0.15);
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: rgba(10, 15, 20, 0.6);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: var(--color-cyan);
+    color: #000;
+    transform: rotate(90deg);
+  }
+}
+
+.modal-image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 70vh;
+  max-height: 600px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  
+  img.modal-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.modal-gradient-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 60%;
+  background: linear-gradient(to top, rgba(10, 15, 20, 0.95) 0%, rgba(10, 15, 20, 0) 100%);
+  pointer-events: none;
+}
+
+.modal-title {
+  position: relative;
+  z-index: 2;
+  font-size: 3rem;
+  font-weight: 800;
+  color: #ffffff;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 3rem 2rem;
+  text-shadow: 0 4px 20px rgba(0,0,0,0.8);
+  letter-spacing: 0.02em;
+  
+  @media (max-width: 768px) {
+    font-size: 2rem;
+    padding: 2rem 1.5rem;
+  }
+}
+
+/* Modal Transitions */
+.modal-fade-enter-active,
+.modal-fade-leave-active {
+  transition: opacity 0.4s ease;
+}
+
+.modal-fade-enter-from,
+.modal-fade-leave-to {
+  opacity: 0;
+}
+
+.modal-fade-enter-active .project-modal-content {
+  animation: modal-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+.modal-fade-leave-active .project-modal-content {
+  animation: modal-pop-out 0.4s cubic-bezier(0.3, 0, 0.8, 0.15) forwards;
+}
+
+@keyframes modal-pop {
+  0% { opacity: 0; transform: scale(0.8) translateY(40px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes modal-pop-out {
+  0% { opacity: 1; transform: scale(1) translateY(0); }
+  100% { opacity: 0; transform: scale(0.9) translateY(20px); }
 }
 </style>

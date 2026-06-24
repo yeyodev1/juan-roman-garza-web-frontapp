@@ -57,30 +57,12 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <section class="research-section section-padding">
-    <div class="container research-container">
-      <div class="research-header">
-        <span class="section-tag">ÁREAS DE INVESTIGACIÓN</span>
-        <h2 class="research-title">Donde convergen ciencia y tecnología</h2>
-      </div>
-
-      <div class="research-grid">
-        <div v-for="(area, idx) in researchAreas" :key="idx" class="research-item">
-          <div class="research-icon-circle">
-            <i class="fa-solid" :class="area.icon"></i>
-          </div>
-          <h3 class="research-item-title">{{ area.title }}</h3>
-        </div>
-      </div>
-    </div>
-  </section>
 
   <section class="impact-section section-padding">
     <div class="container impact-container">
       <div class="impact-header">
         <span class="section-tag">IMPACTO Y EXPERIENCIA</span>
         <h2 class="impact-title">Más de una década impulsando innovación en salud</h2>
-        <div class="accent-line mx-auto"></div>
       </div>
 
       <div class="impact-stats">
