@@ -33,7 +33,6 @@ onMounted(() => {
       <div class="section-header text-center">
         <span class="section-tag">EL ENFOQUE CIENTÍFICO</span>
         <h2 class="approach-title">Medicina Regenerativa: El Futuro de la Longevidad</h2>
-        <div class="accent-line mx-auto"></div>
       </div>
 
       <div class="approach-grid">
@@ -74,7 +73,13 @@ onMounted(() => {
 </template>
 
 <style lang="scss" scoped>
-.approach-section { background-color: var(--bg); transition: background-color 0.3s ease; padding-top: 150px; min-height: 100vh; padding-bottom: 100px; }
+.approach-section {
+  background-color: var(--bg);
+  transition: background-color 0.3s ease;
+  padding-top: 150px;
+  min-height: 100vh;
+  padding-bottom: 100px;
+}
 
 .approach-container {
   padding: 0 1.5rem;
@@ -83,21 +88,44 @@ onMounted(() => {
 
 .section-header {
   margin-bottom: 5rem;
-  display: flex; flex-direction: column; align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .section-tag {
-  font-family: var(--font-principal); font-size: 0.9rem; font-weight: 700;
-  color: var(--color-cyan); letter-spacing: 0.2em; margin-bottom: 1.5rem; display: inline-block;
-  border: 1px solid rgba(56, 182, 255, 0.4); padding: 0.5rem 1.5rem; border-radius: 50px;
+  font-family: var(--font-principal);
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--color-cyan);
+  letter-spacing: 0.2em;
+  margin-bottom: 1.5rem;
+  display: inline-block;
+  border: 1px solid rgba(56, 182, 255, 0.4);
+  padding: 0.5rem 1.5rem;
+  border-radius: 50px;
 }
 
 .approach-title {
-  font-size: 3.5rem; margin-bottom: 1.5rem; color: var(--text); font-weight: 800; text-transform: uppercase; line-height: 1.1; text-align: center;
-  @media (max-width: 768px) { font-size: 2.2rem; }
+  font-size: 3.5rem;
+  margin-bottom: 1.5rem;
+  color: var(--text);
+  font-weight: 800;
+  text-transform: uppercase;
+  line-height: 1.1;
+  text-align: center;
+
+  @media (max-width: 768px) {
+    font-size: 2.2rem;
+  }
 }
 
-.accent-line { width: 60px; height: 3px; background-color: var(--color-cyan); margin: 0 auto 2.5rem; }
+.accent-line {
+  width: 60px;
+  height: 3px;
+  background-color: var(--color-cyan);
+  margin: 0 auto 2.5rem;
+}
 
 .approach-grid {
   display: grid;
@@ -106,58 +134,138 @@ onMounted(() => {
   align-items: center;
   max-width: 1200px;
   margin: 0 auto;
-  @media (max-width: 992px) { grid-template-columns: 1fr; gap: 4rem; }
+
+  @media (max-width: 992px) {
+    grid-template-columns: 1fr;
+    gap: 4rem;
+  }
 }
 
 .explanation-text {
-  font-size: 1.25rem; line-height: 1.8; color: var(--text-muted); margin-bottom: 3rem;
-  .highlight { color: var(--text); font-weight: 600; }
+  font-size: 1.25rem;
+  line-height: 1.8;
+  color: var(--text-muted);
+  margin-bottom: 3rem;
+
+  .highlight {
+    color: var(--text);
+    font-weight: 600;
+  }
 }
 
 .protocol-card {
-  background: rgba(15, 15, 15, 0.6); 
+  background: rgba(15, 15, 15, 0.6);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(56, 182, 255, 0.3); border-left: 4px solid var(--color-cyan);
-  padding: 2.5rem; border-radius: 16px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(56, 182, 255, 0.3);
+  border-left: 4px solid var(--color-cyan);
+  padding: 2.5rem;
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
 
   .protocol-header {
-    display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;
-    .protocol-icon { font-size: 1.8rem; color: var(--color-cyan); }
-    h3 { font-size: 1.4rem; font-weight: 800; color: var(--text); }
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+
+    .protocol-icon {
+      font-size: 1.8rem;
+      color: var(--color-cyan);
+    }
+
+    h3 {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--text);
+    }
   }
 
   .protocol-text {
-    font-size: 1.05rem; line-height: 1.6; color: var(--text-muted);
-    .highlight-gold { color: var(--color-cyan); font-weight: 600; }
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: var(--text-muted);
+
+    .highlight-gold {
+      color: var(--color-cyan);
+      font-weight: 600;
+    }
   }
 }
 
 .app-column {
-  background: rgba(20, 20, 20, 0.8); border: 1px solid rgba(255, 255, 255, 0.05);
-  padding: 3.5rem 2.5rem; border-radius: 24px; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+  background: rgba(20, 20, 20, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 3.5rem 2.5rem;
+  border-radius: 24px;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
 }
 
 .app-subtitle {
-  font-size: 1.6rem; font-weight: 800; margin-bottom: 3rem; color: var(--text); text-align: center;
-  position: relative; text-transform: uppercase; letter-spacing: 0.05em;
-  &::after { content: ''; position: absolute; bottom: -15px; left: 50%; transform: translateX(-50%); width: 50px; height: 3px; background-color: var(--color-cyan); }
+  font-size: 1.6rem;
+  font-weight: 800;
+  margin-bottom: 3rem;
+  color: var(--text);
+  text-align: center;
+  position: relative;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 3px;
+    background-color: var(--color-cyan);
+  }
 }
 
-.apps-list { display: flex; flex-direction: column; gap: 2.5rem; }
+.apps-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
 
 .app-item {
-  display: flex; gap: 1.5rem; align-items: flex-start;
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
 
   .app-icon-box {
-    width: 55px; height: 55px; border-radius: 12px; background: rgba(56, 182, 255, 0.1); color: var(--color-cyan);
-    display: flex; align-items: center; justify-content: center; font-size: 1.5rem; flex-shrink: 0; transition: all 0.3s ease;
+    width: 55px;
+    height: 55px;
+    border-radius: 12px;
+    background: rgba(56, 182, 255, 0.1);
+    color: var(--color-cyan);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+    transition: all 0.3s ease;
   }
 
-  &:hover .app-icon-box { background: var(--color-cyan); color: #000; transform: scale(1.1); }
+  &:hover .app-icon-box {
+    background: var(--color-cyan);
+    color: #000;
+    transform: scale(1.1);
+  }
 
   .app-details {
-    h4 { font-size: 1.15rem; font-weight: 800; margin-bottom: 0.5rem; color: var(--text); }
-    p { font-size: 0.95rem; line-height: 1.6; color: var(--text-muted); }
+    h4 {
+      font-size: 1.15rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+      color: var(--text);
+    }
+
+    p {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: var(--text-muted);
+    }
   }
 }
 </style>
