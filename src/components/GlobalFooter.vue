@@ -41,6 +41,20 @@ const revistas = [
       
       <div class="footer-divider"></div>
 
+      <!-- Legal Disclaimer Section -->
+      <div class="footer-disclaimer">
+        <h4>Aviso Legal (Disclaimer)</h4>
+        <p>La información presentada en este sitio web tiene fines exclusivamente educativos e informativos y no constituye asesoría médica, diagnóstico, tratamiento ni sustituye la relación entre un paciente y su médico tratante.</p>
+        <p>Juan Román Garza no ejerce la medicina ni presta servicios médicos. Su labor consiste en educar, divulgar información sobre Medicina Regenerativa de Precisión, biomarcadores, longevidad e innovación en salud, así como facilitar el acceso a una red de clínicas, laboratorios y profesionales de la salud independientes.</p>
+        <p>Toda recomendación relacionada con tratamientos, estudios diagnósticos o protocolos médicos es realizada únicamente por médicos y profesionales de la salud debidamente autorizados, quienes evalúan de forma individual el historial clínico, los estudios médicos y las condiciones particulares de cada paciente para determinar su elegibilidad.</p>
+        <p>Las terapias de medicina regenerativa no ofrecen garantías de resultados y no se promocionan como una cura para ninguna enfermedad. Como ocurre con cualquier procedimiento médico, los resultados pueden variar significativamente entre pacientes y dependen de múltiples factores clínicos e individuales.</p>
+        <p>Los testimonios, casos de éxito y experiencias compartidas en este sitio representan vivencias personales de pacientes y no constituyen una garantía de resultados futuros ni deben interpretarse como evidencia de que otras personas obtendrán los mismos beneficios.</p>
+        <p>Toda la información personal y médica proporcionada por los usuarios será utilizada únicamente para fines de evaluación y coordinación con los profesionales y centros médicos correspondientes, de conformidad con las políticas de privacidad aplicables.</p>
+        <p>Los tratamientos mencionados en este sitio pueden no estar aprobados o disponibles en todas las jurisdicciones y su disponibilidad dependerá de la legislación vigente del país donde sean realizados. Los procedimientos son llevados a cabo exclusivamente por clínicas y profesionales de la salud autorizados, conforme a la normativa aplicable en cada ubicación.</p>
+      </div>
+
+      <div class="footer-divider"></div>
+
       <div class="footer-bottom-row">
         <div class="footer-info">
         <p class="copyright">&copy; {{ new Date().getFullYear() }} Juan Román Garza. Todos los derechos reservados.</p>
@@ -171,6 +185,31 @@ const revistas = [
   height: 1px;
   background-color: rgba(255, 255, 255, 0.1);
   margin-bottom: 3rem;
+}
+
+.footer-disclaimer {
+  margin-bottom: 3rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+
+  h4 {
+    font-family: var(--font-principal);
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  p {
+    margin-bottom: 0.8rem;
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
 }
 
 .footer-bottom-row {
