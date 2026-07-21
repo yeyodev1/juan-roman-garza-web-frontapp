@@ -49,6 +49,12 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('../views/InvestigacionesView.vue'),
     meta: { title: 'Investigaciones | Juan Román Garza' },
   },
+  {
+    path: '/investigaciones/:slug',
+    name: 'Articulo',
+    component: () => import('../views/ArticuloView.vue'),
+    meta: { title: 'Artículo | Juan Román Garza' },
+  },
 ]
 
 const router = createRouter({

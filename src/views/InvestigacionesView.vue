@@ -155,16 +155,14 @@ onMounted(() => fetchArticles(1))
           <button v-if="search" class="inv-btn inv-btn--ghost" @click="clearSearch">Ver todos</button>
         </div>
 
-        <!-- Cards -->
-        <div v-else class="inv-grid">
-          <a
-            v-for="a in articles"
-            :key="a._id"
-            :href="a.sourceUrl"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="inv-card"
-          >
+          <!-- Cards -->
+          <div v-else class="inv-grid">
+            <RouterLink
+              v-for="a in articles"
+              :key="a._id"
+              :to="{ name: 'Articulo', params: { slug: a.slug } }"
+              class="inv-card"
+            >
             <div class="inv-card__img-wrap">
               <img
                 v-if="a.featuredImage"
@@ -192,7 +190,7 @@ onMounted(() => fetchArticles(1))
               <p class="inv-card__excerpt">{{ a.excerpt }}</p>
               <span class="inv-card__cta">Leer más →</span>
             </div>
-          </a>
+          </RouterLink>
         </div>
 
         <!-- Pagination -->
