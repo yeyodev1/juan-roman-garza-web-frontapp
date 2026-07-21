@@ -14,7 +14,8 @@ const navItems = [
   { path: '/longevidad-regenerativa', label: 'Longevidad', num: '04' },
   { path: '/empresas', label: 'Empresas', num: '05' },
   { path: '/prensa-y-eventos', label: 'Prensa', num: '06' },
-  { path: '/contacto', label: 'Contacto', num: '07' },
+  { path: '/investigaciones', label: 'Investigaciones', num: '07' },
+  { path: '/contacto', label: 'Contacto', num: '08' },
 ];
 
 function toggleMenu() {
@@ -82,14 +83,15 @@ function handleLinkClick() {
   left: 0;
   width: 100%;
   height: 80px;
-  background-color: var(--header-bg);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  z-index: 1000;
+  background-color: rgba(24, 34, 74, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(56, 182, 255, 0.12);
+  z-index: 2000;
   display: flex;
   align-items: center;
   transition: all 0.3s ease;
+  box-shadow: 0 2px 24px rgba(0, 0, 0, 0.25);
 }
 
 .nav-container {
@@ -187,7 +189,7 @@ function handleLinkClick() {
   width: 100vw;
   height: 100vh;
   background-color: var(--bg);
-  z-index: 1001;
+  z-index: 2001;
   display: flex;
   align-items: center;
   justify-content: center;

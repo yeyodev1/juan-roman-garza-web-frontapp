@@ -43,6 +43,12 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('../views/ContactView.vue'),
     meta: { title: 'Contacto | Juan Román Garza' },
   },
+  {
+    path: '/investigaciones',
+    name: 'Investigaciones',
+    component: () => import('../views/InvestigacionesView.vue'),
+    meta: { title: 'Investigaciones | Juan Román Garza' },
+  },
 ]
 
 const router = createRouter({
