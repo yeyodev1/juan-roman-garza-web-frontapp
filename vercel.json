@@ -1,0 +1,7 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "rewrites": [
+    { "source": "/investigaciones/:slug", "destination": "/api/article-meta?slug=:slug" },
+    { "source": "/((?!api/).*)", "destination": "/index.html" }
+  ]
+}

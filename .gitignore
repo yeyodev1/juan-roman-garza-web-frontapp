@@ -4,3 +4,5 @@ dist
 *.local
 
 node-compile-cache
+.vercel
+.env*

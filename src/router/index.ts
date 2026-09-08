@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -55,6 +56,19 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('../views/ArticuloView.vue'),
     meta: { title: 'Artículo | Juan Román Garza' },
   },
+  // ── Panel de blogs (privado) ─────────────────────────────────────────────
+  {
+    path: '/admin/login',
+    name: 'AdminLogin',
+    component: () => import('../views/admin/AdminLoginView.vue'),
+    meta: { title: 'Acceso | Panel de Blogs', noindex: true },
+  },
+  {
+    path: '/admin',
+    name: 'Admin',
+    component: () => import('../views/admin/AdminView.vue'),
+    meta: { title: 'Panel de Blogs | Juan Román Garza', requiresAdmin: true, noindex: true },
+  },
 ]
 
 const router = createRouter({
@@ -68,6 +82,28 @@ const router = createRouter({
 router.beforeEach((to, _from, next) => {
   if (to.meta?.title) {
     document.title = to.meta.title as string
+  }
+
+  // Las páginas privadas no deben indexarse
+  let robots = document.querySelector<HTMLMetaElement>('meta[name="robots"][data-dynamic]')
+  if (to.meta?.noindex) {
+    if (!robots) {
+      robots = document.createElement('meta')
+      robots.name = 'robots'
+      robots.setAttribute('data-dynamic', '')
+      document.head.appendChild(robots)
+    }
+    robots.content = 'noindex, nofollow'
+  } else if (robots) {
+    robots.remove()
+  }
+
+  if (to.meta?.requiresAdmin) {
+    const auth = useAuthStore()
+    if (!auth.isAdmin) {
+      next({ name: 'AdminLogin', query: { redirect: to.fullPath } })
+      return
+    }
   }
   next()
 })
