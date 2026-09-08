@@ -6,7 +6,9 @@ class APIBase {
   private axiosInstance = axios.create()
 
   constructor() {
-    const raw = (import.meta.env.VITE_API_BASE_URL as string) || 'http://localhost:8100/api'
+    // trim(): la variable en Vercel puede traer espacios o saltos de línea al final,
+    // y sin limpiarla el endsWith('/api') fallaba y se duplicaba "/api" en la URL.
+    const raw = ((import.meta.env.VITE_API_BASE_URL as string) || 'http://localhost:8100/api').trim()
     const trimmed = raw.replace(/\/+$/, '')
     this.baseUrl = trimmed.endsWith('/api') || /\/api\//.test(trimmed)
       ? trimmed
