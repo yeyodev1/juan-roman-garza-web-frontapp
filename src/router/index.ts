@@ -68,9 +68,28 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/admin',
-    name: 'Admin',
     component: () => import('../views/admin/AdminView.vue'),
-    meta: { title: 'Panel de Blogs | Juan Román Garza', requiresAdmin: true, noindex: true },
+    meta: { requiresAdmin: true, noindex: true },
+    children: [
+      {
+        path: '',
+        name: 'AdminList',
+        component: () => import('../views/admin/AdminListView.vue'),
+        meta: { title: 'Blogs | Panel de Blogs' },
+      },
+      {
+        path: 'nuevo',
+        name: 'AdminNew',
+        component: () => import('../views/admin/AdminEditorView.vue'),
+        meta: { title: 'Nuevo artículo | Panel de Blogs' },
+      },
+      {
+        path: 'editar/:id',
+        name: 'AdminEdit',
+        component: () => import('../views/admin/AdminEditorView.vue'),
+        meta: { title: 'Editar artículo | Panel de Blogs' },
+      },
+    ],
   },
 ]
 

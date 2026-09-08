@@ -28,7 +28,7 @@ async function submit() {
       return
     }
     const redirect = typeof route.query.redirect === 'string' ? route.query.redirect : null
-    router.push(redirect || { name: 'Admin' })
+    router.push(redirect || { name: 'AdminList' })
   } catch (e) {
     const err = e as ApiError
     errorMsg.value = err.status === 401 ? 'Correo o contraseña incorrectos.' : err.message || 'No se pudo iniciar sesión.'
