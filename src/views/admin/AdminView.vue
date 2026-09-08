@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue'
+import { ref, onMounted, onBeforeUnmount, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import { articlesService, type Article, type Pagination } from '@/services/articles.service'
 import type { ApiError } from '@/types'
 import ArticleEditor from '@/components/admin/ArticleEditor.vue'
 import ShareModal from '@/components/admin/ShareModal.vue'
+import AdminPager from '@/components/admin/AdminPager.vue'
 
 const router = useRouter()
 const auth = useAuthStore()
@@ -28,6 +29,13 @@ const status = ref<'' | 'published' | 'draft'>('')
 const deleting = ref<Article | null>(null)
 
 const publicBase = 'https://juanromangarza.com'
+
+const listTop = ref<HTMLElement | null>(null)
+
+function changePage(page: number) {
+  load(page)
+  listTop.value?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+}
 
 async function load(page = 1) {
   loading.value = true
@@ -121,14 +129,6 @@ function logout() {
   router.push({ name: 'AdminLogin' })
 }
 
-const pages = computed(() => {
-  const out: number[] = []
-  const start = Math.max(1, pagination.value.page - 2)
-  const end = Math.min(pagination.value.pages, pagination.value.page + 2)
-  for (let i = start; i <= end; i++) out.push(i)
-  return out
-})
-
 // Sesión expirada (httpBase emite este evento ante un 401)
 function onTokenExpired() {
   auth.logout()
@@ -183,6 +183,9 @@ onBeforeUnmount(() => window.removeEventListener('auth:token-expired', onTokenEx
           <button class="adm-btn adm-btn--primary" @click="startCreate"><i class="fa-solid fa-plus"></i> Nuevo artículo</button>
         </div>
 
+        <div ref="listTop" class="adm__anchor"></div>
+        <AdminPager v-if="!loading && articles.length" class="adm__pager-top" :pagination="pagination" :loading="loading" @change="changePage" />
+
         <p v-if="error" class="adm__error"><i class="fa-solid fa-circle-exclamation"></i> {{ error }}</p>
 
         <div v-if="loading" class="adm__loading"><span class="adm-spinner adm-spinner--accent"></span></div>
@@ -222,12 +225,7 @@ onBeforeUnmount(() => window.removeEventListener('auth:token-expired', onTokenEx
           </li>
         </ul>
 
-        <nav v-if="pagination.pages > 1" class="adm__pager" aria-label="Paginación">
-          <button :disabled="pagination.page === 1" @click="load(pagination.page - 1)"><i class="fa-solid fa-chevron-left"></i></button>
-          <button v-for="p in pages" :key="p" :class="{ 'is-active': p === pagination.page }" @click="load(p)">{{ p }}</button>
-          <button :disabled="pagination.page === pagination.pages" @click="load(pagination.page + 1)"><i class="fa-solid fa-chevron-right"></i></button>
-          <span class="adm__pager-total">{{ pagination.total }} artículos</span>
-        </nav>
+        <AdminPager v-if="!loading && articles.length" class="adm__pager-bottom" :pagination="pagination" :loading="loading" @change="changePage" />
       </template>
     </div>
 
@@ -428,16 +426,9 @@ onBeforeUnmount(() => window.removeEventListener('auth:token-expired', onTokenEx
     &:disabled { opacity: 0.5; cursor: wait; }
   }
 
-  &__pager {
-    display: flex; align-items: center; gap: 0.4rem; justify-content: center; margin-top: 2rem; flex-wrap: wrap;
-    button {
-      min-width: 38px; height: 38px; border-radius: 0.6rem;
-      background: var(--card-bg); border: 1px solid var(--border); color: var(--text); cursor: pointer;
-      &.is-active { background: var(--accent); color: #0b1631; border-color: var(--accent); }
-      &:disabled { opacity: 0.4; cursor: not-allowed; }
-    }
-  }
-  &__pager-total { font-size: 0.8rem; color: var(--text-muted); margin-left: 0.75rem; }
+  &__anchor { scroll-margin-top: 100px; }
+  &__pager-top { margin-bottom: 1rem; }
+  &__pager-bottom { margin-top: 1rem; }
 
   &__backdrop {
     position: fixed; inset: 0; z-index: 1000;
