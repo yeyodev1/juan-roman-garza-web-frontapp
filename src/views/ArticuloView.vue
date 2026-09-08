@@ -100,7 +100,7 @@ onMounted(fetchArticle)
     <!-- Error -->
     <div v-else-if="error" class="art-error">
       <p>{{ error }}</p>
-      <button class="art-btn art-btn--ghost" @click="goBack">← Volver a investigaciones</button>
+      <button class="art-btn art-btn--ghost" @click="goBack">← Volver a Blogs</button>
     </div>
 
     <!-- Content -->
@@ -112,7 +112,7 @@ onMounted(fetchArticle)
             <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
               <path d="M19 12H5M12 5l-7 7 7 7"/>
             </svg>
-            Investigaciones
+            Blogs
           </button>
 
           <div class="art-meta">
@@ -169,7 +169,7 @@ onMounted(fetchArticle)
           </div>
 
           <button class="art-btn art-btn--primary" @click="goBack">
-            ← Volver a Investigaciones
+            ← Volver a Blogs
           </button>
         </div>
       </section>

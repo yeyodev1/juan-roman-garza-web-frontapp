@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
+import ArticlesPager from '@/components/ArticlesPager.vue'
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8100/api'
 
@@ -65,10 +66,12 @@ function clearSearch() {
   fetchArticles(1)
 }
 
+const gridTop = ref<HTMLElement | null>(null)
+
 function goToPage(page: number) {
   if (page < 1 || page > pagination.value.pages) return
   fetchArticles(page)
-  window.scrollTo({ top: 0, behavior: 'smooth' })
+  gridTop.value?.scrollIntoView({ behavior: 'smooth', block: 'start' })
 }
 
 function formatDate(dateStr: string) {
@@ -79,14 +82,6 @@ function formatDate(dateStr: string) {
   })
 }
 
-const pageRange = computed(() => {
-  const range: number[] = []
-  const start = Math.max(1, currentPage.value - 2)
-  const end = Math.min(pagination.value.pages, currentPage.value + 2)
-  for (let i = start; i <= end; i++) range.push(i)
-  return range
-})
-
 onMounted(() => fetchArticles(1))
 </script>
 
@@ -95,12 +90,12 @@ onMounted(() => fetchArticles(1))
     <!-- Hero -->
     <section class="inv-hero">
       <div class="inv-wrap">
-        <span class="inv-hero__tag">Investigaciones Médicas</span>
+        <span class="inv-hero__tag">Blog</span>
         <h1 class="inv-hero__title">
           Artículos de <span class="inv-hero__cyan">Medicina Regenerativa</span>
         </h1>
         <p class="inv-hero__desc">
-          Investigaciones, avances y conocimiento sobre células madre, longevidad
+          Artículos, avances y conocimiento sobre células madre, longevidad
           y terapias regenerativas del Centro Médico Eternal.
         </p>
 
@@ -126,10 +121,9 @@ onMounted(() => fetchArticles(1))
     <!-- Articles -->
     <section class="inv-body">
       <div class="inv-wrap">
-        <!-- Count -->
-        <p v-if="!loading" class="inv-count">
-          {{ search ? `${pagination.total} resultados para "${search}"` : `${pagination.total} artículos` }}
-        </p>
+        <div ref="gridTop" class="inv-anchor"></div>
+        <p v-if="!loading && search" class="inv-count">{{ pagination.total }} resultados para "{{ search }}"</p>
+        <ArticlesPager v-if="!loading && articles.length" class="inv-pager-top" :pagination="pagination" :loading="loading" @change="goToPage" />
 
         <!-- Loading skeleton -->
         <div v-if="loading" class="inv-grid">
@@ -193,26 +187,7 @@ onMounted(() => fetchArticles(1))
           </RouterLink>
         </div>
 
-        <!-- Pagination -->
-        <nav v-if="!loading && pagination.pages > 1" class="inv-pager">
-          <button class="inv-pager__btn" :disabled="currentPage === 1" @click="goToPage(currentPage - 1)">←</button>
-          <button v-if="(pageRange[0] ?? 1) > 1" class="inv-pager__btn" @click="goToPage(1)">1</button>
-          <span v-if="(pageRange[0] ?? 1) > 2" class="inv-pager__dots">…</span>
-          <button
-            v-for="p in pageRange"
-            :key="p"
-            class="inv-pager__btn"
-            :class="{ 'inv-pager__btn--active': p === currentPage }"
-            @click="goToPage(p)"
-          >{{ p }}</button>
-          <span v-if="(pageRange[pageRange.length - 1] ?? 1) < pagination.pages - 1" class="inv-pager__dots">…</span>
-          <button
-            v-if="(pageRange[pageRange.length - 1] ?? 1) < pagination.pages"
-            class="inv-pager__btn"
-            @click="goToPage(pagination.pages)"
-          >{{ pagination.pages }}</button>
-          <button class="inv-pager__btn" :disabled="currentPage === pagination.pages" @click="goToPage(currentPage + 1)">→</button>
-        </nav>
+        <ArticlesPager v-if="!loading && articles.length" class="inv-pager-bottom" :pagination="pagination" :loading="loading" @change="goToPage" />
       </div>
     </section>
   </div>
@@ -511,50 +486,9 @@ onMounted(() => fetchArticles(1))
 }
 
 /* Pagination */
-.inv-pager {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.5rem;
-  margin-top: 3.5rem;
-  flex-wrap: wrap;
-
-  &__btn {
-    min-width: 2.5rem;
-    height: 2.5rem;
-    padding: 0 0.75rem;
-    border-radius: 0.5rem;
-    border: 1px solid var(--border);
-    background: var(--card-bg);
-    color: var(--text-muted);
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: all 0.2s;
-
-    &:hover:not(:disabled) {
-      border-color: var(--accent);
-      color: var(--accent);
-    }
-
-    &--active {
-      background: var(--accent);
-      border-color: var(--accent);
-      color: var(--bg);
-      font-weight: 700;
-    }
-
-    &:disabled {
-      opacity: 0.4;
-      cursor: not-allowed;
-    }
-  }
-
-  &__dots {
-    color: var(--text-muted);
-    padding: 0 0.25rem;
-  }
-}
+.inv-anchor { scroll-margin-top: 100px; }
+.inv-pager-top { margin-bottom: 2rem; }
+.inv-pager-bottom { margin-top: 3rem; }
 
 @media (max-width: 768px) {
   .inv-hero { padding: 5rem 0 3rem; }

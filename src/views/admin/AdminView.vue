@@ -6,7 +6,7 @@ import { articlesService, type Article, type Pagination } from '@/services/artic
 import type { ApiError } from '@/types'
 import ArticleEditor from '@/components/admin/ArticleEditor.vue'
 import ShareModal from '@/components/admin/ShareModal.vue'
-import AdminPager from '@/components/admin/AdminPager.vue'
+import ArticlesPager from '@/components/ArticlesPager.vue'
 
 const router = useRouter()
 const auth = useAuthStore()
@@ -149,7 +149,7 @@ onBeforeUnmount(() => window.removeEventListener('auth:token-expired', onTokenEx
       <header class="adm__head">
         <div>
           <span class="adm__kicker"><i class="fa-solid fa-pen-nib"></i> Panel de Blogs</span>
-          <h1 class="adm__title">Investigaciones</h1>
+          <h1 class="adm__title">Blogs</h1>
         </div>
         <div class="adm__user">
           <span class="adm__user-name"><i class="fa-regular fa-user"></i> {{ auth.user?.name || auth.user?.email }}</span>
@@ -184,7 +184,7 @@ onBeforeUnmount(() => window.removeEventListener('auth:token-expired', onTokenEx
         </div>
 
         <div ref="listTop" class="adm__anchor"></div>
-        <AdminPager v-if="!loading && articles.length" class="adm__pager-top" :pagination="pagination" :loading="loading" @change="changePage" />
+        <ArticlesPager v-if="!loading && articles.length" class="adm__pager-top" :pagination="pagination" :loading="loading" @change="changePage" />
 
         <p v-if="error" class="adm__error"><i class="fa-solid fa-circle-exclamation"></i> {{ error }}</p>
 
@@ -225,7 +225,7 @@ onBeforeUnmount(() => window.removeEventListener('auth:token-expired', onTokenEx
           </li>
         </ul>
 
-        <AdminPager v-if="!loading && articles.length" class="adm__pager-bottom" :pagination="pagination" :loading="loading" @change="changePage" />
+        <ArticlesPager v-if="!loading && articles.length" class="adm__pager-bottom" :pagination="pagination" :loading="loading" @change="changePage" />
       </template>
     </div>
 

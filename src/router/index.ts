@@ -48,7 +48,7 @@ const routes: Array<RouteRecordRaw> = [
     path: '/investigaciones',
     name: 'Investigaciones',
     component: () => import('../views/InvestigacionesView.vue'),
-    meta: { title: 'Investigaciones | Juan Román Garza' },
+    meta: { title: 'Blogs | Juan Román Garza' },
   },
   {
     path: '/investigaciones/:slug',
@@ -56,6 +56,9 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('../views/ArticuloView.vue'),
     meta: { title: 'Artículo | Juan Román Garza' },
   },
+  // Alias amigables: /blogs → /investigaciones (se mantiene la URL original por SEO y enlaces ya compartidos)
+  { path: '/blogs', redirect: { name: 'Investigaciones' } },
+  { path: '/blogs/:slug', redirect: (to) => ({ name: 'Articulo', params: { slug: to.params.slug } }) },
   // ── Panel de blogs (privado) ─────────────────────────────────────────────
   {
     path: '/admin/login',

@@ -44,7 +44,7 @@ async function submit() {
       <div class="adm-login__head">
         <span class="adm-login__badge"><i class="fa-solid fa-lock"></i> Acceso privado</span>
         <h1 class="adm-login__title">Panel de Blogs</h1>
-        <p class="adm-login__sub">Crea, edita y comparte los artículos de Investigaciones.</p>
+        <p class="adm-login__sub">Crea, edita y comparte los blogs del sitio.</p>
       </div>
 
       <form class="adm-login__form" @submit.prevent="submit" novalidate>
@@ -72,7 +72,7 @@ async function submit() {
       </form>
 
       <router-link :to="{ name: 'Investigaciones' }" class="adm-login__back">
-        <i class="fa-solid fa-arrow-left"></i> Volver a Investigaciones
+        <i class="fa-solid fa-arrow-left"></i> Volver a Blogs
       </router-link>
     </div>
   </div>

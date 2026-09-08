@@ -14,7 +14,7 @@ const navItems = [
   { path: '/longevidad-regenerativa', label: 'Longevidad', num: '04' },
   { path: '/empresas', label: 'Empresas', num: '05' },
   { path: '/prensa-y-eventos', label: 'Prensa', num: '06' },
-  { path: '/investigaciones', label: 'Investigaciones', num: '07' },
+  { path: '/investigaciones', label: 'Blogs', num: '07' },
   { path: '/contacto', label: 'Contacto', num: '08' },
 ];
 

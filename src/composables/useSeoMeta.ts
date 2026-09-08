@@ -61,6 +61,14 @@ const pageMetaMap: Record<string, SeoMeta> = {
     ogImage: 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095169/assets-juan/profile-og.jpg',
     canonical: 'https://juanromangarza.com/prensa-y-eventos'
   },
+  '/investigaciones': {
+    title: 'Blogs | Juan Román Garza — Medicina Regenerativa y Longevidad',
+    description: 'Blogs y artículos sobre células madre, longevidad y terapias regenerativas. Más de 300 publicaciones de Juan Román Garza y el equipo de Powerhouse Biotech.',
+    ogTitle: 'Blogs | Juan Román Garza',
+    ogDescription: 'Artículos sobre células madre, longevidad y medicina regenerativa.',
+    ogImage: 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095169/assets-juan/profile-og.jpg',
+    canonical: 'https://juanromangarza.com/investigaciones'
+  },
   '/contacto': {
     title: 'Contacto | Juan Román Garza — Health Decision Platform',
     description: 'Consulta sobre Medicina Regenerativa, evaluación de viabilidad y salud celular. Comunícate directamente para resolver tus dudas sobre Células Madre, Exosomas y más.',
