@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted } from 'vue';
+import { computed, onMounted, onUnmounted } from 'vue';
+import { useI18n } from '@/i18n';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -31,21 +32,14 @@ onUnmounted(() => {
   ScrollTrigger.getAll().forEach(t => t.kill());
 });
 
-const distinctions = [
-  'Medicina regenerativa',
-  'Biología del envejecimiento',
-  'Biomarcadores avanzados',
-  'Medicina de precisión',
-  'Inteligencia artificial aplicada a la salud',
-  'Optimización del bienestar y la longevidad',
-];
+const { t, tm, rt } = useI18n();
 
-const pillars = [
-  { icon: 'fa-shield-halved', title: 'Preventivo', desc: 'Anticipando riesgos antes de que aparezca la enfermedad.' },
-  { icon: 'fa-user-gear', title: 'Personalizado', desc: 'Diseñando estrategias adaptadas a cada individuo.' },
-  { icon: 'fa-microchip', title: 'Tecnológico', desc: 'Integrando herramientas avanzadas de diagnóstico y análisis.' },
-  { icon: 'fa-hand-holding-heart', title: 'Humano', desc: 'Manteniendo al paciente en el centro de cada decisión.' },
-];
+const distinctions = computed(() => tm<string[]>('about.distinctions.items'));
+
+const pillarIcons = ['fa-shield-halved', 'fa-user-gear', 'fa-microchip', 'fa-hand-holding-heart'];
+const pillars = computed(() =>
+  tm<{ title: string; desc: string }[]>('about.mission.pillars').map((copy, idx) => ({ ...copy, icon: pillarIcons[idx] }))
+);
 </script>
 
 <template>
@@ -55,35 +49,35 @@ const pillars = [
       <div class="bio-grid">
         <div class="bio-visuals">
           <img src="https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095164/assets-juan/5e7c35cb-17e2-4244-ab47-c3f4d3edff54.jpg"
-               alt="Juan Román Garza Delgado" class="bio-main-img" loading="lazy" />
+               :alt="t('about.imageAlt')" class="bio-main-img" loading="lazy" />
           <div class="bio-floating-badge">
             <span class="badge-icon"><i class="fa-solid fa-quote-left"></i></span>
-            <p>"La medicina del futuro no solo prolonga la vida; ayuda a las personas a vivirla con salud, dignidad y plenitud."</p>
+            <p>{{ t('about.badgeQuote') }}</p>
           </div>
         </div>
 
         <div class="bio-text">
-          <span class="section-tag">¿QUIÉN ES JUAN ROMÁN GARZA?</span>
-          <h2 class="bio-title">Una visión que une ciencia, innovación y humanidad</h2>
+          <span class="section-tag">{{ t('about.tag') }}</span>
+          <h2 class="bio-title">{{ t('about.title') }}</h2>
 
           <p class="paragraph">
-            <strong>Juan Román Garza Delgado</strong> es estratega, investigador y emprendedor especializado en longevidad regenerativa, medicina de precisión e innovación en salud.
+            <template v-for="(seg, i) in rt('about.p1')" :key="i"><strong v-if="seg.bold">{{ seg.text }}</strong><template v-else>{{ seg.text }}</template></template>
           </p>
 
           <p class="paragraph">
-            Como fundador de <strong>Eternal Medical Center</strong> y <strong>PowerHouse Biotech</strong>, lidera el desarrollo de un ecosistema centrado en el paciente donde convergen la medicina regenerativa, los biomarcadores avanzados, la inteligencia artificial y la educación médica.
+            <template v-for="(seg, i) in rt('about.p2')" :key="i"><strong v-if="seg.bold">{{ seg.text }}</strong><template v-else>{{ seg.text }}</template></template>
           </p>
 
           <p class="paragraph highlight">
-            Su trabajo está impulsado por una convicción sencilla pero poderosa: ayudar a las personas a vivir más años con salud, bienestar y plenitud.
+            {{ t('about.highlight') }}
           </p>
 
           <div class="inspiration-block">
             <i class="fa-solid fa-leaf inspiration-icon"></i>
             <div>
-              <h3 class="inspiration-title">Nuestra Inspiración</h3>
+              <h3 class="inspiration-title">{{ t('about.inspirationTitle') }}</h3>
               <p class="paragraph">
-                La filosofía de Juan Román nace de una profunda vocación de servicio inspirada por el legado de su padre, el <strong>Dr. Juan Antonio Garza Quintanilla</strong>, quien le enseñó que la medicina no se trata únicamente de tratar enfermedades, sino de escuchar, acompañar y servir con empatía a cada paciente.
+                <template v-for="(seg, i) in rt('about.inspiration')" :key="i"><strong v-if="seg.bold">{{ seg.text }}</strong><template v-else>{{ seg.text }}</template></template>
               </p>
             </div>
           </div>
@@ -92,10 +86,10 @@ const pillars = [
 
       <div class="distinctions-section">
         <div class="distinctions-header">
-          <span class="section-tag">LO QUE LO DISTINGUE</span>
-          <h2 class="distinctions-title">Ciencia con propósito humano</h2>
+          <span class="section-tag">{{ t('about.distinctions.tag') }}</span>
+          <h2 class="distinctions-title">{{ t('about.distinctions.title') }}</h2>
           <p class="distinctions-intro">
-            Juan Román combina disciplinas tradicionalmente separadas para ofrecer una visión integral de la salud:
+            {{ t('about.distinctions.intro') }}
           </p>
         </div>
 
@@ -107,16 +101,16 @@ const pillars = [
         </div>
 
         <p class="distinctions-closing">
-          Su enfoque busca comprender las causas profundas de los problemas de salud y no únicamente sus síntomas.
+          {{ t('about.distinctions.closing') }}
         </p>
       </div>
 
       <div class="mission-section">
         <div class="mission-header">
-          <span class="section-tag">UNA MISIÓN CLARA</span>
-          <h2 class="mission-title">Construyendo el futuro de la salud</h2>
+          <span class="section-tag">{{ t('about.mission.tag') }}</span>
+          <h2 class="mission-title">{{ t('about.mission.title') }}</h2>
           <p class="mission-intro">
-            A través de Eternal Medical Center y PowerHouse Biotech, trabaja para construir un modelo de atención médica más:
+            {{ t('about.mission.intro') }}
           </p>
         </div>
 
@@ -134,12 +128,12 @@ const pillars = [
       <div class="closing-section">
         <div class="closing-block">
           <i class="fa-solid fa-eye closing-icon"></i>
-          <h2 class="closing-title">Mirando hacia el futuro</h2>
+          <h2 class="closing-title">{{ t('about.closing.title') }}</h2>
           <p class="paragraph">
-            Juan Román visualiza un futuro donde las personas tengan acceso a información más precisa sobre su salud, puedan tomar decisiones informadas y dispongan de herramientas que les permitan vivir más tiempo con energía, independencia y bienestar.
+            {{ t('about.closing.body') }}
           </p>
           <p class="paragraph highlight">
-            Su propósito es contribuir a la construcción de una nueva generación de medicina donde la ciencia, la tecnología y la empatía trabajen juntas para transformar vidas y generar un impacto positivo que trascienda generaciones.
+            {{ t('about.closing.highlight') }}
           </p>
         </div>
       </div>

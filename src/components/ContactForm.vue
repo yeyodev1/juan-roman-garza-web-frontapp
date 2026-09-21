@@ -2,6 +2,9 @@
 import { ref, onMounted } from 'vue';
 import { VueTelInput } from 'vue-tel-input';
 import 'vue-tel-input/vue-tel-input.css';
+import { useI18n } from '@/i18n';
+
+const { t, locale } = useI18n();
 
 const form = ref({ firstName: '', lastName: '', phone: '', email: '', message: '' });
 const fullPhoneInfo = ref<any>(null);
@@ -50,7 +53,9 @@ async function handleSubmit() {
       parsedPhone = fullPhoneInfo.value.number.replace(/\s+/g, '');
     }
 
-    const notaContent = `👑 Juan Román Garza — Contacto Ejecutivo\n📌 Fuente: Web Oficial JRG\n🕐 Actualizado: ${formattedDate}\n💬 Mensaje: ${form.value.message}`;
+    // Nota interna para el CRM (siempre en español); se indica el idioma en que escribió el lead
+    const idioma = locale.value === 'en' ? 'Inglés (EN)' : 'Español (ES)';
+    const notaContent = `👑 Juan Román Garza — Contacto Ejecutivo\n📌 Fuente: Web Oficial JRG\n🌐 Idioma: ${idioma}\n🕐 Actualizado: ${formattedDate}\n💬 Mensaje: ${form.value.message}`;
 
     const payload = {
       nombre: `${form.value.firstName} ${form.value.lastName}`,
@@ -92,22 +97,22 @@ async function handleSubmit() {
       
       <div class="form-row">
         <div class="form-group">
-          <label for="firstName">Nombre *</label>
-          <input type="text" id="firstName" v-model="form.firstName" required placeholder="Ej. Carlos" />
+          <label for="firstName">{{ t('contact.form.firstName') }}</label>
+          <input type="text" id="firstName" v-model="form.firstName" required :placeholder="t('contact.form.firstNamePlaceholder')" />
         </div>
         <div class="form-group">
-          <label for="lastName">Apellido *</label>
-          <input type="text" id="lastName" v-model="form.lastName" required placeholder="Ej. Mendoza" />
+          <label for="lastName">{{ t('contact.form.lastName') }}</label>
+          <input type="text" id="lastName" v-model="form.lastName" required :placeholder="t('contact.form.lastNamePlaceholder')" />
         </div>
       </div>
 
       <div class="form-group">
-        <label for="email">Correo Corporativo *</label>
-        <input type="email" id="email" v-model="form.email" required placeholder="carlos@empresa.com" />
+        <label for="email">{{ t('contact.form.email') }}</label>
+        <input type="email" id="email" v-model="form.email" required :placeholder="t('contact.form.emailPlaceholder')" />
       </div>
       
       <div class="form-group">
-        <label>Teléfono (WhatsApp) *</label>
+        <label for="phone">{{ t('contact.form.phone') }}</label>
         <!-- vue-tel-input component for full country code parsing -->
         <vue-tel-input 
           v-if="isCountryLoaded"
@@ -115,33 +120,33 @@ async function handleSubmit() {
           @on-input="onPhoneInput"
           mode="international"
           :defaultCountry="defaultCountry"
-          :inputOptions="{ placeholder: '+52 55 1234 5678', required: true }"
-          :dropdownOptions="{ showSearchBox: true, searchBoxPlaceholder: 'Buscar país...', showFlags: true, showDialCodeInSelection: true }"
+          :inputOptions="{ placeholder: '+52 55 1234 5678', required: true, id: 'phone' }"
+          :dropdownOptions="{ showSearchBox: true, searchBoxPlaceholder: t('contact.form.searchCountry'), showFlags: true, showDialCodeInSelection: true }"
           class="custom-tel-input"
         ></vue-tel-input>
         <div v-else class="tel-skeleton">
-          <i class="fa-solid fa-spinner fa-spin"></i> Detectando región...
+          <i class="fa-solid fa-spinner fa-spin"></i> {{ t('contact.form.detectingRegion') }}
         </div>
       </div>
 
       <div class="form-group">
-        <label for="message">Mensaje / Requerimiento *</label>
-        <textarea id="message" v-model="form.message" required rows="4" placeholder="¿Cómo podemos potenciar su longevidad?"></textarea>
+        <label for="message">{{ t('contact.form.message') }}</label>
+        <textarea id="message" v-model="form.message" required rows="4" :placeholder="t('contact.form.messagePlaceholder')"></textarea>
       </div>
 
       <button type="submit" class="submit-btn" :disabled="isSubmitting">
-        <span v-if="!isSubmitting">Enviar Solicitud <i class="fa-solid fa-paper-plane"></i></span>
-        <span v-else>Procesando <i class="fa-solid fa-spinner fa-spin"></i></span>
+        <span v-if="!isSubmitting">{{ t('contact.form.submit') }} <i class="fa-solid fa-paper-plane"></i></span>
+        <span v-else>{{ t('contact.form.submitting') }} <i class="fa-solid fa-spinner fa-spin"></i></span>
       </button>
 
       <transition name="fade">
-        <div v-if="submitStatus === 'success'" class="alert success-alert">
+        <div v-if="submitStatus === 'success'" class="alert success-alert" role="status">
           <i class="fa-solid fa-circle-check"></i>
-          <p>Solicitud enviada con éxito. Nos comunicaremos pronto.</p>
+          <p>{{ t('contact.form.success') }}</p>
         </div>
-        <div v-else-if="submitStatus === 'error'" class="alert error-alert">
+        <div v-else-if="submitStatus === 'error'" class="alert error-alert" role="alert">
           <i class="fa-solid fa-circle-exclamation"></i>
-          <p>Ocurrió un error o faltan campos por llenar (*).</p>
+          <p>{{ t('contact.form.error') }}</p>
         </div>
       </transition>
     </form>

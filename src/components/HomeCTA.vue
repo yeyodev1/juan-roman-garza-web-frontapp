@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
+import { useI18n } from '@/i18n';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const router = useRouter();
+const { t } = useI18n();
 
 onMounted(() => {
   gsap.fromTo('.cta-section',
@@ -35,16 +37,16 @@ onUnmounted(() => {
     <div class="cta-background-glow"></div>
     <div class="container cta-container">
       <div class="cta-content">
-        <span class="cta-badge"><i class="fa-solid fa-bolt"></i> EMPIECE HOY</span>
-        <h2 class="cta-title">¿Quiere conocer cómo la medicina regenerativa y la inteligencia clínica pueden transformar su salud?</h2>
-        <p class="cta-subtitle">Descubra si una Evaluación de Capacidad Regenerativa podría ayudarle a comprender mejor el estado actual de su salud.</p>
+        <span class="cta-badge"><i class="fa-solid fa-bolt"></i> {{ t('home.cta.badge') }}</span>
+        <h2 class="cta-title">{{ t('home.cta.title') }}</h2>
+        <p class="cta-subtitle">{{ t('home.cta.subtitle') }}</p>
         
         <div class="cta-buttons">
           <button class="btn-primary pulse-glow" @click="router.push('/contacto')">
-            <i class="fa-regular fa-calendar-check"></i> Iniciar mi Evaluación
+            <i class="fa-regular fa-calendar-check"></i> {{ t('home.cta.primary') }}
           </button>
           <button class="btn-secondary glass-btn" @click="router.push('/powerhouse')">
-            <i class="fa-regular fa-building"></i> Explorar PowerHouse Biotech
+            <i class="fa-regular fa-building"></i> {{ t('home.cta.secondary') }}
           </button>
         </div>
       </div>

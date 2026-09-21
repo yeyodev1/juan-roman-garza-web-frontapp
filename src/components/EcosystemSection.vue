@@ -1,35 +1,44 @@
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { computed, onMounted } from 'vue';
+import { useI18n } from '@/i18n';
 import { gsap } from 'gsap';
 import EcosystemCard from './EcosystemCard.vue';
 
-const entities = [
+const { t, tm, rt } = useI18n();
+
+// Datos fijos por entidad; los textos vienen de src/i18n (ecosystem.entities)
+const entityData = [
   {
     name: 'Powerhouse Biotech',
-    lead: 'El gran proyecto de Juan Román Garza',
-    desc: 'La plataforma de educación, vinculación y telemetría de vanguardia para líderes de la salud. Transformando el futuro de la medicina regenerativa con análisis masivo de datos clínicos.',
     image: 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095166/assets-juan/856b90c7-4c38-4f6c-8c5e-2c0b0f50764c.jpg',
-    badge: 'PROYECTO INSIGNIA',
     badgeClass: 'gold',
     link: 'https://www.powerhousebiotech.com/',
-    details: [
-      { icon: 'fa-database', text: '250k+ Casos de Estudio Clínicos' },
-      { icon: 'fa-laptop-code', text: 'Telemetría y Fidelización' },
-    ],
+    icons: ['fa-database', 'fa-laptop-code'],
   },
   {
     name: 'Eternal Regenerative Center',
-    lead: 'Dirigido por el Dr. Juan Antonio Garza Quintanilla',
-    desc: 'Pioneros con más de 20 años de investigación clínica en geriatría y terapias celulares avanzadas. Especialistas en revertir el desgaste fisiológico, enfermedades crónico-degenerativas y trastornos autoinmunes.',
     image: 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095160/assets-juan/19d44cab-fe24-4998-8fa0-7095b1ef858c.jpg',
-    badge: 'LA CLÍNICA',
     badgeClass: '',
-    details: [
-      { icon: 'fa-location-dot', text: 'Monterrey & Montemorelos, México' },
-      { icon: 'fa-shield-halved', text: '20+ Años de Investigación Médica' },
-    ],
-  }
+    link: '',
+    icons: ['fa-location-dot', 'fa-shield-halved'],
+  },
 ];
+
+type EntityCopy = { lead: string; desc: string; badge: string; details: string[] };
+
+const entities = computed(() => {
+  const copies = tm<EntityCopy[]>('ecosystem.entities');
+  return entityData.map(({ icons, ...data }, idx) => {
+    const copy: EntityCopy = copies[idx] ?? { lead: '', desc: '', badge: '', details: [] };
+    return {
+      ...data,
+      lead: copy.lead,
+      desc: copy.desc,
+      badge: copy.badge,
+      details: copy.details.map((text, i) => ({ icon: icons[i] ?? '', text })),
+    };
+  });
+});
 
 onMounted(() => {
   gsap.fromTo('.section-header', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 1, ease: 'power3.out' });
@@ -41,10 +50,10 @@ onMounted(() => {
   <section id="ecosystem" class="ecosystem-section section-padding">
     <div class="container">
       <div class="section-header">
-        <span class="section-tag">NUESTRO ECOSISTEMA</span>
-        <h2 class="section-title">Ciencia Médica y <a href="https://www.powerhousebiotech.com/" target="_blank" class="cyan-link">Powerhouse Biotech</a></h2>
+        <span class="section-tag">{{ t('ecosystem.tag') }}</span>
+        <h2 class="section-title">{{ t('ecosystem.titleBefore') }} <a href="https://www.powerhousebiotech.com/" target="_blank" class="cyan-link">Powerhouse Biotech</a></h2>
         <p class="section-subtitle">
-          El puente que conecta más de dos décadas de investigación biomédica de vanguardia con plataformas de salud digitales personalizadas, liderado por el proyecto insignia <strong>Powerhouse Biotech</strong>.
+          <template v-for="(seg, i) in rt('ecosystem.subtitle')" :key="i"><strong v-if="seg.bold">{{ seg.text }}</strong><template v-else>{{ seg.text }}</template></template>
         </p>
       </div>
 

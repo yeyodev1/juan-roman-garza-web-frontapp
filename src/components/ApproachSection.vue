@@ -1,24 +1,13 @@
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { computed, onMounted } from 'vue';
+import { useI18n } from '@/i18n';
 import { gsap } from 'gsap';
 
-const applications = [
-  {
-    icon: 'fa-brain',
-    title: 'Claridad Mental',
-    desc: 'Favorece un estado de enfoque óptimo y agilidad de pensamiento. Ideal para reducir la sensación de agotamiento y mejorar la concentración en el día a día.',
-  },
-  {
-    icon: 'fa-shield-halved',
-    title: 'Manejo del Estrés Crónico e Inflamación',
-    desc: 'Regulación del estrés oxidativo a nivel celular. Ayuda a mitigar la inflamación celular, promoviendo un envejecimiento saludable y equilibrado.',
-  },
-  {
-    icon: 'fa-bolt',
-    title: 'Revitalización y Movilidad Física',
-    desc: 'Promueve la reparación de tejidos celulares y restaura la vitalidad. Ideal para quienes buscan recuperar su energía física y vivir sin limitaciones.',
-  },
-];
+const { t, tm, rt } = useI18n();
+const appIcons = ['fa-brain', 'fa-shield-halved', 'fa-bolt'];
+const applications = computed(() =>
+  tm<{ title: string; desc: string }[]>('approach.apps').map((copy, idx) => ({ ...copy, icon: appIcons[idx] }))
+);
 
 onMounted(() => {
   gsap.fromTo('.science-column', { opacity: 0, x: -50 }, { opacity: 1, x: 0, duration: 1.2, ease: 'power3.out' });
@@ -31,31 +20,30 @@ onMounted(() => {
     <div class="container approach-container">
       
       <div class="section-header text-center">
-        <span class="section-tag">EL ENFOQUE CIENTÍFICO</span>
-        <h2 class="approach-title">Medicina Regenerativa: El Futuro de la Longevidad</h2>
+        <span class="section-tag">{{ t('approach.tag') }}</span>
+        <h2 class="approach-title">{{ t('approach.title') }}</h2>
       </div>
 
       <div class="approach-grid">
         <div class="science-column">
           <p class="explanation-text">
-            Lejos de ser una solución cosmética, la medicina regenerativa se enfoca en potenciar la
-            <strong class="highlight">capacidad de autorreparación del propio cuerpo</strong>. Basado en las investigaciones del Premio Nobel <strong class="highlight">Shinya Yamanaka</strong> sobre la reprogramación celular adulta, hoy exploramos nuevas fronteras en la optimización biológica celular.
+            <template v-for="(seg, i) in rt('approach.explanation')" :key="i"><strong v-if="seg.bold" class="highlight">{{ seg.text }}</strong><template v-else>{{ seg.text }}</template></template>
           </p>
 
           <div class="protocol-card">
             <div class="protocol-header">
               <i class="fa-solid fa-microscope protocol-icon"></i>
-              <h3>Protocolos Avanzados</h3>
+              <h3>{{ t('approach.protocolTitle') }}</h3>
             </div>
             <p class="protocol-text">
-              A través de enfoques en <strong class="highlight-gold">medicina celular regenerativa</strong>, nuestros protocolos buscan optimizar las condiciones del organismo para favorecer el bienestar integral y una mejor calidad de vida a largo plazo.
+              <template v-for="(seg, i) in rt('approach.protocolText')" :key="i"><strong v-if="seg.bold" class="highlight-gold">{{ seg.text }}</strong><template v-else>{{ seg.text }}</template></template>
             </p>
           </div>
         </div>
 
         <div class="app-column">
           <div class="apps-container">
-            <h3 class="app-subtitle">Aplicación Integral para su Salud</h3>
+            <h3 class="app-subtitle">{{ t('approach.appsTitle') }}</h3>
             <div class="apps-list">
               <div v-for="(app, idx) in applications" :key="idx" class="app-item">
                 <div class="app-icon-box"><i class="fa-solid" :class="app.icon"></i></div>

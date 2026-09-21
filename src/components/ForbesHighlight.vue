@@ -1,21 +1,24 @@
 <script setup lang="ts">
+import { useI18n } from '@/i18n';
+
+const { t } = useI18n();
 const forbesMockup = 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095167/assets-juan/WhatsApp_Image_2026-05-27_at_7_08_51_PM.jpg';
 </script>
 
 <template>
   <div class="forbes-highlight">
     <div class="forbes-image-wrapper">
-      <img :src="forbesMockup" alt="Mock Forbes Cover Juan Roman Garza" class="forbes-img" />
+      <img :src="forbesMockup" :alt="t('press.forbes.imageAlt')" class="forbes-img" />
       <div class="glow-overlay"></div>
     </div>
     <div class="forbes-content">
-      <span class="feature-badge"><i class="fa-solid fa-star"></i> Proyección Empresarial</span>
-      <h3 class="feature-title">Top Entrepreneur to Follow</h3>
+      <span class="feature-badge"><i class="fa-solid fa-star"></i> {{ t('press.forbes.badge') }}</span>
+      <h3 class="feature-title">{{ t('press.forbes.title') }}</h3>
       <p class="feature-text">
-        Esta representación de portada conceptual ilustra el posicionamiento de Juan Román Garza como uno de los perfiles empresariales más destacados a seguir en el ámbito de la biotecnología aplicada a la salud ejecutiva y la optimización humana.
+        {{ t('press.forbes.body') }}
       </p>
       <div class="quotes-box">
-        <p>"Conectando ciencia regenerativa con el management moderno."</p>
+        <p>{{ t('press.forbes.quote') }}</p>
       </div>
     </div>
   </div>

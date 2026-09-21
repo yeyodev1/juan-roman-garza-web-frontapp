@@ -1,21 +1,24 @@
 <script setup lang="ts">
+import { useI18n } from '@/i18n';
+
+const { t } = useI18n();
 const panelVideo = 'https://res.cloudinary.com/drw5sn8qw/video/upload/v1780095169/assets-juan/WhatsApp_Video_2026-05-29_at_12_43_38_PM.mp4';
 const videoPoster = 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095156/assets-juan/076f4a92-7716-4a09-ab4b-0612fa4c7830.jpg';
 </script>
 
 <template>
   <div class="video-section">
-    <h3 class="video-subtitle">Panel de Discusión: Innovación en Salud</h3>
+    <h3 class="video-subtitle">{{ t('press.video.title') }}</h3>
     <div class="video-container-wrapper">
       <div class="video-glow"></div>
       <div class="video-player-frame">
         <video :src="panelVideo" :poster="videoPoster" controls class="native-video">
-          Tu navegador no soporta la reproducción de video HTML5.
+          {{ t('press.video.fallback') }}
         </video>
       </div>
     </div>
     <p class="video-caption">
-      Juan Román Garza discutiendo sobre el desarrollo de clínicas integrales, innovación en salud y modelos de negocios de medicina regenerativa en México y Latinoamérica.
+      {{ t('press.video.caption') }}
     </p>
   </div>
 </template>

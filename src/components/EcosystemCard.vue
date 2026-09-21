@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import { type PropType } from 'vue';
+import { useI18n } from '@/i18n';
 
 interface DetailItem {
   icon: string;
   text: string;
 }
 
-const props = defineProps({
+const { t } = useI18n();
+
+defineProps({
   name: { type: String, required: true },
   lead: { type: String, required: true },
   desc: { type: String, required: true },
@@ -32,7 +35,7 @@ const props = defineProps({
       
       <!-- Premium external portal link -->
       <a v-if="link" :href="link" target="_blank" rel="noopener noreferrer" class="visit-link">
-        Visitar Sitio Web <i class="fa-solid fa-arrow-up-right-from-square link-arrow"></i>
+        {{ t('ecosystem.visit') }} <i class="fa-solid fa-arrow-up-right-from-square link-arrow"></i>
       </a>
 
       <div class="entity-details">

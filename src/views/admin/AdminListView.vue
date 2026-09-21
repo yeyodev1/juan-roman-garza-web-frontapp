@@ -148,7 +148,7 @@ watch(() => [route.query.msg, route.query.compartir], handleReturnFromEditor, { 
     </div>
 
     <div ref="listTop" class="lst__anchor"></div>
-    <ArticlesPager v-if="!loading && articles.length" class="lst__pager-top" :pagination="pagination" :loading="loading" @change="changePage" />
+    <ArticlesPager v-if="!loading && articles.length" class="lst__pager-top" :pagination="pagination" :loading="loading" locale="es" @change="changePage" />
 
     <p v-if="error" class="adm__error"><i class="fa-solid fa-circle-exclamation"></i> {{ error }}</p>
 
@@ -189,7 +189,7 @@ watch(() => [route.query.msg, route.query.compartir], handleReturnFromEditor, { 
       </li>
     </ul>
 
-    <ArticlesPager v-if="!loading && articles.length" class="lst__pager-bottom" :pagination="pagination" :loading="loading" @change="changePage" />
+    <ArticlesPager v-if="!loading && articles.length" class="lst__pager-bottom" :pagination="pagination" :loading="loading" locale="es" @change="changePage" />
 
     <ShareModal v-if="sharing" :article="sharing" @close="sharing = null" />
 

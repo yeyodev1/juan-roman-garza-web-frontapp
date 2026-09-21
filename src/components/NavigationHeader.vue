@@ -1,22 +1,32 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
+import { useRoute } from 'vue-router';
+import LanguageSwitch from './LanguageSwitch.vue';
+import { useI18n } from '@/i18n';
 
-const props = defineProps({
+defineProps({
   activeSection: { type: String, required: true },
 });
 
+const route = useRoute();
+const { t } = useI18n();
 const isMenuOpen = ref(false);
 
-const navItems = [
-  { path: '/', label: 'Inicio', num: '01' },
-  { path: '/sobre-mi', label: 'Sobre Mí', num: '02' },
-  { path: '/powerhouse', label: 'Powerhouse', num: '03' },
-  { path: '/longevidad-regenerativa', label: 'Longevidad', num: '04' },
-  { path: '/empresas', label: 'Empresas', num: '05' },
-  { path: '/prensa-y-eventos', label: 'Prensa', num: '06' },
-  { path: '/investigaciones', label: 'Blogs', num: '07' },
-  { path: '/contacto', label: 'Contacto', num: '08' },
-];
+const navItems = computed(() => [
+  { path: '/', label: t('nav.home'), num: '01' },
+  { path: '/sobre-mi', label: t('nav.about'), num: '02' },
+  { path: '/powerhouse', label: t('nav.powerhouse'), num: '03' },
+  { path: '/longevidad-regenerativa', label: t('nav.longevity'), num: '04' },
+  { path: '/empresas', label: t('nav.companies'), num: '05' },
+  { path: '/prensa-y-eventos', label: t('nav.press'), num: '06' },
+  { path: '/investigaciones', label: t('nav.blogs'), num: '07' },
+  { path: '/contacto', label: t('nav.contact'), num: '08' },
+]);
+
+function isActive(path: string) {
+  if (path === '/') return route.path === '/';
+  return route.path === path || route.path.startsWith(`${path}/`);
+}
 
 function toggleMenu() {
   isMenuOpen.value = !isMenuOpen.value;
@@ -31,11 +41,18 @@ function handleLinkClick() {
   <header class="nav-header">
     <div class="nav-container">
       <RouterLink to="/" class="brand" @click="handleLinkClick">
-        <img src="@/assets/logo/logo.PNG" alt="Juan Román Garza Logo" class="brand-logo" />
+        <img src="@/assets/logo/logo.PNG" :alt="t('nav.logoAlt')" class="brand-logo" />
       </RouterLink>
 
       <div class="right-controls">
-        <button class="burger-menu" :class="{ open: isMenuOpen }" @click="toggleMenu" aria-label="Toggle Navigation">
+        <LanguageSwitch class="header-lang" />
+        <button
+          class="burger-menu"
+          :class="{ open: isMenuOpen }"
+          :aria-label="isMenuOpen ? t('nav.closeMenu') : t('nav.openMenu')"
+          :aria-expanded="isMenuOpen"
+          @click="toggleMenu"
+        >
           <span class="bar"></span>
           <span class="bar"></span>
           <span class="bar"></span>
@@ -47,13 +64,13 @@ function handleLinkClick() {
     <transition name="slide-overlay">
       <div v-if="isMenuOpen" class="fullscreen-overlay">
         <div class="overlay-container">
-          <nav class="overlay-nav">
+          <nav class="overlay-nav" :aria-label="t('nav.mainLabel')">
             <RouterLink
               v-for="item in navItems"
               :key="item.path"
               :to="item.path"
               class="overlay-link"
-              :class="{ active: activeSection === item.label.toLowerCase() || (item.path === '/' && activeSection === 'home') }"
+              :class="{ active: isActive(item.path) }"
               @click="handleLinkClick"
             >
               <span class="link-label">{{ item.label }}</span>
@@ -68,6 +85,10 @@ function handleLinkClick() {
             <div class="footer-col">
               <span class="footer-label">LINKEDIN</span>
               <a href="https://www.linkedin.com/in/juan-roman-garza/" target="_blank" rel="noopener noreferrer" class="footer-link">Juan Román Garza</a>
+            </div>
+            <div class="footer-col footer-col--lang">
+              <span class="footer-label">{{ t('footer.language').toUpperCase() }}</span>
+              <LanguageSwitch />
             </div>
           </div>
         </div>
@@ -95,6 +116,9 @@ function handleLinkClick() {
 }
 
 .nav-container {
+  // Por encima del overlay del menú: logo, idioma y botón de cierre siguen visibles con el menú abierto
+  position: relative;
+  z-index: 2002;
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
@@ -137,6 +161,10 @@ function handleLinkClick() {
   align-items: center;
   gap: 1.5rem;
   z-index: 1002;
+
+  @media (max-width: 480px) {
+    gap: 0.75rem;
+  }
 }
 
 
@@ -183,24 +211,29 @@ function handleLinkClick() {
 
 // Fullscreen Dropdown Overlay
 .fullscreen-overlay {
+  // Empieza bajo la barra del header (80px) para que logo, idioma y cierre sigan visibles
   position: fixed;
-  top: 0;
+  top: 80px;
   left: 0;
   width: 100vw;
-  height: 100vh;
+  height: calc(100vh - 80px);
+  height: calc(100dvh - 80px);
   background-color: var(--bg);
   z-index: 2001;
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow-y: auto;
   transition: background-color 0.3s ease;
 }
 
 .overlay-container {
   width: 100%;
   max-width: 1200px;
-  padding: 120px 1.5rem 40px;
-  height: 100%;
+  padding: 40px 1.5rem;
+  min-height: 100%;
+  height: max-content;
+  margin: auto 0;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -292,7 +325,7 @@ function handleLinkClick() {
   text-align: left;
 
   @media (min-width: 768px) {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 2rem;
     text-align: center;
   }
@@ -301,6 +334,14 @@ function handleLinkClick() {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+  }
+
+  .footer-col--lang {
+    align-items: flex-start;
+
+    @media (min-width: 768px) {
+      align-items: center;
+    }
   }
 
   .footer-label {

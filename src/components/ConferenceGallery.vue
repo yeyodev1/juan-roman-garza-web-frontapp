@@ -1,28 +1,36 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
+import { useI18n } from '@/i18n';
 
-const galleryItems = [
-  { url: 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095165/assets-juan/71a520fc-beb0-4eb0-b7b6-3e97fef04266.jpg', title: 'Ponencia Longevidad', desc: 'Presentando "Longevidad Regenerativa" como activo de liderazgo.' },
-  { url: 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095172/assets-juan/c875b275-008f-42eb-8828-799b8d573ae1.jpg', title: 'Auditorio Principal', desc: 'Conferencia magistral ante líderes empresariales.' },
-  { url: 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095163/assets-juan/5dfa62f2-170e-42eb-867b-f98a1c816781.jpg', title: 'Masterclass Médica', desc: 'Sesión sobre medicina celular y el futuro de la salud.' },
-  { url: 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095156/assets-juan/076f4a92-7716-4a09-ab4b-0612fa4c7830.jpg', title: 'Mesa de Debate', desc: 'Panel "Desarrollos Inmobiliarios e Innovación en Clínicas de Salud".' },
-  { url: 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095159/assets-juan/138b7a57-1fd1-47d5-922f-bb4f7ed03ce4.jpg', title: 'Flyer Guayaquil 2026', desc: 'Conferencia de Entorno Estratégico "The Council".' },
-  { url: 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095166/assets-juan/71d82988-7ebc-48c3-9c7e-1bea286410ab.jpg', title: 'Poster Miami', desc: 'Presentación en Miami "Raise The Bar".' },
+const { t, tm } = useI18n();
+
+const galleryImages = [
+  { url: 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095165/assets-juan/71a520fc-beb0-4eb0-b7b6-3e97fef04266.jpg' },
+  { url: 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095172/assets-juan/c875b275-008f-42eb-8828-799b8d573ae1.jpg' },
+  { url: 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095163/assets-juan/5dfa62f2-170e-42eb-867b-f98a1c816781.jpg' },
+  { url: 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095156/assets-juan/076f4a92-7716-4a09-ab4b-0612fa4c7830.jpg' },
+  { url: 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095159/assets-juan/138b7a57-1fd1-47d5-922f-bb4f7ed03ce4.jpg' },
+  { url: 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095166/assets-juan/71d82988-7ebc-48c3-9c7e-1bea286410ab.jpg' },
 ];
+
+const galleryItems = computed(() => {
+  const copy = tm<{ title: string; desc: string }[]>('press.gallery.items');
+  return galleryImages.map((item, idx) => ({ ...item, ...copy[idx] }));
+});
 
 const selectedImage = ref<string | null>(null);
 </script>
 
 <template>
   <div class="gallery-wrapper">
-    <h3 class="gallery-subtitle">Galería de Conferencias y Eventos</h3>
+    <h3 class="gallery-subtitle">{{ t('press.gallery.title') }}</h3>
     <div class="gallery-grid">
       <div v-for="(item, idx) in galleryItems" :key="idx" class="gallery-card" @click="selectedImage = item.url">
         <div class="gallery-img-container">
           <img :src="item.url" :alt="item.title" class="gallery-img" loading="lazy" />
           <div class="card-hover-overlay">
             <i class="fa-solid fa-magnifying-glass-plus zoom-icon"></i>
-            <span class="view-tag">Ver Imagen</span>
+            <span class="view-tag">{{ t('press.gallery.view') }}</span>
           </div>
         </div>
         <div class="card-footer">
@@ -35,8 +43,8 @@ const selectedImage = ref<string | null>(null);
     <!-- Lightbox Modal -->
     <transition name="fade">
       <div v-if="selectedImage" class="lightbox-modal" @click="selectedImage = null">
-        <button class="close-lightbox" @click="selectedImage = null">&times;</button>
-        <img :src="selectedImage" alt="Ampliado" class="lightbox-img" @click.stop />
+        <button class="close-lightbox" :aria-label="t('press.gallery.close')" @click="selectedImage = null">&times;</button>
+        <img :src="selectedImage" :alt="t('press.gallery.enlargedAlt')" class="lightbox-img" @click.stop />
       </div>
     </transition>
   </div>

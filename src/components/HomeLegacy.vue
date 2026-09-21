@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref } from 'vue';
+import { computed, onMounted, onUnmounted, ref } from 'vue';
+import { useI18n } from '@/i18n';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -8,6 +9,7 @@ import educacionImage from '@/assets/stock/educacion-medica.jpeg';
 import investigacionImage from '@/assets/stock/investigacion.jpeg';
 
 gsap.registerPlugin(ScrollTrigger);
+const { t, tm, rt } = useI18n();
 const powerhouseImage = 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095164/assets-juan/65feeba0-0dce-4cff-b63d-eb15952be89c.jpg';
 const fatherImage = 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1782272608/legado_ydct4l.png';
 
@@ -47,39 +49,25 @@ onUnmounted(() => {
   ScrollTrigger.getAll().forEach(t => t.kill());
 });
 
-const projects = [
-  {
-    title: 'Eternal Medical Center',
-    desc: 'Atención médica regenerativa avanzada.',
-    image: equipoImage,
-    icon: 'fa-hospital'
-  },
-  {
-    title: 'PowerHouse Biotech',
-    desc: 'Plataforma de inteligencia clínica y evaluación biológica.',
-    image: powerhouseImage,
-    icon: 'fa-microchip'
-  },
-  {
-    title: 'Educación Médica',
-    desc: 'Programas de capacitación y divulgación científica.',
-    image: educacionImage,
-    icon: 'fa-graduation-cap'
-  },
-  {
-    title: 'Investigación y Desarrollo',
-    desc: 'Análisis de biomarcadores, longevidad y tecnologías emergentes.',
-    image: investigacionImage,
-    icon: 'fa-flask'
-  }
+const projectMedia = [
+  { image: equipoImage, icon: 'fa-hospital' },
+  { image: powerhouseImage, icon: 'fa-microchip' },
+  { image: educacionImage, icon: 'fa-graduation-cap' },
+  { image: investigacionImage, icon: 'fa-flask' },
 ];
 
-const selectedProject = ref<any>(null);
+const projects = computed(() =>
+  tm<{ title: string; desc: string }[]>('home.whatIDo.projects').map((copy, idx) => ({ ...copy, ...projectMedia[idx], index: idx }))
+);
+
+// Se guarda el índice (no el objeto) para que el título del modal siga el idioma activo
+const selectedIndex = ref<number | null>(null);
+const selectedProject = computed(() => (selectedIndex.value === null ? null : projects.value[selectedIndex.value]));
 const isModalOpen = ref(false);
 
 const openModal = (item: any) => {
   if (item.image) {
-    selectedProject.value = item;
+    selectedIndex.value = item.index;
     isModalOpen.value = true;
     document.body.style.overflow = 'hidden';
   }
@@ -88,7 +76,7 @@ const openModal = (item: any) => {
 const closeModal = () => {
   isModalOpen.value = false;
   setTimeout(() => {
-    selectedProject.value = null;
+    selectedIndex.value = null;
   }, 400); // Esperar la animación para limpiar
   document.body.style.overflow = '';
 };
@@ -99,26 +87,26 @@ const closeModal = () => {
     <div class="container legacy-container">
       <div class="legacy-grid">
         <div class="legacy-image">
-          <img :src="fatherImage" alt="Dr. Juan Antonio Garza Quintanilla" loading="lazy" />
-          <div class="legacy-image-badge">LEGADO FAMILIAR</div>
+          <img :src="fatherImage" :alt="t('home.legacy.imageAlt')" loading="lazy" />
+          <div class="legacy-image-badge">{{ t('home.legacy.badge') }}</div>
         </div>
         <div class="legacy-content">
-          <span class="section-tag">EL LEGADO QUE ME INSPIRA</span>
-          <h2 class="legacy-title">La medicina como servicio</h2>
+          <span class="section-tag">{{ t('home.legacy.tag') }}</span>
+          <h2 class="legacy-title">{{ t('home.legacy.title') }}</h2>
           <p class="legacy-paragraph">
-            Mi mayor inspiración ha sido el ejemplo de mi padre, el <strong>Dr. Juan Antonio Garza Quintanilla</strong>.
+            <template v-for="(seg, i) in rt('home.legacy.p1')" :key="i"><strong v-if="seg.bold">{{ seg.text }}</strong><template v-else>{{ seg.text }}</template></template>
           </p>
           <p class="legacy-paragraph">
-            De él aprendí que la medicina no comienza con tratamientos.
+            {{ t('home.legacy.p2') }}
           </p>
           <p class="legacy-paragraph emphasis">
-            Comienza escuchando.
+            {{ t('home.legacy.emphasis') }}
           </p>
           <p class="legacy-paragraph">
-            Comprendí que detrás de cada diagnóstico existe una historia, una familia y una persona que merece ser tratada con respeto, dignidad y empatía.
+            {{ t('home.legacy.p3') }}
           </p>
           <p class="legacy-paragraph highlight">
-            Ese principio continúa guiando cada proyecto que desarrollo.
+            {{ t('home.legacy.highlight') }}
           </p>
         </div>
       </div>
@@ -128,8 +116,8 @@ const closeModal = () => {
   <section class="whatido-section section-padding">
     <div class="container whatido-container">
       <div class="whatido-header">
-        <span class="section-tag">LO QUE HAGO HOY</span>
-        <h2 class="whatido-title">Construyendo el futuro de la medicina regenerativa</h2>
+        <span class="section-tag">{{ t('home.whatIDo.tag') }}</span>
+        <h2 class="whatido-title">{{ t('home.whatIDo.title') }}</h2>
       </div>
 
       <div class="whatido-grid">
@@ -138,7 +126,11 @@ const closeModal = () => {
           :key="idx" 
           class="whatido-card" 
           :class="{ 'clickable': item.image }"
+          role="button"
+          tabindex="0"
           @click="openModal(item)"
+          @keydown.enter.prevent="openModal(item)"
+          @keydown.space.prevent="openModal(item)"
         >
           <div class="card-icon">
             <i class="fa-solid" :class="item.icon"></i>
@@ -157,7 +149,7 @@ const closeModal = () => {
   <transition name="modal-fade">
     <div v-if="isModalOpen" class="project-modal-overlay" @click="closeModal">
       <div class="project-modal-content" @click.stop>
-        <button class="modal-close-btn" @click="closeModal" aria-label="Cerrar modal">
+        <button class="modal-close-btn" @click="closeModal" :aria-label="t('home.whatIDo.closeModal')">
           <i class="fa-solid fa-times"></i>
         </button>
         <div class="modal-image-wrapper">

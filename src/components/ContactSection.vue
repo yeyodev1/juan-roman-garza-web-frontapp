@@ -2,6 +2,9 @@
 import { onMounted } from 'vue';
 import { gsap } from 'gsap';
 import ContactForm from './ContactForm.vue';
+import { useI18n } from '@/i18n';
+
+const { t } = useI18n();
 
 onMounted(() => {
   gsap.fromTo('.contact-info', { opacity: 0, x: -50 }, { opacity: 1, x: 0, duration: 1.2, ease: 'power3.out' });
@@ -15,27 +18,27 @@ onMounted(() => {
       <div class="contact-grid">
         <!-- Contact Info & Locations (Left) -->
         <div class="contact-info">
-          <span class="section-tag">AGENDAR CONSULTA</span>
-          <h2 class="contact-title">Inicia tu Camino de Longevidad</h2>
+          <span class="section-tag">{{ t('contact.tag') }}</span>
+          <h2 class="contact-title">{{ t('contact.title') }}</h2>
           <div class="accent-bar"></div>
           <p class="contact-subtitle">
-            Solicite información o agende una sesión de evaluación para diseñar su protocolo de rejuvenecimiento celular a la medida.
+            {{ t('contact.subtitle') }}
           </p>
 
           <div class="locations-group">
-            <h3 class="group-title">Atención Digital y Global</h3>
+            <h3 class="group-title">{{ t('contact.groupTitle') }}</h3>
             
             <div class="location-item">
               <div class="icon-box"><i class="fa-solid fa-globe"></i></div>
               <div class="location-text">
-                <h4>Asesoría Sin Fronteras</h4>
-                <p>Para agilizar nuestra respuesta y brindarle atención confidencial en cualquier parte del mundo, operamos exclusivamente a través de nuestros canales digitales y este portal seguro.</p>
+                <h4>{{ t('contact.borderlessTitle') }}</h4>
+                <p>{{ t('contact.borderlessText') }}</p>
               </div>
             </div>
           </div>
 
           <div class="social-channels">
-            <h4 class="channels-title">Canales Profesionales</h4>
+            <h4 class="channels-title">{{ t('contact.channelsTitle') }}</h4>
             <div class="social-links">
               <a href="https://www.instagram.com/jromangarzainc/" target="_blank" rel="noopener noreferrer" class="social-link instagram" aria-label="Instagram">
                 <i class="fa-brands fa-instagram"></i> @jromangarzainc

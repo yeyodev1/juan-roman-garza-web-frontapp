@@ -1,15 +1,18 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted } from 'vue';
+import { computed, onMounted, onUnmounted } from 'vue';
+import { useI18n } from '@/i18n';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const stats = [
-  { value: 15, suffix: '+', label: 'Años de experiencia', prefix: '' },
-  { value: 15, suffix: 'K+', label: 'Pacientes acompañados', prefix: '' },
-  { value: 100, suffix: 'K+', label: 'Estudios clínicos analizados', prefix: '' },
+const { t, tm } = useI18n();
+const statValues = [
+  { value: 15, suffix: '+', prefix: '' },
+  { value: 15, suffix: 'K+', prefix: '' },
+  { value: 100, suffix: 'K+', prefix: '' },
 ];
+const stats = computed(() => tm<string[]>('home.impact.stats').map((label, idx) => ({ ...statValues[idx], label })));
 
 onMounted(() => {
   gsap.fromTo('.research-header',
@@ -52,8 +55,8 @@ onUnmounted(() => {
   <section class="impact-section section-padding">
     <div class="container impact-container">
       <div class="impact-header">
-        <span class="section-tag">IMPACTO Y EXPERIENCIA</span>
-        <h2 class="impact-title">Más de una década impulsando innovación en salud</h2>
+        <span class="section-tag">{{ t('home.impact.tag') }}</span>
+        <h2 class="impact-title">{{ t('home.impact.title') }}</h2>
       </div>
 
       <div class="impact-stats">
@@ -64,7 +67,7 @@ onUnmounted(() => {
       </div>
 
       <p class="impact-footnote">
-        Miles de horas dedicadas al estudio de la longevidad, medicina regenerativa y salud personalizada.
+        {{ t('home.impact.footnote') }}
       </p>
     </div>
   </section>

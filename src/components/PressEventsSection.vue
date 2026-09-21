@@ -1,20 +1,28 @@
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { computed, onMounted } from 'vue';
+import { useI18n } from '@/i18n';
 import { gsap } from 'gsap';
 import ForbesHighlight from './ForbesHighlight.vue';
 import ConferenceGallery from './ConferenceGallery.vue';
 import PanelVideo from './PanelVideo.vue';
 import FeaturedMarquee from './FeaturedMarquee.vue';
 
-const features = [
-  { name: 'The New York Finance', title: 'Román Garza: Pionero en la Salud Regenerativa y la Medicina del Futuro', url: 'https://thenewyorkfinance.com/roman-garza-the-regenerative-entrepreneur-pioneering-regenerative-healthcare-with-a-hearfelt-vision/', icon: 'https://thenewyorkfinance.com/wp-content/uploads/2025/06/cropped-cropped-NYFFINAL-180x180.png' },
-  { name: 'The New Jersey Gazette', title: 'El Emprendedor que está Transformando la Biotecnología Celular', url: 'https://thenewjerseygazette.com/roman-garza-the-regenerative-entrepreneur-pioneering-regenerative-healthcare-with-a-hearfelt-vision/', icon: 'https://thenewjerseygazette.com/wp-content/uploads/2021/11/cropped-Copy-of-The-New-York-City-Times-180x180.png' },
-  { name: 'Big Boston News', title: 'Innovación y Liderazgo: El Impacto de Powerhouse Biotech', url: 'https://www.bigbostonnews.com/roman-garza-the-regenerative-entrepreneur-pioneering-regenerative-healthcare-with-a-hearfelt-vision/', icon: 'https://www.bigbostonnews.com/wp-content/uploads/2021/04/cropped-big-boston-news-180x180.png' },
-  { name: 'The Chicago Finance', title: 'Revolucionando el Bienestar Corporativo: La Estrategia de Román Garza', url: 'https://thechicagofinance.com/roman-garza-the-regenerative-entrepreneur-pioneering-regenerative-healthcare-with-a-hearfelt-vision/', icon: 'https://thechicagofinance.com/wp-content/uploads/2021/04/cropped-The-Chicago-Finane-1-180x180.png' },
-  { name: 'The USA Reporter', title: 'Un Enfoque Vanguardista para la Regeneración y Longevidad', url: 'https://theusareporter.com/roman-garza-the-regenerative-entrepreneur-pioneering-regenerative-healthcare-with-a-hearfelt-vision/', icon: 'https://theusareporter.com/wp-content/uploads/2021/02/cropped-ThE-USA-2-180x180.png' },
-  { name: 'Houston Weekly News', title: 'Tecnología Médica Avanzada: El Futuro de la Lucidez Directiva', url: 'https://houstonweeklynews.com/roman-garza-the-regenerative-entrepreneur-pioneering-regenerative-healthcare-with-a-hearfelt-vision/', icon: 'https://houstonweeklynews.com/wp-content/uploads/2021/01/cropped-ho-180x180.png' },
-  { name: 'The Chicago Gazette', title: 'La Nueva Era de la Medicina: Terapias Celulares y Liderazgo Integral', url: 'https://www.thechicagogazette.com/roman-garza-the-regenerative-entrepreneur-pioneering-regenerative-healthcare-with-a-hearfelt-vision/', icon: 'https://www.thechicagogazette.com/wp-content/uploads/2021/11/cropped-Copy-of-The-New-York-City-Times-2-180x180.png' }
+const { t, tm } = useI18n();
+
+const featureSources = [
+  { name: 'The New York Finance', url: 'https://thenewyorkfinance.com/roman-garza-the-regenerative-entrepreneur-pioneering-regenerative-healthcare-with-a-hearfelt-vision/', icon: 'https://thenewyorkfinance.com/wp-content/uploads/2025/06/cropped-cropped-NYFFINAL-180x180.png' },
+  { name: 'The New Jersey Gazette', url: 'https://thenewjerseygazette.com/roman-garza-the-regenerative-entrepreneur-pioneering-regenerative-healthcare-with-a-hearfelt-vision/', icon: 'https://thenewjerseygazette.com/wp-content/uploads/2021/11/cropped-Copy-of-The-New-York-City-Times-180x180.png' },
+  { name: 'Big Boston News', url: 'https://www.bigbostonnews.com/roman-garza-the-regenerative-entrepreneur-pioneering-regenerative-healthcare-with-a-hearfelt-vision/', icon: 'https://www.bigbostonnews.com/wp-content/uploads/2021/04/cropped-big-boston-news-180x180.png' },
+  { name: 'The Chicago Finance', url: 'https://thechicagofinance.com/roman-garza-the-regenerative-entrepreneur-pioneering-regenerative-healthcare-with-a-hearfelt-vision/', icon: 'https://thechicagofinance.com/wp-content/uploads/2021/04/cropped-The-Chicago-Finane-1-180x180.png' },
+  { name: 'The USA Reporter', url: 'https://theusareporter.com/roman-garza-the-regenerative-entrepreneur-pioneering-regenerative-healthcare-with-a-hearfelt-vision/', icon: 'https://theusareporter.com/wp-content/uploads/2021/02/cropped-ThE-USA-2-180x180.png' },
+  { name: 'Houston Weekly News', url: 'https://houstonweeklynews.com/roman-garza-the-regenerative-entrepreneur-pioneering-regenerative-healthcare-with-a-hearfelt-vision/', icon: 'https://houstonweeklynews.com/wp-content/uploads/2021/01/cropped-ho-180x180.png' },
+  { name: 'The Chicago Gazette', url: 'https://www.thechicagogazette.com/roman-garza-the-regenerative-entrepreneur-pioneering-regenerative-healthcare-with-a-hearfelt-vision/', icon: 'https://www.thechicagogazette.com/wp-content/uploads/2021/11/cropped-Copy-of-The-New-York-City-Times-2-180x180.png' }
 ];
+
+const features = computed(() => {
+  const titles = tm<string[]>('press.articleTitles');
+  return featureSources.map((item, idx) => ({ ...item, title: titles[idx] }));
+});
 
 onMounted(() => {
   gsap.fromTo('.section-header', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 1, ease: 'power3.out' });
@@ -25,8 +33,8 @@ onMounted(() => {
   <section id="press" class="press-section section-padding">
     <div class="container press-container">
       <div class="section-header">
-        <span class="section-tag">PRENSA Y EVENTOS</span>
-        <h2 class="section-title">Presencia Global e Impacto Mediático</h2>
+        <span class="section-tag">{{ t('press.tag') }}</span>
+        <h2 class="section-title">{{ t('press.title') }}</h2>
       </div>
 
       <!-- Forbes Highlight First -->
@@ -37,7 +45,7 @@ onMounted(() => {
 
       <!-- Articulos Grid Section -->
       <div class="features-grid-section">
-        <h3 class="subsection-title">Artículos Recientes</h3>
+        <h3 class="subsection-title">{{ t('press.recentTitle') }}</h3>
         <div class="features-grid">
           <a v-for="(item, idx) in features" :key="`grid-${idx}`" :href="item.url" target="_blank" class="feature-card">
             <div class="feature-card-header">
@@ -49,7 +57,7 @@ onMounted(() => {
             </div>
             <div class="feature-card-footer">
               <span class="read-article-btn">
-                Leer Artículo 
+                {{ t('press.readArticle') }}
                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
                   <polyline points="15 3 21 3 21 9"></polyline>

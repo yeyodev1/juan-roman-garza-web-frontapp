@@ -1,17 +1,15 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
+import { useI18n } from '@/i18n';
 import { gsap } from 'gsap';
 
 const progress = ref(0);
 const isLoaded = ref(false);
 
-const loadingPhrases = [
-  "SINTETIZANDO DATOS BIO-REGENERATIVOS...",
-  "CALIBRANDO PROTOCOLO DE LONGEVIDAD...",
-  "PREPARANDO TRATAMIENTO DE REJUVENECIMIENTO...",
-  "OPTIMIZANDO ARQUITECTURA CELULAR..."
-];
-const currentPhrase = ref(loadingPhrases[0]);
+const { t, tm } = useI18n();
+const loadingPhrases = computed(() => tm<string[]>('preloader.phrases'));
+const phraseIndex = ref(0);
+const currentPhrase = computed(() => loadingPhrases.value[phraseIndex.value]);
 
 onMounted(() => {
   // Prevent scrolling while loading
@@ -53,10 +51,10 @@ onMounted(() => {
       const p = Math.round(progress.value);
       progress.value = p;
       
-      if (p < 25) currentPhrase.value = loadingPhrases[0];
-      else if (p < 55) currentPhrase.value = loadingPhrases[1];
-      else if (p < 85) currentPhrase.value = loadingPhrases[2];
-      else currentPhrase.value = loadingPhrases[3];
+      if (p < 25) phraseIndex.value = 0;
+      else if (p < 55) phraseIndex.value = 1;
+      else if (p < 85) phraseIndex.value = 2;
+      else phraseIndex.value = 3;
     }
   });
 });
@@ -67,7 +65,7 @@ onMounted(() => {
     <div class="loader-content">
       
       <div class="loader-text-wrapper">
-        <img src="@/assets/logo/logo.PNG" alt="Juan Román Garza Logo" class="preloader-logo" />
+        <img src="@/assets/logo/logo.PNG" :alt="t('nav.logoAlt')" class="preloader-logo" />
       </div>
       
       <div class="loader-progress-wrapper">

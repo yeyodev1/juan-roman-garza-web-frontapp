@@ -3,6 +3,7 @@ import { onMounted, onUnmounted, ref } from 'vue';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import FeaturedMarquee from './FeaturedMarquee.vue';
+import { useI18n } from '@/i18n';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -10,6 +11,7 @@ const heroVideoUrl = 'https://res.cloudinary.com/drw5sn8qw/video/upload/v1782231
 const purposeImage = 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095160/assets-juan/1fdb1f14-5799-4c12-ba46-8590a824770b.jpg';
 const videoRef = ref<HTMLVideoElement | null>(null);
 const videoLoaded = ref(false);
+const { t, tm } = useI18n();
 
 onMounted(() => {
   const tl = gsap.timeline();
@@ -102,39 +104,38 @@ onUnmounted(() => {
 
     <div class="container hero-container">
       <div class="hero-text-content">
-        <span class="hero-tag">UNA NUEVA GENERACIÓN DE MEDICINA</span>
+        <span class="hero-tag">{{ t('home.hero.tag') }}</span>
 
         <h1 class="hero-title">
-          <div class="line-wrapper"><span class="line">Centrada en</span></div>
-          <div class="line-wrapper"><span class="line">el Paciente</span></div>
+          <div class="line-wrapper"><span class="line">{{ t('home.hero.titleLine1') }}</span></div>
+          <div class="line-wrapper"><span class="line">{{ t('home.hero.titleLine2') }}</span></div>
         </h1>
 
         <div class="hero-subtitle">
           Juan Román Garza Delgado
         </div>
         <div class="hero-roles">
-          <span>Estratega</span>
-          <span class="role-sep">•</span>
-          <span>Investigador</span>
-          <span class="role-sep">•</span>
-          <span>Emprendedor</span>
+          <template v-for="(role, idx) in tm<string[]>('home.hero.roles')" :key="idx">
+            <span v-if="idx > 0" class="role-sep">•</span>
+            <span>{{ role }}</span>
+          </template>
         </div>
         <div class="hero-fields">
-          Longevidad Regenerativa | Medicina de Precisión | Inteligencia Clínica
+          {{ t('home.hero.fields') }}
         </div>
 
         <p class="hero-desc">
-          "Mi misión es ayudar a las personas a vivir más años con salud, bienestar y plenitud."
+          {{ t('home.hero.quote') }}
         </p>
 
         <div class="hero-actions">
           <a class="btn-primary" href="https://chat.whatsapp.com/K43yrnUQbVq2O9hn93X03c?mode=gi_t" target="_blank" rel="noopener noreferrer">
-            <i class="fa-regular fa-compass"></i> Sé parte de nuestra misión
+            <i class="fa-regular fa-compass"></i> {{ t('home.hero.cta') }}
           </a>
         </div>
 
         <div class="hero-socials-float" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">
-          <span class="socials-title">SÍGUENOS</span>
+          <span class="socials-title">{{ t('home.hero.follow') }}</span>
           <div class="socials-icons">
             <a href="https://www.instagram.com/jromangarzainc/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
               <i class="fa-brands fa-instagram"></i>
@@ -158,24 +159,24 @@ onUnmounted(() => {
     <div class="container purpose-container">
       <div class="purpose-grid">
         <div class="purpose-image">
-          <img :src="purposeImage" alt="Juan Román Garza con pacientes" loading="lazy" />
+          <img :src="purposeImage" :alt="t('home.purpose.imageAlt')" loading="lazy" />
           <div class="purpose-image-overlay"></div>
         </div>
         <div class="purpose-text">
-          <span class="section-tag">MI PROPÓSITO</span>
-          <h2 class="purpose-title">La salud del futuro comienza con mejores decisiones</h2>
+          <span class="section-tag">{{ t('home.purpose.tag') }}</span>
+          <h2 class="purpose-title">{{ t('home.purpose.title') }}</h2>
           <!-- <div class="accent-line"></div> -->
           <p class="purpose-paragraph">
-            Durante años he dedicado mi trabajo a comprender una pregunta fundamental:
+            {{ t('home.purpose.intro') }}
           </p>
           <blockquote class="purpose-quote">
-            ¿Por qué algunas personas recuperan su salud, vitalidad y calidad de vida mientras otras continúan deteriorándose?
+            {{ t('home.purpose.quote') }}
           </blockquote>
           <p class="purpose-paragraph">
-            La búsqueda de esa respuesta me llevó a estudiar la biología del envejecimiento, los biomarcadores, la medicina regenerativa, la inteligencia artificial y los sistemas de salud emergentes.
+            {{ t('home.purpose.body') }}
           </p>
           <p class="purpose-paragraph highlight">
-            Hoy trabajo para acercar la ciencia más avanzada a quienes buscan una oportunidad real para vivir mejor.
+            {{ t('home.purpose.highlight') }}
           </p>
         </div>
       </div>

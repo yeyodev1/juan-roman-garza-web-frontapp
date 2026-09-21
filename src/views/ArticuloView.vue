@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useI18n } from '@/i18n'
 
 const route = useRoute()
 const router = useRouter()
+const { t, locale, formatDate: formatLocaleDate } = useI18n()
 const slug = computed(() => route.params.slug as string)
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8100/api'
@@ -21,19 +23,24 @@ interface Article {
 
 const article = ref<Article | null>(null)
 const loading = ref(true)
-const error = ref<string | null>(null)
+// Código de error (se traduce en la plantilla para seguir el idioma activo)
+const error = ref<'notFound' | 'loadError' | null>(null)
 
 async function fetchArticle() {
   loading.value = true
   error.value = null
   try {
     const res = await fetch(`${API_BASE}/articles/${slug.value}`)
-    if (!res.ok) throw new Error('Artículo no encontrado')
+    if (!res.ok) {
+      error.value = res.status === 404 ? 'notFound' : 'loadError'
+      return
+    }
     const data = await res.json()
     article.value = data.data
     applyArticleMeta(data.data)
   } catch (e: unknown) {
-    error.value = e instanceof Error ? e.message : 'Error al cargar el artículo'
+    console.error('Error al cargar el artículo:', e)
+    error.value = 'loadError'
   } finally {
     loading.value = false
   }
@@ -74,11 +81,7 @@ function applyArticleMeta(a: Article) {
 }
 
 function formatDate(dateStr: string) {
-  return new Date(dateStr).toLocaleDateString('es-MX', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  })
+  return formatLocaleDate(dateStr, { year: 'numeric', month: 'long', day: 'numeric' })
 }
 
 function goBack() {
@@ -94,13 +97,13 @@ onMounted(fetchArticle)
     <!-- Loading -->
     <div v-if="loading" class="art-loading">
       <div class="art-spinner"></div>
-      <p>Cargando artículo...</p>
+      <p>{{ t('blog.article.loading') }}</p>
     </div>
 
     <!-- Error -->
     <div v-else-if="error" class="art-error">
-      <p>{{ error }}</p>
-      <button class="art-btn art-btn--ghost" @click="goBack">← Volver a Blogs</button>
+      <p>{{ t(`blog.article.${error}`) }}</p>
+      <button class="art-btn art-btn--ghost" @click="goBack">{{ t('blog.article.back') }}</button>
     </div>
 
     <!-- Content -->
@@ -112,16 +115,19 @@ onMounted(fetchArticle)
             <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
               <path d="M19 12H5M12 5l-7 7 7 7"/>
             </svg>
-            Blogs
+            {{ t('blog.article.backShort') }}
           </button>
 
           <div class="art-meta">
-            <span class="art-meta__badge">Medicina Regenerativa</span>
-            <time class="art-meta__date">{{ formatDate(article.date) }}</time>
+            <span class="art-meta__badge">{{ t('blog.article.badge') }}</span>
+            <time class="art-meta__date" :datetime="article.date">{{ formatDate(article.date) }}</time>
+            <span v-if="locale === 'en'" class="art-meta__lang" lang="en">
+              <i class="fa-solid fa-language" aria-hidden="true"></i> {{ t('blog.article.spanishNote') }}
+            </span>
           </div>
 
-          <h1 class="art-title">{{ article.title }}</h1>
-          <p v-if="article.excerpt" class="art-excerpt">{{ article.excerpt }}</p>
+          <h1 class="art-title" lang="es">{{ article.title }}</h1>
+          <p v-if="article.excerpt" class="art-excerpt" lang="es">{{ article.excerpt }}</p>
         </div>
       </section>
 
@@ -149,6 +155,7 @@ onMounted(fetchArticle)
           <div
             v-if="article.content"
             class="art-content"
+            lang="es"
             v-html="article.content"
           ></div>
           <div v-else class="art-content">
@@ -157,7 +164,7 @@ onMounted(fetchArticle)
 
           <!-- Source -->
           <div class="art-source">
-            <span class="art-source__label">Fuente original</span>
+            <span class="art-source__label">{{ t('blog.article.source') }}</span>
             <a :href="article.sourceUrl" target="_blank" rel="noopener noreferrer" class="art-source__link">
               {{ article.sourceUrl }}
               <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -169,7 +176,7 @@ onMounted(fetchArticle)
           </div>
 
           <button class="art-btn art-btn--primary" @click="goBack">
-            ← Volver a Blogs
+            {{ t('blog.article.back') }}
           </button>
         </div>
       </section>
@@ -284,6 +291,20 @@ onMounted(fetchArticle)
   &__date {
     font-size: 0.85rem;
     color: var(--text-muted);
+  }
+
+  &__lang {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-style: italic;
+
+    i {
+      color: var(--accent);
+      font-style: normal;
+    }
   }
 }
 

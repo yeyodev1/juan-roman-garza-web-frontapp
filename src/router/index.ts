@@ -1,60 +1,62 @@
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
+import { t } from '@/i18n'
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     name: 'Home',
     component: () => import('../views/HomeView.vue'),
-    meta: { title: 'Inicio | Juan Román Garza' },
+    meta: { titleKey: 'routes.home' },
   },
   {
     path: '/sobre-mi',
     name: 'About',
     component: () => import('../views/AboutView.vue'),
-    meta: { title: 'Sobre Mí | Juan Román Garza' },
+    meta: { titleKey: 'routes.about' },
   },
   {
     path: '/powerhouse',
     name: 'Powerhouse',
     component: () => import('../views/PowerhouseView.vue'),
-    meta: { title: 'Powerhouse Biotech | Juan Román Garza' },
+    meta: { titleKey: 'routes.powerhouse' },
   },
   {
     path: '/longevidad-regenerativa',
     name: 'Approach',
     component: () => import('../views/ApproachView.vue'),
-    meta: { title: 'Longevidad Regenerativa | Juan Román Garza' },
+    meta: { titleKey: 'routes.approach' },
   },
   {
     path: '/empresas',
     name: 'Ecosystem',
     component: () => import('../views/EcosystemView.vue'),
-    meta: { title: 'Empresas | Juan Román Garza' },
+    meta: { titleKey: 'routes.ecosystem' },
   },
   {
     path: '/prensa-y-eventos',
     name: 'Press',
     component: () => import('../views/PressView.vue'),
-    meta: { title: 'Prensa y Eventos | Juan Román Garza' },
+    meta: { titleKey: 'routes.press' },
   },
   {
     path: '/contacto',
     name: 'Contact',
     component: () => import('../views/ContactView.vue'),
-    meta: { title: 'Contacto | Juan Román Garza' },
+    meta: { titleKey: 'routes.contact' },
   },
   {
     path: '/investigaciones',
     name: 'Investigaciones',
     component: () => import('../views/InvestigacionesView.vue'),
-    meta: { title: 'Blogs | Juan Román Garza' },
+    meta: { titleKey: 'routes.blog' },
   },
   {
     path: '/investigaciones/:slug',
     name: 'Articulo',
     component: () => import('../views/ArticuloView.vue'),
-    meta: { title: 'Artículo | Juan Román Garza' },
+    // dynamicTitle: la vista pone el título del artículo; el cambio de idioma no debe pisarlo
+    meta: { titleKey: 'routes.article', dynamicTitle: true },
   },
   // Alias amigables: /blogs → /investigaciones (se mantiene la URL original por SEO y enlaces ya compartidos)
   { path: '/blogs', redirect: { name: 'Investigaciones' } },
@@ -102,7 +104,10 @@ const router = createRouter({
 })
 
 router.beforeEach((to, _from, next) => {
-  if (to.meta?.title) {
+  // Rutas públicas: título traducible (titleKey). Panel admin: título fijo en español (title).
+  if (to.meta?.titleKey) {
+    document.title = t(to.meta.titleKey as string)
+  } else if (to.meta?.title) {
     document.title = to.meta.title as string
   }
 

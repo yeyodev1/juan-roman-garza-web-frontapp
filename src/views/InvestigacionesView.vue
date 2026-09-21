@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import ArticlesPager from '@/components/ArticlesPager.vue'
+import { useI18n } from '@/i18n'
+
+const { t, locale, formatDate: formatLocaleDate } = useI18n()
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8100/api'
 
@@ -23,7 +26,8 @@ interface Pagination {
 
 const articles = ref<Article[]>([])
 const loading = ref(true)
-const error = ref<string | null>(null)
+// true = falló la carga; el mensaje se traduce en la plantilla para que siga el idioma activo
+const error = ref(false)
 const search = ref('')
 const searchInput = ref('')
 const currentPage = ref(1)
@@ -32,7 +36,7 @@ const LIMIT = 12
 
 async function fetchArticles(page = 1) {
   loading.value = true
-  error.value = null
+  error.value = false
   try {
     const qs = new URLSearchParams({
       page: String(page),
@@ -48,7 +52,8 @@ async function fetchArticles(page = 1) {
     pagination.value = data.pagination
     currentPage.value = page
   } catch (e: unknown) {
-    error.value = e instanceof Error ? e.message : 'Error al cargar artículos'
+    console.error('Error al cargar artículos:', e)
+    error.value = true
     articles.value = []
   } finally {
     loading.value = false
@@ -75,11 +80,7 @@ function goToPage(page: number) {
 }
 
 function formatDate(dateStr: string) {
-  return new Date(dateStr).toLocaleDateString('es-MX', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  })
+  return formatLocaleDate(dateStr, { year: 'numeric', month: 'long', day: 'numeric' })
 }
 
 onMounted(() => fetchArticles(1))
@@ -90,13 +91,15 @@ onMounted(() => fetchArticles(1))
     <!-- Hero -->
     <section class="inv-hero">
       <div class="inv-wrap">
-        <span class="inv-hero__tag">Blog</span>
+        <span class="inv-hero__tag">{{ t('blog.tag') }}</span>
         <h1 class="inv-hero__title">
-          Artículos de <span class="inv-hero__cyan">Medicina Regenerativa</span>
+          {{ t('blog.titleBefore') }} <span class="inv-hero__cyan">{{ t('blog.titleAccent') }}</span>
         </h1>
         <p class="inv-hero__desc">
-          Artículos, avances y conocimiento sobre células madre, longevidad
-          y terapias regenerativas del Centro Médico Eternal.
+          {{ t('blog.description') }}
+        </p>
+        <p v-if="locale === 'en'" class="inv-lang-note" lang="en">
+          <i class="fa-solid fa-language" aria-hidden="true"></i> {{ t('blog.spanishNote') }}
         </p>
 
         <!-- Search bar -->
@@ -105,15 +108,16 @@ onMounted(() => fetchArticles(1))
             v-model="searchInput"
             type="text"
             class="inv-search__input"
-            placeholder="Buscar artículos..."
+            :placeholder="t('blog.searchPlaceholder')"
+            :aria-label="t('blog.searchPlaceholder')"
             @keydown.enter="handleSearch"
           />
-          <button class="inv-search__btn" @click="handleSearch">
+          <button class="inv-search__btn" :aria-label="t('blog.searchLabel')" @click="handleSearch">
             <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
               <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
             </svg>
           </button>
-          <button v-if="search" class="inv-search__clear" @click="clearSearch">✕</button>
+          <button v-if="search" class="inv-search__clear" :aria-label="t('blog.clearSearch')" @click="clearSearch">✕</button>
         </div>
       </div>
     </section>
@@ -122,7 +126,7 @@ onMounted(() => fetchArticles(1))
     <section class="inv-body">
       <div class="inv-wrap">
         <div ref="gridTop" class="inv-anchor"></div>
-        <p v-if="!loading && search" class="inv-count">{{ pagination.total }} resultados para "{{ search }}"</p>
+        <p v-if="!loading && search" class="inv-count">{{ t('blog.results', { count: pagination.total, query: search }) }}</p>
         <ArticlesPager v-if="!loading && articles.length" class="inv-pager-top" :pagination="pagination" :loading="loading" @change="goToPage" />
 
         <!-- Loading skeleton -->
@@ -139,14 +143,14 @@ onMounted(() => fetchArticles(1))
 
         <!-- Error -->
         <div v-else-if="error" class="inv-message">
-          <p>{{ error }}</p>
-          <button class="inv-btn" @click="fetchArticles(currentPage)">Reintentar</button>
+          <p>{{ t('blog.loadError') }}</p>
+          <button class="inv-btn" @click="fetchArticles(currentPage)">{{ t('blog.retry') }}</button>
         </div>
 
         <!-- Empty -->
         <div v-else-if="articles.length === 0" class="inv-message">
-          <p>No se encontraron artículos.</p>
-          <button v-if="search" class="inv-btn inv-btn--ghost" @click="clearSearch">Ver todos</button>
+          <p>{{ t('blog.empty') }}</p>
+          <button v-if="search" class="inv-btn inv-btn--ghost" @click="clearSearch">{{ t('blog.viewAll') }}</button>
         </div>
 
           <!-- Cards -->
@@ -179,10 +183,10 @@ onMounted(() => fetchArticles(1))
               </div>
             </div>
             <div class="inv-card__body">
-              <time class="inv-card__date">{{ formatDate(a.date) }}</time>
-              <h3 class="inv-card__title">{{ a.title }}</h3>
-              <p class="inv-card__excerpt">{{ a.excerpt }}</p>
-              <span class="inv-card__cta">Leer más →</span>
+              <time class="inv-card__date" :datetime="a.date">{{ formatDate(a.date) }}</time>
+              <h3 class="inv-card__title" lang="es">{{ a.title }}</h3>
+              <p class="inv-card__excerpt" lang="es">{{ a.excerpt }}</p>
+              <span class="inv-card__cta">{{ t('blog.readMore') }}</span>
             </div>
           </RouterLink>
         </div>
@@ -257,6 +261,25 @@ onMounted(() => fetchArticles(1))
     line-height: 1.75;
     max-width: 580px;
     margin-bottom: 2.5rem;
+  }
+}
+
+/* Aviso de idioma (solo en EN): los artículos se publican en español */
+.inv-lang-note {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: -1rem 0 2rem;
+  padding: 0.4rem 0.95rem;
+  border-radius: 2rem;
+  border: 1px solid rgba(56, 182, 255, 0.25);
+  background: rgba(56, 182, 255, 0.08);
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  line-height: 1.4;
+
+  i {
+    color: var(--accent);
   }
 }
 

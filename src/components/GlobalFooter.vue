@@ -1,17 +1,18 @@
 <script setup lang="ts">
+import { computed } from 'vue';
 import pdfCelulas from '@/assets/revistas/Células Madre - La Nueva Frontera de la Salud (ESPAÑOL).pdf?url';
 import pdfEdad from '@/assets/revistas/REVISTA EDAD CRONOLÓGICA Y EDAD BIOLÓGICA.pdf?url';
+import LanguageSwitch from './LanguageSwitch.vue';
+import { useI18n } from '@/i18n';
 
-const revistas = [
-  {
-    title: 'Células Madre - La Nueva Frontera de la Salud',
-    file: pdfCelulas
-  },
-  {
-    title: 'Revista Edad Cronológica y Edad Biológica',
-    file: pdfEdad
-  }
-];
+const { t, tm } = useI18n();
+const files = [pdfCelulas, pdfEdad];
+const year = new Date().getFullYear();
+
+const revistas = computed(() =>
+  tm<string[]>('footer.magazines').map((title, idx) => ({ title, file: files[idx] }))
+);
+const disclaimer = computed(() => tm<string[]>('footer.disclaimer'));
 </script>
 
 <template>
@@ -20,11 +21,11 @@ const revistas = [
       
       <!-- Publicaciones y Revistas Profesionales -->
       <div class="footer-magazines-section">
-        <h4 class="footer-title">Investigación Médica y Publicaciones</h4>
+        <h4 class="footer-title">{{ t('footer.magazinesTitle') }}</h4>
         <div class="magazines-grid">
-          <a v-for="(revista, idx) in revistas" :key="idx" :href="revista.file" target="_blank" class="magazine-card">
+          <a v-for="(revista, idx) in revistas" :key="idx" :href="revista.file" target="_blank" rel="noopener" hreflang="es" class="magazine-card">
             <div class="magazine-icon-wrapper">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                 <polyline points="14 2 14 8 20 8"></polyline>
                 <path d="M12 18v-6"></path>
@@ -33,7 +34,7 @@ const revistas = [
             </div>
             <div class="magazine-info">
               <h5>{{ revista.title }}</h5>
-              <span class="view-pdf-btn">Descargar Documento PDF</span>
+              <span class="view-pdf-btn">{{ t('footer.download') }}</span>
             </div>
           </a>
         </div>
@@ -43,36 +44,36 @@ const revistas = [
 
       <!-- Legal Disclaimer Section -->
       <div class="footer-disclaimer">
-        <h4>Aviso Legal (Disclaimer)</h4>
-        <p>La información presentada en este sitio web tiene fines exclusivamente educativos e informativos y no constituye asesoría médica, diagnóstico, tratamiento ni sustituye la relación entre un paciente y su médico tratante.</p>
-        <p>Juan Román Garza no ejerce la medicina ni presta servicios médicos. Su labor consiste en educar, divulgar información sobre Medicina Regenerativa de Precisión, biomarcadores, longevidad e innovación en salud, así como facilitar el acceso a una red de clínicas, laboratorios y profesionales de la salud independientes.</p>
-        <p>Toda recomendación relacionada con tratamientos, estudios diagnósticos o protocolos médicos es realizada únicamente por médicos y profesionales de la salud debidamente autorizados, quienes evalúan de forma individual el historial clínico, los estudios médicos y las condiciones particulares de cada paciente para determinar su elegibilidad.</p>
-        <p>Las terapias de medicina regenerativa no ofrecen garantías de resultados y no se promocionan como una cura para ninguna enfermedad. Como ocurre con cualquier procedimiento médico, los resultados pueden variar significativamente entre pacientes y dependen de múltiples factores clínicos e individuales.</p>
-        <p>Los testimonios, casos de éxito y experiencias compartidas en este sitio representan vivencias personales de pacientes y no constituyen una garantía de resultados futuros ni deben interpretarse como evidencia de que otras personas obtendrán los mismos beneficios.</p>
-        <p>Toda la información personal y médica proporcionada por los usuarios será utilizada únicamente para fines de evaluación y coordinación con los profesionales y centros médicos correspondientes, de conformidad con las políticas de privacidad aplicables.</p>
-        <p>Los tratamientos mencionados en este sitio pueden no estar aprobados o disponibles en todas las jurisdicciones y su disponibilidad dependerá de la legislación vigente del país donde sean realizados. Los procedimientos son llevados a cabo exclusivamente por clínicas y profesionales de la salud autorizados, conforme a la normativa aplicable en cada ubicación.</p>
+        <h4>{{ t('footer.disclaimerTitle') }}</h4>
+        <p v-for="(paragraph, idx) in disclaimer" :key="idx">{{ paragraph }}</p>
       </div>
 
       <div class="footer-divider"></div>
 
       <div class="footer-bottom-row">
         <div class="footer-info">
-        <p class="copyright">&copy; {{ new Date().getFullYear() }} Juan Román Garza. Todos los derechos reservados.</p>
+        <p class="copyright">{{ t('footer.copyright', { year }) }}</p>
         <p class="powerhouse-footer">
-          Fundador del proyecto <router-link to="/powerhouse" class="cyan-link">Powerhouse Biotech</router-link>
+          {{ t('footer.founder') }} <router-link to="/powerhouse" class="cyan-link">Powerhouse Biotech</router-link>
         </p>
         <p class="creator-credit">
-          Diseñado y desarrollado por <a href="https://yeyo.dev/" target="_blank" class="yeyo-link">yeyo.dev</a> desde Ecuador 🇪🇨
+          {{ t('footer.creditBefore') }} <a href="https://yeyo.dev/" target="_blank" class="yeyo-link">yeyo.dev</a> {{ t('footer.creditAfter') }}
         </p>
       </div>
 
-      <div class="footer-links">
-        <a href="https://www.instagram.com/jromangarzainc/" target="_blank" class="social-link" aria-label="Instagram">
-          <i class="fa-brands fa-instagram"></i> Instagram
-        </a>
-        <a href="https://wa.me/5215553518114" target="_blank" class="social-link" aria-label="WhatsApp">
-          <i class="fa-brands fa-whatsapp"></i> WhatsApp
-        </a>
+      <div class="footer-side">
+        <div class="footer-links">
+          <a href="https://www.instagram.com/jromangarzainc/" target="_blank" class="social-link" aria-label="Instagram">
+            <i class="fa-brands fa-instagram"></i> Instagram
+          </a>
+          <a href="https://wa.me/5215553518114" target="_blank" class="social-link" aria-label="WhatsApp">
+            <i class="fa-brands fa-whatsapp"></i> WhatsApp
+          </a>
+        </div>
+        <div class="footer-lang">
+          <span class="footer-lang__label">{{ t('footer.language') }}</span>
+          <LanguageSwitch size="sm" />
+        </div>
       </div>
     </div>
   </div>
@@ -275,6 +276,27 @@ const revistas = [
   gap: 1.5rem;
 }
 
+.footer-side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 1.25rem;
+}
+
+.footer-lang {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.footer-lang__label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
 .social-link {
   display: inline-flex;
   align-items: center;
@@ -312,6 +334,10 @@ const revistas = [
 
   .footer-info {
     text-align: center;
+  }
+
+  .footer-side {
+    align-items: center;
   }
 }
 </style>

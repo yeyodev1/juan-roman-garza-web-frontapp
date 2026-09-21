@@ -1,8 +1,14 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import type { Pagination } from '@/services/articles.service'
+import { locale as activeLocale, toRich, translate, type Locale, type Params } from '@/i18n'
 
-const props = defineProps<{ pagination: Pagination; loading?: boolean }>()
+// `locale` fija el idioma (el panel admin siempre va en español); si no, sigue el idioma activo del sitio
+const props = defineProps<{ pagination: Pagination; loading?: boolean; locale?: Locale }>()
+
+const lang = computed<Locale>(() => props.locale ?? activeLocale.value)
+const t = (key: string, params?: Params) => translate(lang.value, `pager.${key}`, params)
+const rich = (key: string, params?: Params) => toRich(t(key, params))
 const emit = defineEmits<{ change: [page: number] }>()
 
 const pageInput = ref(String(props.pagination.page))
@@ -42,28 +48,28 @@ function goInput() {
 </script>
 
 <template>
-  <nav class="pg" aria-label="Paginación de artículos">
+  <nav class="pg" :aria-label="t('label')">
     <p class="pg__summary">
-      Mostrando <strong>{{ from }}–{{ to }}</strong> de <strong>{{ pagination.total }}</strong> artículos
+      <template v-for="(seg, i) in rich('summary', { from, to, total: pagination.total })" :key="`s${i}`"><strong v-if="seg.bold">{{ seg.text }}</strong><template v-else>{{ seg.text }}</template></template>
       <span class="pg__sep">·</span>
-      Página <strong>{{ pagination.page }}</strong> de <strong>{{ pagination.pages }}</strong>
+      <template v-for="(seg, i) in rich('page', { page: pagination.page, pages: pagination.pages })" :key="`p${i}`"><strong v-if="seg.bold">{{ seg.text }}</strong><template v-else>{{ seg.text }}</template></template>
     </p>
 
     <div v-if="pagination.pages > 1" class="pg__controls">
-      <button class="pg__btn" :disabled="pagination.page === 1 || loading" title="Primera página" @click="go(1)"><i class="fa-solid fa-angles-left"></i></button>
-      <button class="pg__btn pg__btn--text" :disabled="pagination.page === 1 || loading" @click="go(pagination.page - 1)"><i class="fa-solid fa-chevron-left"></i> Anterior</button>
+      <button class="pg__btn" :disabled="pagination.page === 1 || loading" :title="t('first')" :aria-label="t('first')" @click="go(1)"><i class="fa-solid fa-angles-left"></i></button>
+      <button class="pg__btn pg__btn--text" :disabled="pagination.page === 1 || loading" @click="go(pagination.page - 1)"><i class="fa-solid fa-chevron-left"></i> {{ t('prev') }}</button>
 
       <template v-for="(p, i) in pages" :key="i">
         <span v-if="p === '…'" class="pg__gap">…</span>
         <button v-else class="pg__btn" :class="{ 'pg__btn--active': p === pagination.page }" :disabled="loading" @click="go(p)">{{ p }}</button>
       </template>
 
-      <button class="pg__btn pg__btn--text" :disabled="pagination.page === pagination.pages || loading" @click="go(pagination.page + 1)">Siguiente <i class="fa-solid fa-chevron-right"></i></button>
-      <button class="pg__btn" :disabled="pagination.page === pagination.pages || loading" title="Última página" @click="go(pagination.pages)"><i class="fa-solid fa-angles-right"></i></button>
+      <button class="pg__btn pg__btn--text" :disabled="pagination.page === pagination.pages || loading" @click="go(pagination.page + 1)">{{ t('next') }} <i class="fa-solid fa-chevron-right"></i></button>
+      <button class="pg__btn" :disabled="pagination.page === pagination.pages || loading" :title="t('last')" :aria-label="t('last')" @click="go(pagination.pages)"><i class="fa-solid fa-angles-right"></i></button>
 
       <label class="pg__jump">
-        Ir a
-        <input v-model="pageInput" type="number" min="1" :max="pagination.pages" inputmode="numeric" @keydown.enter.prevent="goInput" @blur="goInput" />
+        {{ t('goTo') }}
+        <input v-model="pageInput" type="number" min="1" :max="pagination.pages" inputmode="numeric" :aria-label="t('goToLabel')" @keydown.enter.prevent="goInput" @blur="goInput" />
       </label>
     </div>
   </nav>

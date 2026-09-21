@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted } from 'vue';
+import { computed, onMounted, onUnmounted } from 'vue';
+import { useI18n } from '@/i18n';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -7,12 +8,8 @@ gsap.registerPlugin(ScrollTrigger);
 
 const philosophyImage = 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095163/assets-juan/5dfa62f2-170e-42eb-867b-f98a1c816781.jpg';
 
-const pillars = [
-  { text: 'Más preventiva que reactiva.' },
-  { text: 'Más personalizada que generalizada.' },
-  { text: 'Más humana que burocrática.' },
-  { text: 'Más inteligente que improvisada.' },
-];
+const { t, tm } = useI18n();
+const pillars = computed(() => tm<string[]>('home.philosophy.pillars').map((text) => ({ text })));
 
 onMounted(() => {
   gsap.fromTo('.philosophy-section',
@@ -62,14 +59,14 @@ onUnmounted(() => {
     <div class="container philosophy-container">
       <div class="philosophy-grid">
         <div class="philosophy-image">
-          <img :src="philosophyImage" alt="Juan Román Garza" loading="lazy" />
+          <img :src="philosophyImage" :alt="t('home.philosophy.imageAlt')" loading="lazy" />
           <div class="philosophy-image-glow"></div>
         </div>
         <div class="philosophy-text">
-          <span class="section-tag">FILOSOFÍA DE TRABAJO</span>
-          <h2 class="philosophy-title">Ciencia con propósito humano</h2>
+          <span class="section-tag">{{ t('home.philosophy.tag') }}</span>
+          <h2 class="philosophy-title">{{ t('home.philosophy.title') }}</h2>
           <p class="philosophy-intro">
-            Creo que la medicina del futuro será:
+            {{ t('home.philosophy.intro') }}
           </p>
           <div class="pillars-list">
             <div v-for="(p, idx) in pillars" :key="idx" class="pillar-item">
@@ -79,7 +76,7 @@ onUnmounted(() => {
           </div>
           <blockquote class="philosophy-quote">
             <i class="fa-solid fa-quote-left quote-icon"></i>
-            <p class="quote-text">"La tecnología puede potenciar la medicina, pero jamás sustituirá la empatía."</p>
+            <p class="quote-text">{{ t('home.philosophy.quote') }}</p>
             <footer class="quote-author">— Juan Román Garza</footer>
           </blockquote>
         </div>
@@ -89,19 +86,19 @@ onUnmounted(() => {
 
   <section class="vision-section section-padding">
     <div class="container vision-container">
-      <span class="section-tag">VISIÓN</span>
-      <h2 class="vision-title">El futuro que estamos construyendo</h2>
+      <span class="section-tag">{{ t('home.vision.tag') }}</span>
+      <h2 class="vision-title">{{ t('home.vision.title') }}</h2>
 
       <div class="vision-content">
         <img src="https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095165/assets-juan/71a520fc-beb0-4eb0-b7b6-3e97fef04266.jpg"
-             alt="Juan Román Garza - Visión" class="vision-image" loading="lazy" />
+             :alt="t('home.vision.imageAlt')" class="vision-image" loading="lazy" />
         <div class="vision-text">
           <p>
-            Visualizo un mundo donde las personas puedan comprender mejor su cuerpo, anticipar riesgos, tomar decisiones informadas y acceder a herramientas que les permitan vivir más años con salud y dignidad.
+            {{ t('home.vision.body') }}
           </p>
           <blockquote class="philosophy-quote">
             <i class="fa-solid fa-quote-left quote-icon"></i>
-            <p class="quote-text">"Mi trabajo consiste en ayudar a construir ese futuro."</p>
+            <p class="quote-text">{{ t('home.vision.quote') }}</p>
             <footer class="quote-author">— Juan Román Garza</footer>
           </blockquote>
         </div>

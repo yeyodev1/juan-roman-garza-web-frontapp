@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted } from 'vue';
+import { computed, nextTick, onMounted, onUnmounted, watch } from 'vue';
+import { useI18n } from '@/i18n';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -10,6 +11,12 @@ const heroVideo = 'https://res.cloudinary.com/drw5sn8qw/video/upload/v1780095169
 const imageAuditorium = 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095166/assets-juan/c875b275-008f-42eb-8828-799b8d573ae1.jpg';
 const imagePresentation = 'https://res.cloudinary.com/drw5sn8qw/image/upload/v1780095164/assets-juan/65feeba0-0dce-4cff-b63d-eb15952be89c.jpg';
 import powerhouseLogo from '@/assets/partners/powerhouse-logo.png';
+
+const { t, tm, rt, locale } = useI18n();
+const statValues = [15, 100, 1];
+const stats = computed(() =>
+  tm<{ suffix: string; line1: string; line2: string }[]>('powerhouse.stats').map((copy, idx) => ({ ...copy, value: statValues[idx] }))
+);
 
 onMounted(() => {
   const tl = gsap.timeline();
@@ -37,7 +44,6 @@ onMounted(() => {
   // Stats Counter Animation (Triggered on Scroll)
   gsap.utils.toArray('.stat-num').forEach((el: any) => {
     const endValue = parseInt(el.getAttribute('data-val'));
-    const suffix = el.getAttribute('data-suffix') || '';
 
     ScrollTrigger.create({
       trigger: '.ph-stats-section',
@@ -49,8 +55,10 @@ onMounted(() => {
           ease: 'power3.out',
           snap: { innerHTML: 1 },
           onUpdate: function () {
-            el.innerHTML = Math.round(Number(el.innerHTML)) + suffix;
-          }
+            // El sufijo se lee en cada frame: depende del idioma ("1ra" / "1st")
+            el.innerHTML = Math.round(Number(el.innerHTML)) + (el.getAttribute('data-suffix') || '');
+          },
+          onComplete: () => el.setAttribute('data-done', 'true')
         });
       },
       once: true
@@ -101,6 +109,14 @@ onMounted(() => {
   });
 });
 
+// GSAP escribe el contador directamente en el DOM; al cambiar de idioma se reescribe el sufijo
+watch(locale, async () => {
+  await nextTick();
+  document.querySelectorAll<HTMLElement>('.stat-num[data-done="true"]').forEach((el) => {
+    el.innerHTML = `${el.getAttribute('data-val')}${el.getAttribute('data-suffix') || ''}`;
+  });
+});
+
 onUnmounted(() => {
   ScrollTrigger.getAll().forEach(t => t.kill());
 });
@@ -117,16 +133,16 @@ onUnmounted(() => {
       <div class="ph-hero-overlay"></div>
       
       <div class="ph-hero-content text-center">
-        <span class="ph-hero-tag">EL PROYECTO CUMBRE</span>
+        <span class="ph-hero-tag">{{ t('powerhouse.heroTag') }}</span>
         <img :src="powerhouseLogo" alt="Powerhouse Biotech" class="ph-hero-logo" />
         <p class="ph-hero-subtitle">
-          La primera <strong class="text-cyan">Plataforma de salud decisional</strong> enfocada en Medicina Regenerativa.
+          <template v-for="(seg, i) in rt('powerhouse.subtitle')" :key="i"><strong v-if="seg.bold" class="text-cyan">{{ seg.text }}</strong><template v-else>{{ seg.text }}</template></template>
         </p>
       </div>
 
       <!-- Scroll Indicator -->
       <div class="scroll-indicator">
-        <span class="scroll-text">DESCUBRE LA PLATAFORMA</span>
+        <span class="scroll-text">{{ t('powerhouse.scroll') }}</span>
         <div class="scroll-line"></div>
       </div>
     </section>
@@ -135,17 +151,9 @@ onUnmounted(() => {
     <section class="ph-stats-section">
       <div class="container">
         <div class="stats-grid">
-          <div class="stat-item">
-            <span class="stat-num" data-val="15" data-suffix="+">0</span>
-            <span class="stat-label">Años de Liderazgo<br>en Medicina</span>
-          </div>
-          <div class="stat-item">
-            <span class="stat-num" data-val="100" data-suffix="K+">0</span>
-            <span class="stat-label">Casos Analizados<br>Exitosamente</span>
-          </div>
-          <div class="stat-item">
-            <span class="stat-num" data-val="1" data-suffix="ra">0</span>
-            <span class="stat-label">Health Decision Platform<br>en su clase</span>
+          <div v-for="(stat, idx) in stats" :key="idx" class="stat-item">
+            <span class="stat-num" :data-val="stat.value" :data-suffix="stat.suffix">0</span>
+            <span class="stat-label">{{ stat.line1 }}<br>{{ stat.line2 }}</span>
           </div>
         </div>
       </div>
@@ -157,12 +165,12 @@ onUnmounted(() => {
         <div class="sticky-grid">
         <!-- Left: Sticky Titles -->
         <div class="sticky-sidebar">
-          <h2 class="sidebar-title">Ciencia al Servicio de su <span class="text-cyan">Bienestar Integral</span></h2>
+          <h2 class="sidebar-title">{{ t('powerhouse.sidebarTitle') }} <span class="text-cyan">{{ t('powerhouse.sidebarTitleAccent') }}</span></h2>
           <!-- <div class="anim-line"></div> -->
-          <p class="sidebar-desc">Una plataforma médica y tecnológica diseñada para quienes desean comprender, restaurar y optimizar su salud al máximo nivel, fundada y dirigida por Juan Román Garza.</p>
+          <p class="sidebar-desc">{{ t('powerhouse.sidebarDesc') }}</p>
           
           <a href="https://www.powerhousebiotech.com/" target="_blank" rel="noopener noreferrer" class="ph-btn-outline">
-            Ingresar a la Plataforma <i class="fa-solid fa-arrow-right"></i>
+            {{ t('powerhouse.enter') }} <i class="fa-solid fa-arrow-right"></i>
           </a>
         </div>
 
@@ -171,22 +179,22 @@ onUnmounted(() => {
           
           <div class="content-block">
             <div class="ph-image-reveal">
-              <img :src="imageAuditorium" alt="Conferencia de Longevidad Regenerativa" />
+              <img :src="imageAuditorium" :alt="t('powerhouse.block1.imageAlt')" />
             </div>
-            <h3 class="reveal-text">El Cimiento de una Vida Plena</h3>
-            <p class="reveal-text">Powerhouse Biotech nace de una convicción inquebrantable: un cuerpo regenerado y optimizado celularmente es el cimiento absoluto para una mejor calidad de vida. No somos una clínica tradicional; somos una entidad tecnológica-médica.</p>
+            <h3 class="reveal-text">{{ t('powerhouse.block1.title') }}</h3>
+            <p class="reveal-text">{{ t('powerhouse.block1.body') }}</p>
           </div>
 
           <div class="content-block">
             <div class="ph-image-reveal">
-              <img :src="imagePresentation" alt="Presentación de Powerhouse Biotech" />
+              <img :src="imagePresentation" :alt="t('powerhouse.block2.imageAlt')" />
             </div>
-            <h3 class="reveal-text">Evaluación de Viabilidad Regenerativa™</h3>
-            <p class="reveal-text">Antes de sugerir cualquier tratamiento, realizamos un análisis exhaustivo, brutalmente honesto y puramente científico. Nuestro protocolo patentado nos permite determinar con precisión si tu cuerpo está verdaderamente listo para repararse a nivel celular.</p>
+            <h3 class="reveal-text">{{ t('powerhouse.block2.title') }}</h3>
+            <p class="reveal-text">{{ t('powerhouse.block2.body') }}</p>
             <blockquote class="reveal-text ph-quote">
               <i class="fa-solid fa-quote-left quote-icon"></i>
-              <p class="quote-text">"Eliminamos conjeturas para proteger tu inversión biológica."</p>
-              <footer class="quote-author">— Equipo Powerhouse Biotech</footer>
+              <p class="quote-text">{{ t('powerhouse.block2.quote') }}</p>
+              <footer class="quote-author">{{ t('powerhouse.block2.author') }}</footer>
             </blockquote>
           </div>
 
