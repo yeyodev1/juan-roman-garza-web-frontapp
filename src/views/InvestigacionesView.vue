@@ -1,28 +1,10 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import ArticlesPager from '@/components/ArticlesPager.vue'
 import { useI18n } from '@/i18n'
+import { articlesService, type Article, type Pagination } from '@/services/articles.service'
 
 const { t, locale, formatDate: formatLocaleDate } = useI18n()
-
-const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8100/api'
-
-interface Article {
-  _id: string
-  slug: string
-  title: string
-  excerpt: string
-  date: string
-  featuredImage: string
-  sourceUrl: string
-}
-
-interface Pagination {
-  page: number
-  limit: number
-  total: number
-  pages: number
-}
 
 const articles = ref<Article[]>([])
 const loading = ref(true)
@@ -34,29 +16,44 @@ const currentPage = ref(1)
 const pagination = ref<Pagination>({ page: 1, limit: 12, total: 0, pages: 1 })
 const LIMIT = 12
 
+/** Idioma en que llegó cada artículo (sin campo `lang` = español, backend sin traducción). */
+function servedLang(a: Article): 'es' | 'en' {
+  return a.lang === 'en' ? 'en' : 'es'
+}
+
+// Aviso de idioma en EN: solo si hay artículos servidos en español en la página actual
+const spanishCount = computed(() => articles.value.filter((a) => servedLang(a) === 'es').length)
+const showSpanishNote = computed(() => locale.value === 'en' && !loading.value && spanishCount.value > 0)
+const spanishNoteText = computed(() =>
+  spanishCount.value === articles.value.length ? t('blog.spanishNote') : t('blog.spanishNotePartial'),
+)
+
+// Evita que una respuesta vieja (p. ej. al cambiar de idioma a mitad de carga) pise a la nueva
+let requestId = 0
+
 async function fetchArticles(page = 1) {
+  const id = ++requestId
   loading.value = true
   error.value = false
   try {
-    const qs = new URLSearchParams({
-      page: String(page),
-      limit: String(LIMIT),
+    const data = await articlesService.list({
+      page,
+      limit: LIMIT,
       source: 'drjuangarza',
+      search: search.value || undefined,
+      lang: locale.value,
     })
-    if (search.value) qs.set('search', search.value)
-
-    const res = await fetch(`${API_BASE}/articles?${qs}`)
-    if (!res.ok) throw new Error(`HTTP ${res.status}`)
-    const data = await res.json()
+    if (id !== requestId) return
     articles.value = data.data
     pagination.value = data.pagination
     currentPage.value = page
   } catch (e: unknown) {
+    if (id !== requestId) return
     console.error('Error al cargar artículos:', e)
     error.value = true
     articles.value = []
   } finally {
-    loading.value = false
+    if (id === requestId) loading.value = false
   }
 }
 
@@ -84,6 +81,8 @@ function formatDate(dateStr: string) {
 }
 
 onMounted(() => fetchArticles(1))
+// Al cambiar ES ↔ EN se vuelve a pedir la misma página en el nuevo idioma
+watch(locale, () => fetchArticles(currentPage.value))
 </script>
 
 <template>
@@ -98,8 +97,8 @@ onMounted(() => fetchArticles(1))
         <p class="inv-hero__desc">
           {{ t('blog.description') }}
         </p>
-        <p v-if="locale === 'en'" class="inv-lang-note" lang="en">
-          <i class="fa-solid fa-language" aria-hidden="true"></i> {{ t('blog.spanishNote') }}
+        <p v-if="showSpanishNote" class="inv-lang-note" lang="en">
+          <i class="fa-solid fa-language" aria-hidden="true"></i> {{ spanishNoteText }}
         </p>
 
         <!-- Search bar -->
@@ -183,9 +182,12 @@ onMounted(() => fetchArticles(1))
               </div>
             </div>
             <div class="inv-card__body">
-              <time class="inv-card__date" :datetime="a.date">{{ formatDate(a.date) }}</time>
-              <h3 class="inv-card__title" lang="es">{{ a.title }}</h3>
-              <p class="inv-card__excerpt" lang="es">{{ a.excerpt }}</p>
+              <div class="inv-card__meta">
+                <time class="inv-card__date" :datetime="a.date">{{ formatDate(a.date) }}</time>
+                <span v-if="locale === 'en' && servedLang(a) === 'es'" class="inv-card__lang">{{ t('blog.cardSpanish') }}</span>
+              </div>
+              <h3 class="inv-card__title" :lang="servedLang(a)">{{ a.title }}</h3>
+              <p class="inv-card__excerpt" :lang="servedLang(a)">{{ a.excerpt }}</p>
               <span class="inv-card__cta">{{ t('blog.readMore') }}</span>
             </div>
           </RouterLink>
@@ -415,13 +417,31 @@ onMounted(() => fetchArticles(1))
     flex: 1;
   }
 
+  &__meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+
   &__date {
     font-size: 0.75rem;
     font-weight: 600;
     color: var(--accent);
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    margin-bottom: 0.75rem;
+  }
+
+  /* Solo en EN: artículo aún sin versión en inglés */
+  &__lang {
+    flex-shrink: 0;
+    padding: 0.15rem 0.55rem;
+    border-radius: 2rem;
+    border: 1px solid var(--border);
+    font-size: 0.68rem;
+    color: var(--text-muted);
+    white-space: nowrap;
   }
 
   &__title {

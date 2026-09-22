@@ -392,6 +392,8 @@ const es = {
     viewAll: 'Ver todos',
     readMore: 'Leer más →',
     spanishNote: 'Los artículos se publican en español.',
+    spanishNotePartial: 'Algunos artículos por ahora solo están disponibles en español.',
+    cardSpanish: 'En español',
     article: {
       loading: 'Cargando artículo...',
       notFound: 'Artículo no encontrado',
@@ -401,6 +403,11 @@ const es = {
       badge: 'Medicina Regenerativa',
       source: 'Fuente original',
       spanishNote: 'Este artículo está publicado en español.',
+      translating: 'Traduciendo este artículo al inglés…',
+      translatedNote: 'Traducido automáticamente del español',
+      viewOriginal: 'Ver original',
+      viewTranslation: 'Ver traducción',
+      originalNote: 'Estás viendo la versión original en español.',
     },
   },
 

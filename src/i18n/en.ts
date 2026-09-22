@@ -77,7 +77,7 @@ const en: Messages = {
     },
     blog: {
       title: 'Blogs | Juan Román Garza — Regenerative Medicine & Longevity',
-      description: 'Blogs and articles on stem cells, longevity and regenerative therapies. More than 300 publications (in Spanish) by Juan Román Garza and the Powerhouse Biotech team.',
+      description: 'Blogs and articles on stem cells, longevity and regenerative therapies. More than 300 publications by Juan Román Garza and the Powerhouse Biotech team.',
       ogTitle: 'Blogs | Juan Román Garza',
       ogDescription: 'Articles on stem cells, longevity and regenerative medicine.',
     },
@@ -393,6 +393,8 @@ const en: Messages = {
     viewAll: 'View all',
     readMore: 'Read more →',
     spanishNote: 'Articles are published in Spanish.',
+    spanishNotePartial: 'Some articles are only available in Spanish for now.',
+    cardSpanish: 'In Spanish',
     article: {
       loading: 'Loading article...',
       notFound: 'Article not found',
@@ -402,6 +404,11 @@ const en: Messages = {
       badge: 'Regenerative Medicine',
       source: 'Original source',
       spanishNote: 'This article is published in Spanish.',
+      translating: 'Translating this article into English…',
+      translatedNote: 'Automatically translated from Spanish',
+      viewOriginal: 'View original',
+      viewTranslation: 'View translation',
+      originalNote: 'You are viewing the original Spanish version.',
     },
   },
 

@@ -1,49 +1,132 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, onBeforeUnmount, computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from '@/i18n'
+import { articlesService, type Article, type ServedLang } from '@/services/articles.service'
+import type { ApiError } from '@/types'
 
 const route = useRoute()
 const router = useRouter()
 const { t, locale, formatDate: formatLocaleDate } = useI18n()
 const slug = computed(() => route.params.slug as string)
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8100/api'
-
-interface Article {
-  _id: string
-  slug: string
-  title: string
-  excerpt: string
-  content: string
-  date: string
-  featuredImage: string
-  sourceUrl: string
-}
-
+// Artículo tal como lo sirvió el backend en el idioma activo (EN si ya está traducido)
 const article = ref<Article | null>(null)
+// Original en español, solo cuando el lector pulsa "Ver original" estando en EN
+const original = ref<Article | null>(null)
+const showOriginal = ref(false)
+const loadingOriginal = ref(false)
 const loading = ref(true)
 // Código de error (se traduce en la plantilla para seguir el idioma activo)
 const error = ref<'notFound' | 'loadError' | null>(null)
 
-async function fetchArticle() {
-  loading.value = true
-  error.value = null
+// ── Estado de la traducción (sin campos del backend = español, sin aviso de traducción) ──
+const servedLang = computed<ServedLang>(() => (article.value?.lang === 'en' ? 'en' : 'es'))
+const polling = ref(false)
+const isTranslated = computed(() => locale.value === 'en' && servedLang.value === 'en')
+const isPending = computed(() => locale.value === 'en' && servedLang.value === 'es' && polling.value)
+// Lo que se pinta: el original si el lector lo pidió, si no la versión servida
+const viewingOriginal = computed(() => isTranslated.value && showOriginal.value && !!original.value)
+const shown = computed(() => (viewingOriginal.value ? original.value : article.value))
+const shownLang = computed<ServedLang>(() => (viewingOriginal.value ? 'es' : servedLang.value))
+
+// ── Sondeo mientras la traducción se genera en segundo plano ──────────────────
+const POLL_EVERY_MS = 5000
+const POLL_MAX_MS = 120000
+let pollTimer: ReturnType<typeof setTimeout> | null = null
+let pollStartedAt = 0
+// Cada carga/sondeo lleva un número; las respuestas de cargas anteriores se descartan
+let requestId = 0
+
+function stopPolling() {
+  if (pollTimer) clearTimeout(pollTimer)
+  pollTimer = null
+  polling.value = false
+}
+
+function schedulePoll() {
+  if (Date.now() - pollStartedAt >= POLL_MAX_MS) {
+    stopPolling()
+    return
+  }
+  pollTimer = setTimeout(pollOnce, POLL_EVERY_MS)
+}
+
+async function pollOnce() {
+  pollTimer = null
+  const id = requestId
   try {
-    const res = await fetch(`${API_BASE}/articles/${slug.value}`)
-    if (!res.ok) {
-      error.value = res.status === 404 ? 'notFound' : 'loadError'
+    const fresh = await articlesService.getBySlug(slug.value, 'en')
+    if (id !== requestId || locale.value !== 'en') return
+    if (fresh.lang === 'en') {
+      // Cambio sin recargar: misma página, ahora en inglés
+      article.value = fresh
+      applyArticleMeta(fresh)
+      stopPolling()
       return
     }
-    const data = await res.json()
-    article.value = data.data
-    applyArticleMeta(data.data)
-  } catch (e: unknown) {
-    console.error('Error al cargar el artículo:', e)
-    error.value = 'loadError'
-  } finally {
-    loading.value = false
+    if (fresh.translation?.status !== 'pending') {
+      // Falló o dejó de estar en cola: nos quedamos con el español
+      article.value = fresh
+      stopPolling()
+      return
+    }
+  } catch {
+    if (id !== requestId) return
+    // error puntual de red: se reintenta en el siguiente ciclo
   }
+  schedulePoll()
+}
+
+async function fetchArticle() {
+  const id = ++requestId
+  stopPolling()
+  showOriginal.value = false
+  original.value = null
+  loading.value = true
+  error.value = null
+  const lang = locale.value
+  try {
+    const data = await articlesService.getBySlug(slug.value, lang)
+    if (id !== requestId) return
+    article.value = data
+    applyArticleMeta(data)
+    if (lang === 'en' && data.lang !== 'en' && data.translation?.status === 'pending') {
+      polling.value = true
+      pollStartedAt = Date.now()
+      schedulePoll()
+    }
+  } catch (e: unknown) {
+    if (id !== requestId) return
+    console.error('Error al cargar el artículo:', e)
+    error.value = (e as ApiError)?.status === 404 ? 'notFound' : 'loadError'
+  } finally {
+    if (id === requestId) loading.value = false
+  }
+}
+
+async function toggleOriginal() {
+  if (showOriginal.value) {
+    showOriginal.value = false
+    if (article.value) applyArticleMeta(article.value)
+    return
+  }
+  if (!original.value) {
+    const id = requestId
+    loadingOriginal.value = true
+    try {
+      const es = await articlesService.getBySlug(slug.value, 'es')
+      if (id !== requestId) return
+      original.value = es
+    } catch (e) {
+      console.error('Error al cargar el original:', e)
+      return
+    } finally {
+      loadingOriginal.value = false
+    }
+  }
+  showOriginal.value = true
+  applyArticleMeta(original.value!)
 }
 
 // Mantiene <head> coherente al navegar dentro del SPA (el HTML inicial ya viene
@@ -89,6 +172,14 @@ function goBack() {
 }
 
 onMounted(fetchArticle)
+// Cambio de idioma o de artículo: recargar (y cortar cualquier sondeo en curso)
+watch([locale, slug], () => {
+  if (slug.value) fetchArticle()
+})
+onBeforeUnmount(() => {
+  requestId++
+  stopPolling()
+})
 </script>
 
 <template>
@@ -107,7 +198,7 @@ onMounted(fetchArticle)
     </div>
 
     <!-- Content -->
-    <template v-else-if="article">
+    <template v-else-if="article && shown">
       <!-- Hero -->
       <section class="art-hero">
         <div class="art-wrap">
@@ -120,21 +211,41 @@ onMounted(fetchArticle)
 
           <div class="art-meta">
             <span class="art-meta__badge">{{ t('blog.article.badge') }}</span>
-            <time class="art-meta__date" :datetime="article.date">{{ formatDate(article.date) }}</time>
-            <span v-if="locale === 'en'" class="art-meta__lang" lang="en">
+            <time class="art-meta__date" :datetime="shown.date">{{ formatDate(shown.date) }}</time>
+            <!-- EN, ya traducido: aviso + alternar con el original -->
+            <span v-if="isTranslated" class="art-meta__lang">
+              <i class="fa-solid fa-language" aria-hidden="true"></i>
+              <span>{{ showOriginal ? t('blog.article.originalNote') : t('blog.article.translatedNote') }}</span>
+              <span class="art-meta__sep" aria-hidden="true">·</span>
+              <button
+                type="button"
+                class="art-meta__toggle"
+                :disabled="loadingOriginal"
+                :aria-pressed="showOriginal"
+                @click="toggleOriginal"
+              >{{ showOriginal ? t('blog.article.viewTranslation') : t('blog.article.viewOriginal') }}</button>
+            </span>
+            <!-- EN, sin traducción (fallida, no disponible o backend sin soporte) -->
+            <span v-else-if="locale === 'en' && !isPending" class="art-meta__lang">
               <i class="fa-solid fa-language" aria-hidden="true"></i> {{ t('blog.article.spanishNote') }}
             </span>
           </div>
 
-          <h1 class="art-title" lang="es">{{ article.title }}</h1>
-          <p v-if="article.excerpt" class="art-excerpt" lang="es">{{ article.excerpt }}</p>
+          <!-- EN, traducción en curso: se muestra el español y se cambia solo al terminar -->
+          <p v-if="isPending" class="art-translating" role="status" aria-live="polite">
+            <span class="art-translating__dot" aria-hidden="true"></span>
+            {{ t('blog.article.translating') }}
+          </p>
+
+          <h1 class="art-title" :lang="shownLang">{{ shown.title }}</h1>
+          <p v-if="shown.excerpt" class="art-excerpt" :lang="shownLang">{{ shown.excerpt }}</p>
         </div>
       </section>
 
       <!-- Cover image -->
       <div class="art-wrap art-cover-wrap">
-        <div v-if="article.featuredImage" class="art-cover">
-          <img :src="article.featuredImage" :alt="article.title" class="art-cover__img" />
+        <div v-if="shown.featuredImage" class="art-cover">
+          <img :src="shown.featuredImage" :alt="shown.title" class="art-cover__img" />
         </div>
         <div v-else class="art-cover art-cover--default">
           <svg width="64" height="64" fill="none" viewBox="0 0 64 64">
@@ -153,13 +264,14 @@ onMounted(fetchArticle)
       <section class="art-body">
         <div class="art-wrap">
           <div
-            v-if="article.content"
+            v-if="shown.content"
+            :key="shownLang"
             class="art-content"
-            lang="es"
-            v-html="article.content"
+            :lang="shownLang"
+            v-html="shown.content"
           ></div>
-          <div v-else class="art-content">
-            <p>{{ article.excerpt }}</p>
+          <div v-else class="art-content" :lang="shownLang">
+            <p>{{ shown.excerpt }}</p>
           </div>
 
           <!-- Source -->
@@ -296,6 +408,7 @@ onMounted(fetchArticle)
   &__lang {
     display: inline-flex;
     align-items: center;
+    flex-wrap: wrap;
     gap: 0.4rem;
     font-size: 0.8rem;
     color: var(--text-muted);
@@ -306,6 +419,56 @@ onMounted(fetchArticle)
       font-style: normal;
     }
   }
+
+  &__sep {
+    font-style: normal;
+    opacity: 0.6;
+  }
+
+  &__toggle {
+    background: transparent;
+    border: none;
+    padding: 0;
+    font: inherit;
+    font-style: normal;
+    font-weight: 600;
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    &:hover { opacity: 0.75; }
+    &:disabled { opacity: 0.5; cursor: progress; }
+  }
+}
+
+/* Aviso discreto mientras se genera la versión en inglés */
+.art-translating {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: -0.5rem 0 1.5rem;
+  padding: 0.45rem 1rem;
+  border-radius: 2rem;
+  border: 1px solid rgba(56, 182, 255, 0.25);
+  background: rgba(56, 182, 255, 0.08);
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  line-height: 1.4;
+
+  &__dot {
+    flex-shrink: 0;
+    width: 0.85rem;
+    height: 0.85rem;
+    border: 2px solid rgba(56, 182, 255, 0.3);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .art-translating__dot { animation-duration: 2.4s; }
 }
 
 /* Title */
