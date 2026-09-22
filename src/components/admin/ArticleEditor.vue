@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { ref, computed, watch, onMounted, nextTick } from 'vue'
+import { ref, computed, watch, onMounted, onBeforeUnmount, nextTick } from 'vue'
 import { articlesService, type Article, type ArticleInput } from '@/services/articles.service'
 import type { ApiError } from '@/types'
+import { spanishSourceHash, translationBadge, translateActionLabel } from '@/utils/articleTranslation'
 
 const props = defineProps<{ article: Article | null }>()
 const emit = defineEmits<{ saved: [article: Article]; cancel: [] }>()
@@ -142,6 +143,71 @@ function removeImage() {
   form.value.featuredImage = ''
 }
 
+// ── Versión en inglés (se genera sola a partir del español guardado) ─────────
+const trArticle = ref<Article | null>(props.article)
+const savedHash = ref<string | null>(null)
+const translating = ref(false)
+const trError = ref<string | null>(null)
+let trPoll: ReturnType<typeof setTimeout> | null = null
+let trPollUntil = 0
+
+const trBadge = computed(() => (trArticle.value ? translationBadge(trArticle.value, savedHash.value) : null))
+const trEn = computed(() => trArticle.value?.translations?.en ?? null)
+// ¿El formulario tiene cambios en el español sin guardar? (la traducción se hará al guardar)
+const spanishDirty = computed(() => {
+  const a = props.article
+  if (!a) return false
+  return form.value.title.trim() !== (a.title ?? '').trim() || form.value.excerpt.trim() !== (a.excerpt ?? '').trim() || form.value.content !== (a.content ?? '')
+})
+
+function formatDateTime(iso?: string) {
+  if (!iso) return ''
+  const d = new Date(iso)
+  return Number.isNaN(d.getTime()) ? '' : d.toLocaleString('es-MX', { dateStyle: 'medium', timeStyle: 'short' })
+}
+
+function stopTrPoll() {
+  if (trPoll) clearTimeout(trPoll)
+  trPoll = null
+}
+
+// Mientras la traducción está en curso, refrescar su estado cada 5 s (máx. 3 min)
+function watchPending() {
+  stopTrPoll()
+  if (!trArticle.value || trBadge.value?.status !== 'pending' || Date.now() > trPollUntil) return
+  trPoll = setTimeout(async () => {
+    try {
+      trArticle.value = await articlesService.adminGet(trArticle.value!._id)
+    } catch { /* se reintenta */ }
+    watchPending()
+  }, 5000)
+}
+
+async function forceTranslate() {
+  if (!trArticle.value || translating.value) return
+  translating.value = true
+  trError.value = null
+  try {
+    const updated = await articlesService.translate(trArticle.value._id)
+    trArticle.value = updated ?? (await articlesService.adminGet(trArticle.value._id))
+    trPollUntil = Date.now() + 3 * 60 * 1000
+    watchPending()
+  } catch (e) {
+    trError.value = (e as ApiError).message || 'No se pudo traducir el artículo.'
+  } finally {
+    translating.value = false
+  }
+}
+
+onMounted(async () => {
+  if (props.article) savedHash.value = await spanishSourceHash(props.article)
+  if (trBadge.value?.status === 'pending') {
+    trPollUntil = Date.now() + 3 * 60 * 1000
+    watchPending()
+  }
+})
+onBeforeUnmount(stopTrPoll)
+
 // ── Guardar ───────────────────────────────────────────────────────────────────
 async function save() {
   if (!canSave.value) return
@@ -279,6 +345,35 @@ async function save() {
             <input v-model="imageUrlInput" class="adm-input adm-input--sm" type="url" placeholder="…o pega la URL de una imagen" @keydown.enter.prevent="useImageUrl" />
             <button type="button" class="adm-btn adm-btn--ghost adm-btn--sm" :disabled="!imageUrlInput" @click="useImageUrl">Usar</button>
           </div>
+        </div>
+
+        <div v-if="isEdit && trArticle && trBadge" class="ed__card ed__tr">
+          <div class="ed__tr-head">
+            <span class="adm-field__label"><i class="fa-solid fa-language"></i> Versión en inglés</span>
+            <span :class="['ed__tr-badge', `ed__tr-badge--${trBadge.status}`]" :title="trBadge.hint">{{ trBadge.label }}</span>
+          </div>
+          <p class="ed__help ed__tr-help">
+            Escribe solo en español: la traducción se genera automáticamente al guardar un artículo publicado y se guarda en este mismo artículo.
+          </p>
+          <p v-if="trEn?.title && trBadge.status !== 'none'" class="ed__tr-preview" lang="en">“{{ trEn.title }}”</p>
+          <p v-if="trEn?.translatedAt && (trBadge.status === 'ready' || trBadge.status === 'stale')" class="ed__tr-meta">
+            Traducido el {{ formatDateTime(trEn.translatedAt) }}
+          </p>
+          <p v-if="trBadge.status === 'failed' && trEn?.error" class="ed__tr-meta ed__tr-meta--err">{{ trEn.error }}</p>
+          <p v-if="spanishDirty && form.isPublished" class="ed__tr-meta">Hay cambios sin guardar: al guardar se volverá a traducir.</p>
+          <p v-if="!trArticle.isPublished" class="ed__tr-meta">Se traduce cuando el artículo está publicado.</p>
+          <p v-if="trError" class="ed__tr-meta ed__tr-meta--err">{{ trError }}</p>
+          <button
+            v-if="trArticle.isPublished"
+            type="button"
+            class="adm-btn adm-btn--ghost adm-btn--sm"
+            :disabled="translating || trBadge.status === 'pending'"
+            @click="forceTranslate"
+          >
+            <span v-if="translating" class="adm-spinner adm-spinner--accent ed__tr-spinner"></span>
+            <i v-else class="fa-solid" :class="trBadge.status === 'ready' || trBadge.status === 'stale' ? 'fa-rotate' : 'fa-language'"></i>
+            {{ translating ? 'Traduciendo…' : trBadge.status === 'pending' ? 'Traducción en curso…' : translateActionLabel(trBadge.status) }}
+          </button>
         </div>
 
         <div class="ed__card">
@@ -425,6 +520,22 @@ async function save() {
   }
 
   &__url-row { display: flex; gap: 0.5rem; }
+
+  &__tr { gap: 0.7rem; }
+  &__tr-head { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; flex-wrap: wrap; }
+  &__tr-help { margin-top: 0; }
+  &__tr-badge {
+    font-size: 0.68rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 0.2rem 0.55rem; border-radius: 2rem;
+    &--ready { background: rgba(56, 182, 255, 0.14); color: var(--accent); }
+    &--pending { background: rgba(245, 158, 11, 0.15); color: #fbbf24; }
+    &--stale { background: rgba(249, 115, 22, 0.15); color: #fb923c; }
+    &--failed { background: rgba(239, 68, 68, 0.14); color: #f87171; }
+    &--none { background: rgba(255, 255, 255, 0.08); color: var(--text-muted); }
+  }
+  &__tr-preview { font-size: 0.85rem; color: var(--text); line-height: 1.45; font-style: italic; }
+  &__tr-meta { font-size: 0.75rem; color: var(--text-muted); line-height: 1.45; &--err { color: #f87171; } }
+  &__tr-spinner { width: 0.95rem; height: 0.95rem; }
 
   &__slug-preview { font-size: 0.75rem; color: var(--text-muted); word-break: break-all; }
 

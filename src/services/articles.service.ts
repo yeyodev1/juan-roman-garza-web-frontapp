@@ -80,6 +80,8 @@ export interface Pagination {
 export interface ArticlesResponse {
   data: Article[]
   pagination: Pagination
+  /** Opcional (admin): artículos publicados que aún no tienen inglés vigente */
+  translationStats?: { remaining?: number; total?: number; translated?: number }
 }
 
 export interface AdminListParams {

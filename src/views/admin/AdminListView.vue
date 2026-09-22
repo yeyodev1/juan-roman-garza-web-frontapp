@@ -5,6 +5,7 @@ import { articlesService, type Article, type Pagination } from '@/services/artic
 import type { ApiError } from '@/types'
 import ShareModal from '@/components/admin/ShareModal.vue'
 import ArticlesPager from '@/components/ArticlesPager.vue'
+import { translationBadge, translateActionLabel } from '@/utils/articleTranslation'
 
 const route = useRoute()
 const router = useRouter()
@@ -22,6 +23,15 @@ const toast = ref<string | null>(null)
 const sharing = ref<Article | null>(null)
 const deleting = ref<Article | null>(null)
 const listTop = ref<HTMLElement | null>(null)
+
+// ── Traducción al inglés ──────────────────────────────────────────────────────
+const translatingIds = ref<Set<string>>(new Set())
+// Pendientes de traducir (null = desconocido hasta la primera respuesta del backend)
+const backlogRemaining = ref<number | null>(null)
+const backlogRunning = ref(false)
+const backlogStop = ref(false)
+const backlogDone = ref(0)
+const BACKLOG_BATCH = 3
 
 // ── Estado de la lista = query de la URL (?pagina=2&q=texto&estado=borradores) ──
 const page = computed(() => Math.max(1, parseInt(String(route.query.pagina || '1'), 10) || 1))
@@ -58,6 +68,7 @@ async function load() {
     const res = await articlesService.adminList({ page: page.value, limit: 20, search: search.value, status: status.value })
     articles.value = res.data
     pagination.value = res.pagination
+    if (typeof res.translationStats?.remaining === 'number') backlogRemaining.value = res.translationStats.remaining
     // Si la página pedida ya no existe (p. ej. tras borrar), volver a la última
     if (res.pagination.pages > 0 && page.value > res.pagination.pages) setQuery({ pagina: String(res.pagination.pages) })
   } catch (e) {
@@ -97,6 +108,65 @@ async function togglePublish(a: Article) {
     showToast(updated.isPublished ? 'Artículo publicado' : 'Artículo pasado a borrador')
   } catch (e) {
     error.value = (e as ApiError).message || 'No se pudo actualizar.'
+  }
+}
+
+function replaceRow(a: Article) {
+  const idx = articles.value.findIndex((x) => x._id === a._id)
+  if (idx >= 0) articles.value[idx] = { ...articles.value[idx], ...a }
+}
+
+async function translateOne(a: Article) {
+  if (translatingIds.value.has(a._id)) return
+  translatingIds.value = new Set(translatingIds.value).add(a._id)
+  error.value = null
+  try {
+    const updated = await articlesService.translate(a._id)
+    if (updated) {
+      replaceRow(updated)
+    } else {
+      // El backend aceptó la petición pero no devolvió el artículo: queda en curso
+      replaceRow({ ...a, translations: { en: { ...(a.translations?.en ?? {}), status: 'pending', startedAt: new Date().toISOString() } } })
+    }
+    const status = updated ? translationBadge(updated).status : 'pending'
+    showToast(status === 'ready' ? 'Traducción al inglés lista' : 'Traducción al inglés en curso')
+  } catch (e) {
+    error.value = (e as ApiError).message || 'No se pudo traducir el artículo.'
+  } finally {
+    const next = new Set(translatingIds.value)
+    next.delete(a._id)
+    translatingIds.value = next
+  }
+}
+
+// Traduce por lotes pequeños (cada lote es una petición corta) hasta terminar o detener
+async function runBacklog() {
+  if (backlogRunning.value) {
+    backlogStop.value = true
+    return
+  }
+  backlogRunning.value = true
+  backlogStop.value = false
+  backlogDone.value = 0
+  error.value = null
+  try {
+    // eslint-disable-next-line no-constant-condition
+    while (true) {
+      const r = await articlesService.translateBacklog(BACKLOG_BATCH)
+      const ok = r.translated ?? r.processed ?? 0
+      backlogDone.value += ok
+      if (typeof r.remaining === 'number') backlogRemaining.value = r.remaining
+      const nothingLeft = r.remaining === 0 || r.remaining === undefined || r.remaining === null
+      const noProgress = (r.processed ?? ok) === 0
+      if (nothingLeft || noProgress || backlogStop.value) break
+    }
+    showToast(backlogDone.value ? `${backlogDone.value} artículo(s) traducido(s)` : 'No había artículos pendientes de traducir')
+  } catch (e) {
+    error.value = (e as ApiError).message || 'No se pudieron traducir los pendientes.'
+  } finally {
+    backlogRunning.value = false
+    backlogStop.value = false
+    load()
   }
 }
 
@@ -144,8 +214,32 @@ watch(() => [route.query.msg, route.query.compartir], handleReturnFromEditor, { 
         <button :class="['lst__chip', { 'lst__chip--on': status === 'draft' }]" @click="setStatus('draft')">Borradores</button>
       </div>
 
+      <button
+        type="button"
+        class="adm-btn adm-btn--ghost lst__backlog"
+        :title="backlogRunning ? 'Detener después del lote actual' : 'Traduce al inglés los artículos publicados que aún no tienen versión en inglés'"
+        :disabled="backlogRunning && backlogStop"
+        @click="runBacklog"
+      >
+        <template v-if="backlogRunning">
+          <span class="adm-spinner lst__btn-spinner"></span>
+          {{ backlogStop ? 'Deteniendo…' : 'Detener' }}
+          <span v-if="backlogRemaining !== null" class="lst__count">quedan {{ backlogRemaining }}</span>
+        </template>
+        <template v-else>
+          <i class="fa-solid fa-language"></i> Traducir pendientes
+          <span v-if="backlogRemaining !== null" class="lst__count">{{ backlogRemaining }}</span>
+        </template>
+      </button>
+
       <router-link :to="newLink" class="adm-btn adm-btn--primary"><i class="fa-solid fa-plus"></i> Nuevo artículo</router-link>
     </div>
+
+    <p v-if="backlogRunning" class="lst__progress" role="status">
+      <i class="fa-solid fa-language"></i>
+      Traduciendo al inglés por lotes de {{ BACKLOG_BATCH }}… {{ backlogDone }} listo(s)<template v-if="backlogRemaining !== null">, quedan {{ backlogRemaining }}</template>.
+      Puedes seguir usando el panel; no cierres esta pestaña.
+    </p>
 
     <div ref="listTop" class="lst__anchor"></div>
     <ArticlesPager v-if="!loading && articles.length" class="lst__pager-top" :pagination="pagination" :loading="loading" locale="es" @change="changePage" />
@@ -171,6 +265,11 @@ watch(() => [route.query.msg, route.query.compartir], handleReturnFromEditor, { 
           <div class="lst__badges">
             <span :class="['lst__badge', a.isPublished ? 'lst__badge--ok' : 'lst__badge--draft']">{{ a.isPublished ? 'Publicado' : 'Borrador' }}</span>
             <span v-if="!a.featuredImage" class="lst__badge lst__badge--warn" title="Al compartir se usará la imagen genérica del sitio">Sin portada</span>
+            <span
+              v-if="a.isPublished || a.translations?.en"
+              :class="['lst__badge', 'lst__badge--tr', `lst__badge--tr-${translationBadge(a).status}`]"
+              :title="translationBadge(a).hint"
+            ><i class="fa-solid fa-language"></i> EN · {{ translationBadge(a).label }}</span>
             <time class="lst__date">{{ formatDate(a.date) }}</time>
           </div>
           <h2 class="lst__row-title"><router-link :to="editLink(a)">{{ a.title }}</router-link></h2>
@@ -179,6 +278,17 @@ watch(() => [route.query.msg, route.query.compartir], handleReturnFromEditor, { 
 
         <div class="lst__row-actions">
           <router-link class="lst__icon-btn" title="Editar" :to="editLink(a)"><i class="fa-solid fa-pen"></i><span>Editar</span></router-link>
+          <button
+            v-if="a.isPublished"
+            class="lst__icon-btn"
+            :title="translateActionLabel(translationBadge(a).status)"
+            :disabled="translatingIds.has(a._id) || translationBadge(a).status === 'pending'"
+            @click="translateOne(a)"
+          >
+            <span v-if="translatingIds.has(a._id)" class="adm-spinner lst__btn-spinner"></span>
+            <i v-else :class="translationBadge(a).status === 'ready' || translationBadge(a).status === 'stale' ? 'fa-solid fa-rotate' : 'fa-solid fa-language'"></i>
+            <span>{{ translationBadge(a).status === 'pending' ? 'En curso' : translationBadge(a).status === 'ready' || translationBadge(a).status === 'stale' ? 'Regenerar' : 'Traducir' }}</span>
+          </button>
           <button class="lst__icon-btn" title="Compartir" @click="sharing = a"><i class="fa-solid fa-share-nodes"></i><span>Compartir</span></button>
           <a class="lst__icon-btn" title="Ver en el sitio" :href="`${publicBase}/investigaciones/${a.slug}`" target="_blank" rel="noopener"><i class="fa-solid fa-eye"></i><span>Ver</span></a>
           <button class="lst__icon-btn" :title="a.isPublished ? 'Pasar a borrador' : 'Publicar'" @click="togglePublish(a)">
@@ -207,6 +317,13 @@ watch(() => [route.query.msg, route.query.compartir], handleReturnFromEditor, { 
 </template>
 
 <style lang="scss" scoped>
+// El reset global (* { padding: 0 }) que inyecta additionalData llega aquí como [data-v-…] y
+// anulaba el padding de los botones compartidos del panel; se restablece para este componente.
+.adm-btn {
+  padding: 0.75rem 1.3rem;
+  &--sm { padding: 0.5rem 0.9rem; }
+}
+
 .lst {
   list-style: none;
   display: flex;
@@ -285,6 +402,26 @@ watch(() => [route.query.msg, route.query.compartir], handleReturnFromEditor, { 
     &--ok { background: rgba(16, 185, 129, 0.15); color: #34d399; }
     &--draft { background: rgba(255, 255, 255, 0.08); color: var(--text-muted); }
     &--warn { background: rgba(245, 158, 11, 0.15); color: #fbbf24; }
+    &--tr { display: inline-flex; align-items: center; gap: 0.3rem; i { font-size: 0.7rem; } }
+    &--tr-ready { background: rgba(56, 182, 255, 0.14); color: var(--accent); }
+    &--tr-pending { background: rgba(245, 158, 11, 0.15); color: #fbbf24; }
+    &--tr-stale { background: rgba(249, 115, 22, 0.15); color: #fb923c; }
+    &--tr-failed { background: rgba(239, 68, 68, 0.14); color: #f87171; }
+    &--tr-none { background: rgba(255, 255, 255, 0.08); color: var(--text-muted); }
+  }
+
+  &__backlog { gap: 0.5rem; }
+  &__count {
+    min-width: 1.4rem; padding: 0.05rem 0.45rem; border-radius: 2rem;
+    background: rgba(255, 255, 255, 0.1); font-size: 0.72rem; font-weight: 700; text-align: center;
+  }
+  &__btn-spinner { width: 0.95rem; height: 0.95rem; }
+  &__progress {
+    display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;
+    margin: -0.75rem 0 1.25rem; padding: 0.6rem 0.9rem;
+    border: 1px solid rgba(56, 182, 255, 0.25); background: rgba(56, 182, 255, 0.06);
+    border-radius: 0.6rem; font-size: 0.82rem; color: var(--text-muted);
+    i { color: var(--accent); }
   }
   &__date { font-size: 0.75rem; color: var(--text-muted); }
   &__row-title {
@@ -306,6 +443,7 @@ watch(() => [route.query.msg, route.query.compartir], handleReturnFromEditor, { 
     i { font-size: 0.95rem; }
     &:hover { background: rgba(255, 255, 255, 0.06); color: var(--text); }
     &--danger:hover { color: #f87171; background: rgba(239, 68, 68, 0.1); }
+    &:disabled { opacity: 0.6; cursor: progress; }
   }
 
   &__backdrop {
