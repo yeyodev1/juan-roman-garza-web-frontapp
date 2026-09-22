@@ -1,11 +1,20 @@
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, onBeforeUnmount } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { articlesService, type Article, type Pagination } from '@/services/articles.service'
 import type { ApiError } from '@/types'
 import ShareModal from '@/components/admin/ShareModal.vue'
 import ArticlesPager from '@/components/ArticlesPager.vue'
 import { translationBadge, translateActionLabel } from '@/utils/articleTranslation'
+import {
+  BACKLOG_BATCH,
+  backlogDone,
+  backlogRemaining,
+  backlogRunning,
+  backlogStop,
+  onBacklogFinished,
+  toggleBacklog,
+} from '@/utils/translationBacklog'
 
 const route = useRoute()
 const router = useRouter()
@@ -26,12 +35,13 @@ const listTop = ref<HTMLElement | null>(null)
 
 // ── Traducción al inglés ──────────────────────────────────────────────────────
 const translatingIds = ref<Set<string>>(new Set())
-// Pendientes de traducir (null = desconocido hasta la primera respuesta del backend)
-const backlogRemaining = ref<number | null>(null)
-const backlogRunning = ref(false)
-const backlogStop = ref(false)
-const backlogDone = ref(0)
-const BACKLOG_BATCH = 3
+// El proceso del backlog vive en un módulo (sobrevive a la navegación); aquí solo se escucha su final
+const offBacklog = onBacklogFinished(({ done, error: err }) => {
+  if (err) error.value = err
+  else showToast(done ? `${done} artículo(s) traducido(s)` : 'No había artículos pendientes de traducir')
+  load()
+})
+onBeforeUnmount(() => { offBacklog() })
 
 // ── Estado de la lista = query de la URL (?pagina=2&q=texto&estado=borradores) ──
 const page = computed(() => Math.max(1, parseInt(String(route.query.pagina || '1'), 10) || 1))
@@ -132,6 +142,9 @@ async function translateOne(a: Article) {
     showToast(status === 'ready' ? 'Traducción al inglés lista' : 'Traducción al inglés en curso')
   } catch (e) {
     error.value = (e as ApiError).message || 'No se pudo traducir el artículo.'
+    // En un 502 el backend devuelve el artículo con el estado del fallo: reflejarlo en la fila
+    const failed = ((e as ApiError).data as { data?: Article } | undefined)?.data
+    if (failed?._id) replaceRow(failed)
   } finally {
     const next = new Set(translatingIds.value)
     next.delete(a._id)
@@ -140,34 +153,9 @@ async function translateOne(a: Article) {
 }
 
 // Traduce por lotes pequeños (cada lote es una petición corta) hasta terminar o detener
-async function runBacklog() {
-  if (backlogRunning.value) {
-    backlogStop.value = true
-    return
-  }
-  backlogRunning.value = true
-  backlogStop.value = false
-  backlogDone.value = 0
+function runBacklog() {
   error.value = null
-  try {
-    // eslint-disable-next-line no-constant-condition
-    while (true) {
-      const r = await articlesService.translateBacklog(BACKLOG_BATCH)
-      const ok = r.translated ?? r.processed ?? 0
-      backlogDone.value += ok
-      if (typeof r.remaining === 'number') backlogRemaining.value = r.remaining
-      const nothingLeft = r.remaining === 0 || r.remaining === undefined || r.remaining === null
-      const noProgress = (r.processed ?? ok) === 0
-      if (nothingLeft || noProgress || backlogStop.value) break
-    }
-    showToast(backlogDone.value ? `${backlogDone.value} artículo(s) traducido(s)` : 'No había artículos pendientes de traducir')
-  } catch (e) {
-    error.value = (e as ApiError).message || 'No se pudieron traducir los pendientes.'
-  } finally {
-    backlogRunning.value = false
-    backlogStop.value = false
-    load()
-  }
+  toggleBacklog()
 }
 
 async function confirmDelete() {

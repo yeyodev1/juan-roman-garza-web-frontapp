@@ -58,9 +58,13 @@ export type AdminTranslationStatus = 'ready' | 'pending' | 'stale' | 'failed' | 
 
 export interface TranslateBacklogResult {
   processed?: number
+  /** Traducidos con éxito en este lote */
+  succeeded?: number
+  /** Total del sitio con inglés vigente (no es por lote) */
   translated?: number
   failed?: number
   remaining?: number | null
+  results?: { slug: string; status: string; error?: string }[]
 }
 
 export type ArticleInput = Partial<

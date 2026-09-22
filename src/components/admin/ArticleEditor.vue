@@ -194,6 +194,9 @@ async function forceTranslate() {
     watchPending()
   } catch (e) {
     trError.value = (e as ApiError).message || 'No se pudo traducir el artículo.'
+    // En un 502 el backend devuelve el artículo con el estado del fallo
+    const failed = ((e as ApiError).data as { data?: Article } | undefined)?.data
+    if (failed?._id) trArticle.value = failed
   } finally {
     translating.value = false
   }

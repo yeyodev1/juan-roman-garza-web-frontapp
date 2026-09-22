@@ -57,7 +57,7 @@ function normalize(value: unknown): AdminTranslationStatus | null {
 export async function spanishSourceHash(a: Pick<Article, 'title' | 'excerpt' | 'content'>): Promise<string | null> {
   try {
     if (typeof crypto === 'undefined' || !crypto.subtle) return null
-    const bytes = new TextEncoder().encode(`${a.title ?? ''}${a.excerpt ?? ''}${a.content ?? ''}`)
+    const bytes = new TextEncoder().encode(`${a.title ?? ''}\u0000${a.excerpt ?? ''}\u0000${a.content ?? ''}`)
     const digest = await crypto.subtle.digest('SHA-256', bytes)
     return Array.from(new Uint8Array(digest), (b) => b.toString(16).padStart(2, '0')).join('')
   } catch {
@@ -66,10 +66,10 @@ export async function spanishSourceHash(a: Pick<Article, 'title' | 'excerpt' | '
 }
 
 export function translationStatus(a: Article, currentHash?: string | null): AdminTranslationStatus {
-  // 1) Estado ya calculado por el backend, si lo envía
+  // 1) Estado ya calculado por el backend (compara el hash con el contenido real): manda
   const direct = normalize(a.translationStatus) ?? normalize(a.translation?.status)
-  if (direct && direct !== 'ready') return direct
   if (direct === 'ready' && a.translation?.fresh === false) return 'stale'
+  if (direct) return direct
 
   // 2) Sub-documento translations.en
   const en = a.translations?.en
